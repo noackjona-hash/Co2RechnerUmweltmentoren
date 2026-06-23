@@ -52,8 +52,9 @@ export default function QuizPage() {
   const [studentId, setStudentId] = useState<string | null>(null);
   const router = useRouter();
 
-  // Define currentQuestion and calculateCo2 first (needed for hooks below)
+  // Define currentQuestion, currentValue and calculateCo2 first (needed for hooks below)
   const currentQuestion = questions[currentIndex];
+  const currentValue = currentQuestion ? answers[currentQuestion.id]?.numericalValue : undefined;
 
   const calculateCo2 = useCallback(
     (question: QuizQuestion, value: number): number => {
@@ -171,7 +172,7 @@ export default function QuizPage() {
   // Calculate running total CO2
   const runningTotalCo2 = Object.values(answers).reduce((sum, a) => sum + a.calculatedCo2, 0);
 
-  const handleAnswer = (value: number, optionIndex?: number) => {
+  const handleAnswer = useCallback((value: number, optionIndex?: number) => {
     if (!currentQuestion) return;
     const co2 = calculateCo2(currentQuestion, value);
 
@@ -189,7 +190,42 @@ export default function QuizPage() {
         optionIndex,
       },
     }));
-  };
+
+    // Auto-advance for select/radio questions on mobile/desktop after a short delay
+    if (
+      currentQuestion.questionType === 'select' ||
+      currentQuestion.questionType === 'radio'
+    ) {
+      if (currentIndex < questions.length - 1) {
+        setTimeout(() => {
+          setDirection('next');
+          const nextQ = questions[currentIndex + 1];
+          if (nextQ && nextQ.category !== currentQuestion.category) {
+            setShowCategoryIntro(true);
+          }
+          setCurrentIndex((prevIndex) => prevIndex + 1);
+        }, 400);
+      }
+    }
+  }, [currentQuestion, calculateCo2, currentIndex, questions, currentCategory]);
+
+  const handleDecrement = useCallback(() => {
+    if (!currentQuestion) return;
+    const min = currentQuestion.minValue ?? 0;
+    const step = currentQuestion.step ?? 1;
+    const current = currentValue ?? currentQuestion.defaultValue ?? min;
+    const newVal = Math.max(min, current - step);
+    handleAnswer(newVal);
+  }, [currentQuestion, currentValue, handleAnswer]);
+
+  const handleIncrement = useCallback(() => {
+    if (!currentQuestion) return;
+    const max = currentQuestion.maxValue ?? 100;
+    const step = currentQuestion.step ?? 1;
+    const current = currentValue ?? currentQuestion.defaultValue ?? (currentQuestion.minValue ?? 0);
+    const newVal = Math.min(max, current + step);
+    handleAnswer(newVal);
+  }, [currentQuestion, currentValue, handleAnswer]);
 
   const goNext = () => {
     // Ensure default value is registered in state if unanswered and has a default/min value
@@ -295,6 +331,74 @@ export default function QuizPage() {
     setSubmitting(false);
   };
 
+  // Keyboard navigation shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts if focus is in an input field
+      if (
+        document.activeElement?.tagName === 'INPUT' ||
+        document.activeElement?.tagName === 'TEXTAREA' ||
+        document.activeElement?.tagName === 'SELECT'
+      ) {
+        return;
+      }
+
+      if (loading || !currentQuestion) return;
+
+      // Select / Radio option shortcuts: 1, 2, 3, 4...
+      if (
+        currentQuestion.questionType === 'select' ||
+        currentQuestion.questionType === 'radio'
+      ) {
+        if (currentQuestion.options) {
+          const numKey = parseInt(e.key);
+          const optionsArray = currentQuestion.options as { label: string; value: number }[];
+          if (!isNaN(numKey) && numKey >= 1 && numKey <= optionsArray.length) {
+            const selectedOption = optionsArray[numKey - 1];
+            handleAnswer(selectedOption.value, numKey - 1);
+          }
+        }
+      }
+
+      // Slider step shortcuts: ArrowLeft / ArrowRight
+      if (currentQuestion.questionType === 'slider') {
+        if (e.key === 'ArrowLeft') {
+          handleDecrement();
+        } else if (e.key === 'ArrowRight') {
+          handleIncrement();
+        }
+      }
+
+      // Quiz navigation shortcuts
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        goPrev();
+      } else if (
+        (e.key === 'ArrowRight' || e.key === 'Enter') &&
+        currentIndex < questions.length - 1
+      ) {
+        goNext();
+      } else if (e.key === 'Enter' && currentIndex === questions.length - 1) {
+        handleSubmit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [
+    currentIndex,
+    loading,
+    currentQuestion,
+    questions,
+    handleDecrement,
+    handleIncrement,
+    goPrev,
+    goNext,
+    handleSubmit,
+    handleAnswer,
+  ]);
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -314,7 +418,6 @@ export default function QuizPage() {
     (Object.keys(answers).length / questions.length) * 100
   );
 
-  const currentValue = answers[currentQuestion.id]?.numericalValue;
 
   // Category progress for SVG donut
   const catAnswered = categoryQuestions.filter((q) => answers[q.id]).length;
@@ -511,20 +614,38 @@ export default function QuizPage() {
                       </span>
                     )}
                   </div>
-                  <input
-                    type="range"
-                    min={currentQuestion.minValue ?? 0}
-                    max={currentQuestion.maxValue ?? 100}
-                    step={currentQuestion.step ?? 1}
-                    value={
-                      currentValue ??
-                      currentQuestion.defaultValue ??
-                      currentQuestion.minValue ??
-                      0
-                    }
-                    onChange={(e) => handleAnswer(parseFloat(e.target.value))}
-                    className="slider-premium"
-                  />
+                  <div className="flex items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={handleDecrement}
+                      className="w-10 h-10 rounded-full glass hover:bg-muted/70 flex items-center justify-center font-bold text-lg select-none cursor-pointer active:scale-90 transition-transform shrink-0"
+                      title="Wert verringern"
+                    >
+                      –
+                    </button>
+                    <input
+                      type="range"
+                      min={currentQuestion.minValue ?? 0}
+                      max={currentQuestion.maxValue ?? 100}
+                      step={currentQuestion.step ?? 1}
+                      value={
+                        currentValue ??
+                        currentQuestion.defaultValue ??
+                        currentQuestion.minValue ??
+                        0
+                      }
+                      onChange={(e) => handleAnswer(parseFloat(e.target.value))}
+                      className="slider-premium flex-1"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleIncrement}
+                      className="w-10 h-10 rounded-full glass hover:bg-muted/70 flex items-center justify-center font-bold text-lg select-none cursor-pointer active:scale-90 transition-transform shrink-0"
+                      title="Wert erhöhen"
+                    >
+                      +
+                    </button>
+                  </div>
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>
                       {currentQuestion.minValue ?? 0} {currentQuestion.unit}

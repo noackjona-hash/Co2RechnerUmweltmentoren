@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="leafGrad" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#10b981" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Beautiful glowing leaf -->
+  <path d="M16 2C8 10 8 20 16 30C24 20 24 10 16 2Z" fill="url(#leafGrad)" filter="url(#glow)"/>
+  <path d="M16 2V30" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 3" opacity="0.7"/>
+</svg>

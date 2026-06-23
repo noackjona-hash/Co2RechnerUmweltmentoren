@@ -138,6 +138,133 @@ export default function ResultsPage() {
     return () => clearInterval(timer);
   }, [results]);
 
+  // Celebrate with Confetti on complete
+  useEffect(() => {
+    if (loading || !results) return;
+
+    const canvas = document.getElementById('confetti-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Resize canvas
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    // Particle class
+    class ConfettiParticle {
+      x: number;
+      y: number;
+      size: number;
+      color: string;
+      speedX: number;
+      speedY: number;
+      rotation: number;
+      rotationSpeed: number;
+
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * -100 - 10;
+        this.size = Math.random() * 8 + 5;
+        
+        const colors = [
+          '#10b981', // emerald
+          '#06b6d4', // cyan
+          '#f59e0b', // amber
+          '#8b5cf6', // purple
+          '#ec4899', // pink
+          '#3b82f6', // blue
+        ];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.speedX = Math.random() * 4 - 2;
+        this.speedY = Math.random() * 5 + 3;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 4 - 2;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.rotation += this.rotationSpeed;
+
+        if (this.y > canvas.height) {
+          this.y = -20;
+          this.x = Math.random() * canvas.width;
+          this.speedY = Math.random() * 5 + 3;
+        }
+      }
+
+      draw() {
+        if (!ctx) return;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        ctx.restore();
+      }
+    }
+
+    const particles: ConfettiParticle[] = [];
+    const maxParticles = 120;
+    
+    for (let i = 0; i < maxParticles; i++) {
+      const p = new ConfettiParticle();
+      p.y = Math.random() * canvas.height - canvas.height;
+      particles.push(p);
+    }
+
+    class BurstParticle extends ConfettiParticle {
+      constructor(fromLeft: boolean) {
+        super();
+        this.x = fromLeft ? 0 : canvas.width;
+        this.y = canvas.height * 0.8;
+        this.speedX = fromLeft ? Math.random() * 15 + 5 : Math.random() * -15 - 5;
+        this.speedY = Math.random() * -20 - 5;
+      }
+      
+      update() {
+        super.update();
+        this.speedY += 0.3; // add gravity to burst particles
+      }
+    }
+    
+    const burstCount = 50;
+    for (let i = 0; i < burstCount; i++) {
+      particles.push(new BurstParticle(true));
+      particles.push(new BurstParticle(false));
+    }
+
+    let animationFrameId: number;
+    const animateConfetti = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+
+      animationFrameId = requestAnimationFrame(animateConfetti);
+    };
+
+    animateConfetti();
+
+    const timer = setTimeout(() => {
+      cancelAnimationFrame(animationFrameId);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }, 6000);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      clearTimeout(timer);
+      window.removeEventListener('resize', resizeCanvas);
+    };
+  }, [loading, results]);
+
   const handleLogout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
     router.push('/');
@@ -310,6 +437,12 @@ export default function ResultsPage() {
 
   return (
     <div className="min-h-screen relative pb-20 flex flex-col justify-between">
+      {/* Confetti Canvas */}
+      <canvas
+        id="confetti-canvas"
+        className="pointer-events-none fixed inset-0 z-50 w-full h-full"
+      />
+
       {/* Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-950" />
