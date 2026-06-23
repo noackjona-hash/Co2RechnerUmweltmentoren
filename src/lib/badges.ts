@@ -12,7 +12,12 @@ export interface Badge {
   unit: string;
 }
 
-type ResponseWithQuestion = QuizResponse & { question: QuizQuestion };
+type ResponseWithQuestion = {
+  numericalValue: number;
+  question: {
+    orderIndex: number;
+  };
+};
 
 interface StudentWithResponses {
   id: string;

@@ -14,13 +14,23 @@ export async function GET() {
     // Get all classes for this school
     const classes = await prisma.class.findMany({
       where: { licenseId: session.licenseId },
-      include: {
+      select: {
+        id: true,
+        className: true,
         students: {
           where: { isCompleted: true },
-          include: {
+          select: {
+            id: true,
             responses: {
-              include: {
-                question: true,
+              select: {
+                calculatedCo2: true,
+                category: true,
+                numericalValue: true,
+                question: {
+                  select: {
+                    orderIndex: true,
+                  },
+                },
               },
             },
           },

@@ -13,7 +13,10 @@ export async function GET() {
   try {
     const responses = await prisma.quizResponse.findMany({
       where: { studentId: session.id },
-      include: { question: true },
+      select: {
+        category: true,
+        calculatedCo2: true,
+      },
     });
 
     // Calculate totals per category
@@ -31,8 +34,14 @@ export async function GET() {
     // Fetch current student details to find class and license
     const student = await prisma.student.findUnique({
       where: { id: session.id },
-      include: {
-        class: true,
+      select: {
+        classId: true,
+        class: {
+          select: {
+            licenseId: true,
+            className: true,
+          },
+        },
       },
     });
 
@@ -43,12 +52,24 @@ export async function GET() {
     // Get all classes for the same school (license)
     const classes = await prisma.class.findMany({
       where: { licenseId: student.class.licenseId },
-      include: {
+      select: {
+        id: true,
+        className: true,
         students: {
           where: { isCompleted: true },
-          include: {
+          select: {
+            id: true,
             responses: {
-              include: { question: true },
+              select: {
+                calculatedCo2: true,
+                category: true,
+                numericalValue: true,
+                question: {
+                  select: {
+                    orderIndex: true,
+                  },
+                },
+              },
             },
           },
         },

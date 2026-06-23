@@ -9,18 +9,20 @@ import {
   formatCO2,
   type Category,
 } from '@/lib/utils';
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Legend,
-} from 'recharts';
+import dynamic from 'next/dynamic';
+
+const CategoryPieChart = dynamic(
+  () => import('@/components/results-charts').then((mod) => mod.CategoryPieChart),
+  { ssr: false, loading: () => <div className="h-[280px] flex items-center justify-center text-muted-foreground animate-pulse">Diagramm lädt...</div> }
+);
+const ComparisonBarChart = dynamic(
+  () => import('@/components/results-charts').then((mod) => mod.ComparisonBarChart),
+  { ssr: false, loading: () => <div className="h-[280px] flex items-center justify-center text-muted-foreground animate-pulse">Diagramm lädt...</div> }
+);
+const CategoryDetailBarChart = dynamic(
+  () => import('@/components/results-charts').then((mod) => mod.CategoryDetailBarChart),
+  { ssr: false, loading: () => <div className="h-[200px] flex items-center justify-center text-muted-foreground animate-pulse">Diagramm lädt...</div> }
+);
 import { Leaf, TrendingDown, TrendingUp, Minus, LogOut, RefreshCw, Award, Sparkles, Printer, X, Trophy, Users, TreePine, Car, Flame } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
@@ -614,35 +616,7 @@ export default function ResultsPage() {
                   style={{ animationDelay: '0.2s' }}
                 >
                   <h3 className="text-lg font-bold mb-4">Aufteilung nach Kategorien</h3>
-                  <ResponsiveContainer width="100%" height={280}>
-                    <PieChart>
-                      <Pie
-                        data={pieData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={100}
-                        paddingAngle={4}
-                        dataKey="value"
-                        label={({ name, percent }) =>
-                          `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
-                        }
-                        labelLine={false}
-                      >
-                        {pieData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        formatter={(value: any) => [`${formatCO2(Number(value || 0))}`, 'CO₂']}
-                        contentStyle={{
-                          borderRadius: '12px',
-                          border: 'none',
-                          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                        }}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
+                  <CategoryPieChart data={pieData} />
                 </div>
               </TiltCard>
 
@@ -653,30 +627,7 @@ export default function ResultsPage() {
                   style={{ animationDelay: '0.3s' }}
                 >
                   <h3 className="text-lg font-bold mb-4">Vergleich</h3>
-                  <ResponsiveContainer width="100%" height={280}>
-                    <BarChart data={comparisonData} layout="vertical">
-                      <XAxis type="number" tick={{ fontSize: 12 }} />
-                      <YAxis
-                        dataKey="name"
-                        type="category"
-                        width={120}
-                        tick={{ fontSize: 10 }}
-                      />
-                      <Tooltip
-                        formatter={(value: any) => [`${formatCO2(Number(value || 0))}`, 'CO₂']}
-                        contentStyle={{
-                          borderRadius: '12px',
-                          border: 'none',
-                          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                        }}
-                      />
-                      <Bar dataKey="value" radius={[0, 8, 8, 0]} barSize={20}>
-                        {comparisonData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.fill} />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <ComparisonBarChart data={comparisonData} />
                 </div>
               </TiltCard>
             </div>
@@ -689,25 +640,7 @@ export default function ResultsPage() {
               <h3 className="text-lg font-bold mb-4">
                 Detailansicht nach Kategorien
               </h3>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={categoryBarData}>
-                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip
-                    formatter={(value: any) => [`${formatCO2(Number(value || 0))}`, 'CO₂']}
-                    contentStyle={{
-                      borderRadius: '12px',
-                      border: 'none',
-                      boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                    }}
-                  />
-                  <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={50}>
-                    {categoryBarData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+              <CategoryDetailBarChart data={categoryBarData} />
             </div>
 
             {/* Category detail cards */}

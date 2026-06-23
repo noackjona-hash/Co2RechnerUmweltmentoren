@@ -12,11 +12,18 @@ export async function GET() {
 
     const totalClasses = await prisma.class.count();
 
-    return NextResponse.json({
-      totalCompleted,
-      totalSchools,
-      totalClasses,
-    });
+    return NextResponse.json(
+      {
+        totalCompleted,
+        totalSchools,
+        totalClasses,
+      },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=30',
+        },
+      }
+    );
   } catch {
     return NextResponse.json(
       { totalCompleted: 0, totalSchools: 0, totalClasses: 0 },

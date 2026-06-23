@@ -38,6 +38,7 @@ model Class {
   license   License   @relation(fields: [licenseId], references: [id], onDelete: Cascade)
   students  Student[]
 
+  @@index([licenseId])
   @@map("classes")
 }
 
@@ -51,6 +52,7 @@ model Student {
   class       Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
   responses   QuizResponse[]
 
+  @@index([classId])
   @@map("students")
 }
 

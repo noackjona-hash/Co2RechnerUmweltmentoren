@@ -9,18 +9,16 @@ import {
   formatCO2,
   type Category,
 } from '@/lib/utils';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-  PieChart,
-  Pie,
-  Legend,
-} from 'recharts';
+import dynamic from 'next/dynamic';
+
+const SchoolCategoryPieChart = dynamic(
+  () => import('@/components/analytics-charts').then((mod) => mod.SchoolCategoryPieChart),
+  { ssr: false, loading: () => <div className="h-[280px] flex items-center justify-center text-muted-foreground animate-pulse">Diagramm lädt...</div> }
+);
+const SchoolClassBarChart = dynamic(
+  () => import('@/components/analytics-charts').then((mod) => mod.SchoolClassBarChart),
+  { ssr: false, loading: () => <div className="h-[280px] flex items-center justify-center text-muted-foreground animate-pulse">Diagramm lädt...</div> }
+);
 import {
   Leaf,
   LogOut,
@@ -241,38 +239,7 @@ export default function SchoolAnalyticsPage() {
                 <h3 className="text-lg font-bold mb-4">
                   Durchschnittliche Verteilung
                 </h3>
-                <ResponsiveContainer width="100%" height={280}>
-                  <PieChart>
-                    <Pie
-                      data={categoryPieData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={4}
-                      dataKey="value"
-                      label={({ name, percent }) =>
-                        `${name} ${((percent ?? 0) * 100).toFixed(0)}%`
-                      }
-                      labelLine={false}
-                    >
-                      {categoryPieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value: any) => [
-                        `${formatCO2(Number(value || 0))}`,
-                        'Ø CO₂',
-                      ]}
-                      contentStyle={{
-                        borderRadius: '12px',
-                        border: 'none',
-                        boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
+                <SchoolCategoryPieChart data={categoryPieData} />
               </div>
 
               {/* Class comparison */}
@@ -284,40 +251,7 @@ export default function SchoolAnalyticsPage() {
                   Vergleich nach Klassen
                 </h3>
                 {classComparisonData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={280}>
-                    <BarChart data={classComparisonData} layout="vertical">
-                      <XAxis type="number" tick={{ fontSize: 12 }} />
-                      <YAxis
-                        dataKey="name"
-                        type="category"
-                        width={80}
-                        tick={{ fontSize: 12 }}
-                      />
-                      <Tooltip
-                        formatter={(value: any) => [
-                          `${formatCO2(Number(value || 0))}`,
-                          'Ø CO₂',
-                        ]}
-                        contentStyle={{
-                          borderRadius: '12px',
-                          border: 'none',
-                          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                        }}
-                      />
-                      <Bar dataKey="value" radius={[0, 8, 8, 0]} barSize={24}>
-                        {classComparisonData.map((entry, index) => (
-                          <Cell
-                            key={`cell-${index}`}
-                            fill={
-                              entry.value <= NATIONAL_AVERAGE_CO2
-                                ? '#10b981'
-                                : '#f59e0b'
-                            }
-                          />
-                        ))}
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <SchoolClassBarChart data={classComparisonData} />
                 ) : (
                   <p className="text-muted-foreground text-center py-10">
                     Noch keine abgeschlossenen Klassen.

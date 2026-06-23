@@ -6,7 +6,12 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { TiltCard } from '@/components/tilt-card';
 import { MagneticButton } from '@/components/magnetic-button';
 import { ScrollReveal } from '@/components/scroll-reveal';
-import { ParticleField } from '@/components/particle-field';
+import dynamic from 'next/dynamic';
+
+const ParticleField = dynamic(
+  () => import('@/components/particle-field').then((mod) => mod.ParticleField),
+  { ssr: false }
+);
 import {
   Leaf,
   ArrowRight,
