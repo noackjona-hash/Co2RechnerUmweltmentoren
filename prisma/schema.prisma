@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model SuperAdmin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("super_admins")
+}
+
+model License {
+  id           String   @id @default(cuid())
+  schoolName   String   @map("school_name")
+  contactEmail String   @map("contact_email")
+  licenseKey   String   @unique @map("license_key")
+  passwordHash String   @map("password_hash")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  classes      Class[]
+
+  @@map("licenses")
+}
+
+model Class {
+  id        String    @id @default(cuid())
+  licenseId String    @map("license_id")
+  className String    @map("class_name")
+  createdAt DateTime  @default(now()) @map("created_at")
+  license   License   @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+  students  Student[]
+
+  @@map("classes")
+}
+
+model Student {
+  id          String         @id @default(cuid())
+  classId     String         @map("class_id")
+  accessKey   String         @unique @map("access_key")
+  isCompleted Boolean        @default(false) @map("is_completed")
+  completedAt DateTime?      @map("completed_at")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  class       Class          @relation(fields: [classId], references: [id], onDelete: Cascade)
+  responses   QuizResponse[]
+
+  @@map("students")
+}
+
+model QuizQuestion {
+  id           String         @id @default(cuid())
+  category     String
+  questionText String         @map("question_text")
+  questionType String         @map("question_type") // slider, select, number, radio
+  options      Json?          // JSON array of options for select/radio types
+  unit         String?        // e.g., "km", "kg", "kWh"
+  co2Factor    Float          @map("co2_factor") // kg CO2 per unit
+  minValue     Float?         @map("min_value")
+  maxValue     Float?         @map("max_value")
+  step         Float?
+  defaultValue Float?         @map("default_value")
+  helpText     String?        @map("help_text")
+  orderIndex   Int            @map("order_index")
+  responses    QuizResponse[]
+
+  @@map("quiz_questions")
+}
+
+model QuizResponse {
+  id             String       @id @default(cuid())
+  studentId      String       @map("student_id")
+  questionId     String       @map("question_id")
+  category       String
+  numericalValue Float        @map("numerical_value")
+  calculatedCo2  Float        @map("calculated_co2")
+  createdAt      DateTime     @default(now()) @map("created_at")
+  student        Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  question       QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, questionId])
+  @@map("quiz_responses")
+}

@@ -1,0 +1,50 @@
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { setSession } from '@/lib/auth';
+import bcrypt from 'bcryptjs';
+
+export async function POST(request: Request) {
+  try {
+    const { email, password } = await request.json();
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: 'E-Mail und Passwort sind erforderlich.' },
+        { status: 400 }
+      );
+    }
+
+    const admin = await prisma.superAdmin.findUnique({
+      where: { email },
+    });
+
+    if (!admin) {
+      return NextResponse.json(
+        { error: 'Ungültige Anmeldedaten.' },
+        { status: 401 }
+      );
+    }
+
+    const validPassword = await bcrypt.compare(password, admin.passwordHash);
+    if (!validPassword) {
+      return NextResponse.json(
+        { error: 'Ungültige Anmeldedaten.' },
+        { status: 401 }
+      );
+    }
+
+    await setSession({
+      id: admin.id,
+      role: 'super-admin',
+      email: admin.email,
+    });
+
+    return NextResponse.json({ success: true, role: 'super-admin' });
+  } catch (error) {
+    console.error('Admin login error:', error);
+    return NextResponse.json(
+      { error: 'Interner Serverfehler.' },
+      { status: 500 }
+    );
+  }
+}
