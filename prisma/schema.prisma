@@ -88,5 +88,6 @@ model QuizResponse {
   question       QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, questionId])
+  @@index([questionId])
   @@map("quiz_responses")
 }
