@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { className } = await request.json();
+    const { className, quizMode } = await request.json();
 
     if (!className) {
       return NextResponse.json(
@@ -47,9 +47,18 @@ export async function POST(request: Request) {
       );
     }
 
+    const mode = quizMode ? Number(quizMode) : 60;
+    if (![10, 30, 60].includes(mode)) {
+      return NextResponse.json(
+        { error: 'Ungültiger Fragen-Modus (muss 10, 30 oder 60 sein).' },
+        { status: 400 }
+      );
+    }
+
     const newClass = await prisma.class.create({
       data: {
         className,
+        quizMode: mode,
         licenseId: session.licenseId!,
       },
     });

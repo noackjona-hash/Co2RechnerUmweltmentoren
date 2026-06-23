@@ -33,6 +33,7 @@ model Class {
   id        String    @id @default(cuid())
   licenseId String    @map("license_id")
   className String    @map("class_name")
+  quizMode  Int       @default(60) @map("quiz_mode") // 10, 30, 60 questions
   createdAt DateTime  @default(now()) @map("created_at")
   license   License   @relation(fields: [licenseId], references: [id], onDelete: Cascade)
   students  Student[]
@@ -67,6 +68,7 @@ model QuizQuestion {
   defaultValue Float?         @map("default_value")
   helpText     String?        @map("help_text")
   orderIndex   Int            @map("order_index")
+  tier         Int            @default(3) // 1 = Short (10), 2 = Medium (30), 3 = Long (60)
   responses    QuizResponse[]
 
   @@map("quiz_questions")

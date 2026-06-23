@@ -18,6 +18,7 @@ import {
   ChevronUp,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { LegalFooter } from '@/components/legal-footer';
 
 interface License {
   id: string;
@@ -114,7 +115,7 @@ export default function AdminPage() {
   );
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative flex flex-col justify-between">
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-950" />
       </div>
@@ -378,6 +379,7 @@ export default function AdminPage() {
           )}
         </div>
       </div>
+      <LegalFooter />
     </div>
   );
 }

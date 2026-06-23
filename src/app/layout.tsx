@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { CookieBanner } from '@/components/cookie-banner';
 
 export const metadata: Metadata = {
   title: 'CO₂ Rechner – Dein ökologischer Fußabdruck',
@@ -17,8 +18,12 @@ export default function RootLayout({
   return (
     <html lang="de" suppressHydrationWarning>
       <body className="min-h-screen">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <CookieBanner />
+        </ThemeProvider>
       </body>
     </html>
   );
 }
+

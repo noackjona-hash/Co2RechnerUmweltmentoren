@@ -102,6 +102,7 @@ export const ClassScalarFieldEnum = {
   id: 'id',
   licenseId: 'licenseId',
   className: 'className',
+  quizMode: 'quizMode',
   createdAt: 'createdAt'
 } as const
 
@@ -133,7 +134,8 @@ export const QuizQuestionScalarFieldEnum = {
   step: 'step',
   defaultValue: 'defaultValue',
   helpText: 'helpText',
-  orderIndex: 'orderIndex'
+  orderIndex: 'orderIndex',
+  tier: 'tier'
 } as const
 
 export type QuizQuestionScalarFieldEnum = (typeof QuizQuestionScalarFieldEnum)[keyof typeof QuizQuestionScalarFieldEnum]

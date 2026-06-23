@@ -33,6 +33,7 @@ export type QuizQuestionAvgAggregateOutputType = {
   step: number | null
   defaultValue: number | null
   orderIndex: number | null
+  tier: number | null
 }
 
 export type QuizQuestionSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type QuizQuestionSumAggregateOutputType = {
   step: number | null
   defaultValue: number | null
   orderIndex: number | null
+  tier: number | null
 }
 
 export type QuizQuestionMinAggregateOutputType = {
@@ -57,6 +59,7 @@ export type QuizQuestionMinAggregateOutputType = {
   defaultValue: number | null
   helpText: string | null
   orderIndex: number | null
+  tier: number | null
 }
 
 export type QuizQuestionMaxAggregateOutputType = {
@@ -72,6 +75,7 @@ export type QuizQuestionMaxAggregateOutputType = {
   defaultValue: number | null
   helpText: string | null
   orderIndex: number | null
+  tier: number | null
 }
 
 export type QuizQuestionCountAggregateOutputType = {
@@ -88,6 +92,7 @@ export type QuizQuestionCountAggregateOutputType = {
   defaultValue: number
   helpText: number
   orderIndex: number
+  tier: number
   _all: number
 }
 
@@ -99,6 +104,7 @@ export type QuizQuestionAvgAggregateInputType = {
   step?: true
   defaultValue?: true
   orderIndex?: true
+  tier?: true
 }
 
 export type QuizQuestionSumAggregateInputType = {
@@ -108,6 +114,7 @@ export type QuizQuestionSumAggregateInputType = {
   step?: true
   defaultValue?: true
   orderIndex?: true
+  tier?: true
 }
 
 export type QuizQuestionMinAggregateInputType = {
@@ -123,6 +130,7 @@ export type QuizQuestionMinAggregateInputType = {
   defaultValue?: true
   helpText?: true
   orderIndex?: true
+  tier?: true
 }
 
 export type QuizQuestionMaxAggregateInputType = {
@@ -138,6 +146,7 @@ export type QuizQuestionMaxAggregateInputType = {
   defaultValue?: true
   helpText?: true
   orderIndex?: true
+  tier?: true
 }
 
 export type QuizQuestionCountAggregateInputType = {
@@ -154,6 +163,7 @@ export type QuizQuestionCountAggregateInputType = {
   defaultValue?: true
   helpText?: true
   orderIndex?: true
+  tier?: true
   _all?: true
 }
 
@@ -257,6 +267,7 @@ export type QuizQuestionGroupByOutputType = {
   defaultValue: number | null
   helpText: string | null
   orderIndex: number
+  tier: number
   _count: QuizQuestionCountAggregateOutputType | null
   _avg: QuizQuestionAvgAggregateOutputType | null
   _sum: QuizQuestionSumAggregateOutputType | null
@@ -296,6 +307,7 @@ export type QuizQuestionWhereInput = {
   defaultValue?: Prisma.FloatNullableFilter<"QuizQuestion"> | number | null
   helpText?: Prisma.StringNullableFilter<"QuizQuestion"> | string | null
   orderIndex?: Prisma.IntFilter<"QuizQuestion"> | number
+  tier?: Prisma.IntFilter<"QuizQuestion"> | number
   responses?: Prisma.QuizResponseListRelationFilter
 }
 
@@ -313,6 +325,7 @@ export type QuizQuestionOrderByWithRelationInput = {
   defaultValue?: Prisma.SortOrderInput | Prisma.SortOrder
   helpText?: Prisma.SortOrderInput | Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
   responses?: Prisma.QuizResponseOrderByRelationAggregateInput
 }
 
@@ -333,6 +346,7 @@ export type QuizQuestionWhereUniqueInput = Prisma.AtLeast<{
   defaultValue?: Prisma.FloatNullableFilter<"QuizQuestion"> | number | null
   helpText?: Prisma.StringNullableFilter<"QuizQuestion"> | string | null
   orderIndex?: Prisma.IntFilter<"QuizQuestion"> | number
+  tier?: Prisma.IntFilter<"QuizQuestion"> | number
   responses?: Prisma.QuizResponseListRelationFilter
 }, "id">
 
@@ -350,6 +364,7 @@ export type QuizQuestionOrderByWithAggregationInput = {
   defaultValue?: Prisma.SortOrderInput | Prisma.SortOrder
   helpText?: Prisma.SortOrderInput | Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
   _count?: Prisma.QuizQuestionCountOrderByAggregateInput
   _avg?: Prisma.QuizQuestionAvgOrderByAggregateInput
   _max?: Prisma.QuizQuestionMaxOrderByAggregateInput
@@ -374,6 +389,7 @@ export type QuizQuestionScalarWhereWithAggregatesInput = {
   defaultValue?: Prisma.FloatNullableWithAggregatesFilter<"QuizQuestion"> | number | null
   helpText?: Prisma.StringNullableWithAggregatesFilter<"QuizQuestion"> | string | null
   orderIndex?: Prisma.IntWithAggregatesFilter<"QuizQuestion"> | number
+  tier?: Prisma.IntWithAggregatesFilter<"QuizQuestion"> | number
 }
 
 export type QuizQuestionCreateInput = {
@@ -390,6 +406,7 @@ export type QuizQuestionCreateInput = {
   defaultValue?: number | null
   helpText?: string | null
   orderIndex: number
+  tier?: number
   responses?: Prisma.QuizResponseCreateNestedManyWithoutQuestionInput
 }
 
@@ -407,6 +424,7 @@ export type QuizQuestionUncheckedCreateInput = {
   defaultValue?: number | null
   helpText?: string | null
   orderIndex: number
+  tier?: number
   responses?: Prisma.QuizResponseUncheckedCreateNestedManyWithoutQuestionInput
 }
 
@@ -424,6 +442,7 @@ export type QuizQuestionUpdateInput = {
   defaultValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   helpText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
   responses?: Prisma.QuizResponseUpdateManyWithoutQuestionNestedInput
 }
 
@@ -441,6 +460,7 @@ export type QuizQuestionUncheckedUpdateInput = {
   defaultValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   helpText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
   responses?: Prisma.QuizResponseUncheckedUpdateManyWithoutQuestionNestedInput
 }
 
@@ -458,6 +478,7 @@ export type QuizQuestionCreateManyInput = {
   defaultValue?: number | null
   helpText?: string | null
   orderIndex: number
+  tier?: number
 }
 
 export type QuizQuestionUpdateManyMutationInput = {
@@ -474,6 +495,7 @@ export type QuizQuestionUpdateManyMutationInput = {
   defaultValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   helpText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuizQuestionUncheckedUpdateManyInput = {
@@ -490,6 +512,7 @@ export type QuizQuestionUncheckedUpdateManyInput = {
   defaultValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   helpText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuizQuestionCountOrderByAggregateInput = {
@@ -506,6 +529,7 @@ export type QuizQuestionCountOrderByAggregateInput = {
   defaultValue?: Prisma.SortOrder
   helpText?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
 }
 
 export type QuizQuestionAvgOrderByAggregateInput = {
@@ -515,6 +539,7 @@ export type QuizQuestionAvgOrderByAggregateInput = {
   step?: Prisma.SortOrder
   defaultValue?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
 }
 
 export type QuizQuestionMaxOrderByAggregateInput = {
@@ -530,6 +555,7 @@ export type QuizQuestionMaxOrderByAggregateInput = {
   defaultValue?: Prisma.SortOrder
   helpText?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
 }
 
 export type QuizQuestionMinOrderByAggregateInput = {
@@ -545,6 +571,7 @@ export type QuizQuestionMinOrderByAggregateInput = {
   defaultValue?: Prisma.SortOrder
   helpText?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
 }
 
 export type QuizQuestionSumOrderByAggregateInput = {
@@ -554,6 +581,7 @@ export type QuizQuestionSumOrderByAggregateInput = {
   step?: Prisma.SortOrder
   defaultValue?: Prisma.SortOrder
   orderIndex?: Prisma.SortOrder
+  tier?: Prisma.SortOrder
 }
 
 export type QuizQuestionScalarRelationFilter = {
@@ -575,14 +603,6 @@ export type FloatFieldUpdateOperationsInput = {
 
 export type NullableFloatFieldUpdateOperationsInput = {
   set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
   increment?: number
   decrement?: number
   multiply?: number
@@ -617,6 +637,7 @@ export type QuizQuestionCreateWithoutResponsesInput = {
   defaultValue?: number | null
   helpText?: string | null
   orderIndex: number
+  tier?: number
 }
 
 export type QuizQuestionUncheckedCreateWithoutResponsesInput = {
@@ -633,6 +654,7 @@ export type QuizQuestionUncheckedCreateWithoutResponsesInput = {
   defaultValue?: number | null
   helpText?: string | null
   orderIndex: number
+  tier?: number
 }
 
 export type QuizQuestionCreateOrConnectWithoutResponsesInput = {
@@ -665,6 +687,7 @@ export type QuizQuestionUpdateWithoutResponsesInput = {
   defaultValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   helpText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type QuizQuestionUncheckedUpdateWithoutResponsesInput = {
@@ -681,6 +704,7 @@ export type QuizQuestionUncheckedUpdateWithoutResponsesInput = {
   defaultValue?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   helpText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   orderIndex?: Prisma.IntFieldUpdateOperationsInput | number
+  tier?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -728,6 +752,7 @@ export type QuizQuestionSelect<ExtArgs extends runtime.Types.Extensions.Internal
   defaultValue?: boolean
   helpText?: boolean
   orderIndex?: boolean
+  tier?: boolean
   responses?: boolean | Prisma.QuizQuestion$responsesArgs<ExtArgs>
   _count?: boolean | Prisma.QuizQuestionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["quizQuestion"]>
@@ -746,6 +771,7 @@ export type QuizQuestionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   defaultValue?: boolean
   helpText?: boolean
   orderIndex?: boolean
+  tier?: boolean
 }, ExtArgs["result"]["quizQuestion"]>
 
 export type QuizQuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -762,6 +788,7 @@ export type QuizQuestionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   defaultValue?: boolean
   helpText?: boolean
   orderIndex?: boolean
+  tier?: boolean
 }, ExtArgs["result"]["quizQuestion"]>
 
 export type QuizQuestionSelectScalar = {
@@ -778,9 +805,10 @@ export type QuizQuestionSelectScalar = {
   defaultValue?: boolean
   helpText?: boolean
   orderIndex?: boolean
+  tier?: boolean
 }
 
-export type QuizQuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "category" | "questionText" | "questionType" | "options" | "unit" | "co2Factor" | "minValue" | "maxValue" | "step" | "defaultValue" | "helpText" | "orderIndex", ExtArgs["result"]["quizQuestion"]>
+export type QuizQuestionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "category" | "questionText" | "questionType" | "options" | "unit" | "co2Factor" | "minValue" | "maxValue" | "step" | "defaultValue" | "helpText" | "orderIndex" | "tier", ExtArgs["result"]["quizQuestion"]>
 export type QuizQuestionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   responses?: boolean | Prisma.QuizQuestion$responsesArgs<ExtArgs>
   _count?: boolean | Prisma.QuizQuestionCountOutputTypeDefaultArgs<ExtArgs>
@@ -807,6 +835,7 @@ export type $QuizQuestionPayload<ExtArgs extends runtime.Types.Extensions.Intern
     defaultValue: number | null
     helpText: string | null
     orderIndex: number
+    tier: number
   }, ExtArgs["result"]["quizQuestion"]>
   composites: {}
 }
@@ -1244,6 +1273,7 @@ export interface QuizQuestionFieldRefs {
   readonly defaultValue: Prisma.FieldRef<"QuizQuestion", 'Float'>
   readonly helpText: Prisma.FieldRef<"QuizQuestion", 'String'>
   readonly orderIndex: Prisma.FieldRef<"QuizQuestion", 'Int'>
+  readonly tier: Prisma.FieldRef<"QuizQuestion", 'Int'>
 }
     
 

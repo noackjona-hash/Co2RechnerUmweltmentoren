@@ -19,10 +19,12 @@ import {
   Printer,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { LegalFooter } from '@/components/legal-footer';
 
 interface ClassData {
   id: string;
   className: string;
+  quizMode: number;
   createdAt: string;
   students: {
     id: string;
@@ -43,6 +45,7 @@ export default function SchoolDashboard() {
   const [generatingKeys, setGeneratingKeys] = useState<string | null>(null);
   const [keyCount, setKeyCount] = useState(25);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [quizMode, setQuizMode] = useState<number>(60);
   const router = useRouter();
 
   const fetchClasses = async () => {
@@ -72,11 +75,12 @@ export default function SchoolDashboard() {
       const res = await fetch('/api/school/classes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ className }),
+        body: JSON.stringify({ className, quizMode }),
       });
       if (res.ok) {
         setShowCreate(false);
         setClassName('');
+        setQuizMode(60);
         fetchClasses();
       }
     } catch {
@@ -134,7 +138,7 @@ export default function SchoolDashboard() {
         .key-label { font-size: 10px; color: #999; margin-top: 4px; }
       </style></head><body>
       <h1>CO₂ Rechner – Zugangscodes</h1>
-      <p>${cls.className} • ${cls.students.length} Codes</p>
+      <p>${cls.className} • ${cls.students.length} Codes • ${cls.quizMode} Fragen</p>
       <div class="grid">
         ${cls.students.map((s) => `
           <div class="key">
@@ -155,7 +159,7 @@ export default function SchoolDashboard() {
   );
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative flex flex-col justify-between">
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-950" />
       </div>
@@ -225,7 +229,7 @@ export default function SchoolDashboard() {
         {/* Create form */}
         {showCreate && (
           <div className="glass-strong rounded-2xl p-6 animate-scale-in">
-            <form onSubmit={handleCreateClass} className="flex gap-3">
+            <form onSubmit={handleCreateClass} className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 value={className}
@@ -234,13 +238,24 @@ export default function SchoolDashboard() {
                 required
                 className="flex-1 px-4 py-2.5 rounded-xl bg-muted/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm"
               />
-              <button
-                type="submit"
-                disabled={creating}
-                className="px-5 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold disabled:opacity-50"
-              >
-                {creating ? 'Erstellen...' : 'Erstellen'}
-              </button>
+              <div className="flex gap-3">
+                <select
+                  value={quizMode}
+                  onChange={(e) => setQuizMode(Number(e.target.value))}
+                  className="px-4 py-2.5 rounded-xl bg-muted/50 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm outline-none dark:bg-gray-950 text-foreground"
+                >
+                  <option value={10}>Kurz (10 Fragen)</option>
+                  <option value={30}>Mittel (30 Fragen)</option>
+                  <option value={60}>Vollständig (60 Fragen)</option>
+                </select>
+                <button
+                  type="submit"
+                  disabled={creating}
+                  className="px-5 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold disabled:opacity-50 shrink-0"
+                >
+                  {creating ? 'Erstellen...' : 'Erstellen'}
+                </button>
+              </div>
             </form>
           </div>
         )}
@@ -276,7 +291,18 @@ export default function SchoolDashboard() {
                 >
                   <div className="p-4 flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold">{cls.className}</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold">{cls.className}</h3>
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+                          cls.quizMode === 10
+                            ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-900'
+                            : cls.quizMode === 30
+                            ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900'
+                            : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900'
+                        }`}>
+                          {cls.quizMode} Fragen
+                        </span>
+                      </div>
                       <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Users className="w-3 h-3" />
@@ -415,6 +441,7 @@ export default function SchoolDashboard() {
           )}
         </div>
       </div>
+      <LegalFooter />
     </div>
   );
 }

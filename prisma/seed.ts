@@ -901,6 +901,14 @@ async function main() {
 
   // Delete existing questions and re-seed
   await prisma.quizQuestion.deleteMany({});
+
+  function getQuestionTier(orderIndex: number): number {
+    const tier1 = [1, 2, 7, 16, 17, 31, 36, 46, 48, 53];
+    const tier2 = [3, 4, 6, 8, 9, 18, 19, 20, 21, 22, 32, 33, 34, 35, 37, 47, 49, 50, 51, 59];
+    if (tier1.includes(orderIndex)) return 1;
+    if (tier2.includes(orderIndex)) return 2;
+    return 3;
+  }
   
   for (const q of questions) {
     await prisma.quizQuestion.create({
@@ -917,6 +925,7 @@ async function main() {
         defaultValue: q.defaultValue ?? null,
         helpText: q.helpText || null,
         orderIndex: q.orderIndex,
+        tier: getQuestionTier(q.orderIndex),
       },
     });
   }

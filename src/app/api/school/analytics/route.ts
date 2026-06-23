@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
+import { calculateClassBadges } from '@/lib/badges';
 
 // GET aggregated analytics for the school
 export async function GET() {
@@ -17,7 +18,11 @@ export async function GET() {
         students: {
           where: { isCompleted: true },
           include: {
-            responses: true,
+            responses: {
+              include: {
+                question: true,
+              },
+            },
           },
         },
         _count: {
@@ -68,6 +73,8 @@ export async function GET() {
             )
           : 0;
 
+      const badges = calculateClassBadges(completedStudents, averageCo2);
+
       return {
         id: cls.id,
         className: cls.className,
@@ -76,6 +83,7 @@ export async function GET() {
         completionRate,
         averageCo2,
         categoryAverages,
+        badges,
       };
     });
 

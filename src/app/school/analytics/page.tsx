@@ -29,6 +29,8 @@ import {
   TrendingDown,
   TrendingUp,
   Target,
+  Trophy,
+  BookOpen,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
@@ -45,6 +47,7 @@ interface AnalyticsData {
     completionRate: number;
     averageCo2: number;
     categoryAverages: Record<string, number>;
+    badges: any[];
   }[];
 }
 
@@ -364,6 +367,127 @@ export default function SchoolAnalyticsPage() {
                   );
                 }
               )}
+            </div>
+            {/* School-wide Challenge Leaderboard for Teachers */}
+            <div className="glass-strong rounded-3xl p-6 sm:p-8 shadow-xl animate-slide-up" style={{ animationDelay: '0.45s' }}>
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-yellow-500 animate-bounce" />
+                Schul-Challenge Leaderboard & Auszeichnungen
+              </h3>
+              <p className="text-sm text-muted-foreground mb-6">
+                Hier siehst du das aktuelle Ranking aller Klassen deiner Schule sowie deren freigeschaltete Abzeichen.
+              </p>
+
+              <div className="space-y-3">
+                {data.classStats
+                  .sort((a, b) => {
+                    if (a.completedStudents === 0 && b.completedStudents > 0) return 1;
+                    if (b.completedStudents === 0 && a.completedStudents > 0) return -1;
+                    return a.averageCo2 - b.averageCo2;
+                  })
+                  .map((cls, index) => {
+                    const hasCompletions = cls.completedStudents > 0;
+                    const rank = index + 1;
+                    return (
+                      <div
+                        key={cls.id}
+                        className="glass border border-border/40 hover:border-primary/20 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300"
+                      >
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-lg shrink-0 glass shadow-inner">
+                            {rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-sm sm:text-base">{cls.className}</span>
+                            </div>
+                            {hasCompletions && cls.badges && (
+                              <div className="flex flex-wrap gap-1 mt-1.5">
+                                {cls.badges.filter((b: any) => b.unlocked).map((b: any) => (
+                                  <span
+                                    key={b.id}
+                                    className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs shadow-sm hover:scale-110 transition-transform cursor-help"
+                                    title={`${b.title}: ${b.description}`}
+                                  >
+                                    {b.icon}
+                                  </span>
+                                ))}
+                                {cls.badges.filter((b: any) => b.unlocked).length === 0 && (
+                                  <span className="text-[10px] text-muted-foreground italic">Noch keine Abzeichen</span>
+                                )}
+                              </div>
+                            )}
+                            {!hasCompletions && (
+                              <span className="text-[10px] text-muted-foreground italic mt-1 block">Keine ausgefüllten Fragebögen</span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between sm:justify-end gap-6 border-t sm:border-t-0 pt-3 sm:pt-0 border-border/30">
+                          <div className="space-y-1">
+                            <span className="text-xs text-muted-foreground block text-right sm:text-left">
+                              {cls.completedStudents} / {cls.totalStudents} abgeschlossen
+                            </span>
+                            <div className="w-28 h-1 rounded-full bg-muted overflow-hidden">
+                              <div
+                                className="h-full rounded-full gradient-primary"
+                                style={{ width: `${cls.totalStudents > 0 ? (cls.completedStudents / cls.totalStudents) * 100 : 0}%` }}
+                              />
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0 min-w-[90px]">
+                            <span className="text-[10px] text-muted-foreground block uppercase tracking-wider">Ø CO₂</span>
+                            <span className="font-mono font-bold text-sm sm:text-base text-foreground">
+                              {hasCompletions ? formatCO2(cls.averageCo2) : '---'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+
+            {/* Didactic Competition Guide for Teachers */}
+            <div className="glass-strong rounded-3xl p-6 sm:p-8 shadow-xl animate-slide-up" style={{ animationDelay: '0.48s' }}>
+              <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-emerald-500" />
+                Didaktischer Leitfaden: Klima-Wettbewerb an der Schule
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                Nutze diese Challenge, um Umweltschutz im Unterricht greifbar und lebendig zu gestalten. Hier sind erprobte Ideen für Umweltmentoren und Lehrkräfte:
+              </p>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-muted/30 border border-border/30 space-y-2">
+                  <span className="text-lg">📈</span>
+                  <h4 className="font-bold text-sm">Ergebnisse im Unterricht reflektieren</h4>
+                  <p className="text-xs text-muted-foreground leading-normal">
+                    Vergleiche den Durchschnitt der Schule mit dem bundesweiten Durchschnitt (9.1t). Diskutiert in Kleingruppen, warum bestimmte Sektoren (wie Heizung oder Ernährung) oft den größten Anteil ausmachen.
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/30 border border-border/30 space-y-2">
+                  <span className="text-lg">🚲</span>
+                  <h4 className="font-bold text-sm">Die "Verkehrswende-Woche" ausrufen</h4>
+                  <p className="text-xs text-muted-foreground leading-normal">
+                    Schaltet gemeinsam das Abzeichen <strong>Pedal-Pioniere</strong> frei! Ruft eine Woche aus, in der alle Schüler:innen versuchen, auf das Elterntaxi zu verzichten und stattdessen zu Fuß, mit dem Fahrrad oder Bus zu kommen.
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/30 border border-border/30 space-y-2">
+                  <span className="text-lg">🎖️</span>
+                  <h4 className="font-bold text-sm">Urkunden verleihen & Pledges einhalten</h4>
+                  <p className="text-xs text-muted-foreground leading-normal">
+                    Lass Schüler:innen ihre personalisierten Klima-Urkunden mit ihren Versprechen (Pledges) ausdrucken. Hängt die Urkunden oder die Abzeichen der Klasse im Klassenzimmer auf, um das Engagement sichtbar zu machen.
+                  </p>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/30 border border-border/30 space-y-2">
+                  <span className="text-lg">🍎</span>
+                  <h4 className="font-bold text-sm">Klimafreundliches Frühstück / Mensa-Tag</h4>
+                  <p className="text-xs text-muted-foreground leading-normal">
+                    Startet einen Versuchstag mit rein veganer/vegetarischer Verpflegung, um das Abzeichen <strong>Veggie-Helden</strong> freizuschalten. Berechnet danach die fiktiven Einsparungen pro Jahr für die ganze Klasse.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Info */}

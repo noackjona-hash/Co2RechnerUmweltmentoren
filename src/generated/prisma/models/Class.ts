@@ -20,14 +20,25 @@ export type ClassModel = runtime.Types.Result.DefaultSelection<Prisma.$ClassPayl
 
 export type AggregateClass = {
   _count: ClassCountAggregateOutputType | null
+  _avg: ClassAvgAggregateOutputType | null
+  _sum: ClassSumAggregateOutputType | null
   _min: ClassMinAggregateOutputType | null
   _max: ClassMaxAggregateOutputType | null
+}
+
+export type ClassAvgAggregateOutputType = {
+  quizMode: number | null
+}
+
+export type ClassSumAggregateOutputType = {
+  quizMode: number | null
 }
 
 export type ClassMinAggregateOutputType = {
   id: string | null
   licenseId: string | null
   className: string | null
+  quizMode: number | null
   createdAt: Date | null
 }
 
@@ -35,6 +46,7 @@ export type ClassMaxAggregateOutputType = {
   id: string | null
   licenseId: string | null
   className: string | null
+  quizMode: number | null
   createdAt: Date | null
 }
 
@@ -42,15 +54,25 @@ export type ClassCountAggregateOutputType = {
   id: number
   licenseId: number
   className: number
+  quizMode: number
   createdAt: number
   _all: number
 }
 
 
+export type ClassAvgAggregateInputType = {
+  quizMode?: true
+}
+
+export type ClassSumAggregateInputType = {
+  quizMode?: true
+}
+
 export type ClassMinAggregateInputType = {
   id?: true
   licenseId?: true
   className?: true
+  quizMode?: true
   createdAt?: true
 }
 
@@ -58,6 +80,7 @@ export type ClassMaxAggregateInputType = {
   id?: true
   licenseId?: true
   className?: true
+  quizMode?: true
   createdAt?: true
 }
 
@@ -65,6 +88,7 @@ export type ClassCountAggregateInputType = {
   id?: true
   licenseId?: true
   className?: true
+  quizMode?: true
   createdAt?: true
   _all?: true
 }
@@ -107,6 +131,18 @@ export type ClassAggregateArgs<ExtArgs extends runtime.Types.Extensions.Internal
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ClassAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ClassSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ClassMinAggregateInputType
@@ -137,6 +173,8 @@ export type ClassGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   _count?: ClassCountAggregateInputType | true
+  _avg?: ClassAvgAggregateInputType
+  _sum?: ClassSumAggregateInputType
   _min?: ClassMinAggregateInputType
   _max?: ClassMaxAggregateInputType
 }
@@ -145,8 +183,11 @@ export type ClassGroupByOutputType = {
   id: string
   licenseId: string
   className: string
+  quizMode: number
   createdAt: Date
   _count: ClassCountAggregateOutputType | null
+  _avg: ClassAvgAggregateOutputType | null
+  _sum: ClassSumAggregateOutputType | null
   _min: ClassMinAggregateOutputType | null
   _max: ClassMaxAggregateOutputType | null
 }
@@ -173,6 +214,7 @@ export type ClassWhereInput = {
   id?: Prisma.StringFilter<"Class"> | string
   licenseId?: Prisma.StringFilter<"Class"> | string
   className?: Prisma.StringFilter<"Class"> | string
+  quizMode?: Prisma.IntFilter<"Class"> | number
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
   license?: Prisma.XOR<Prisma.LicenseScalarRelationFilter, Prisma.LicenseWhereInput>
   students?: Prisma.StudentListRelationFilter
@@ -182,6 +224,7 @@ export type ClassOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   licenseId?: Prisma.SortOrder
   className?: Prisma.SortOrder
+  quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   license?: Prisma.LicenseOrderByWithRelationInput
   students?: Prisma.StudentOrderByRelationAggregateInput
@@ -194,6 +237,7 @@ export type ClassWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ClassWhereInput | Prisma.ClassWhereInput[]
   licenseId?: Prisma.StringFilter<"Class"> | string
   className?: Prisma.StringFilter<"Class"> | string
+  quizMode?: Prisma.IntFilter<"Class"> | number
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
   license?: Prisma.XOR<Prisma.LicenseScalarRelationFilter, Prisma.LicenseWhereInput>
   students?: Prisma.StudentListRelationFilter
@@ -203,10 +247,13 @@ export type ClassOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   licenseId?: Prisma.SortOrder
   className?: Prisma.SortOrder
+  quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ClassCountOrderByAggregateInput
+  _avg?: Prisma.ClassAvgOrderByAggregateInput
   _max?: Prisma.ClassMaxOrderByAggregateInput
   _min?: Prisma.ClassMinOrderByAggregateInput
+  _sum?: Prisma.ClassSumOrderByAggregateInput
 }
 
 export type ClassScalarWhereWithAggregatesInput = {
@@ -216,12 +263,14 @@ export type ClassScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Class"> | string
   licenseId?: Prisma.StringWithAggregatesFilter<"Class"> | string
   className?: Prisma.StringWithAggregatesFilter<"Class"> | string
+  quizMode?: Prisma.IntWithAggregatesFilter<"Class"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Class"> | Date | string
 }
 
 export type ClassCreateInput = {
   id?: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
   license: Prisma.LicenseCreateNestedOneWithoutClassesInput
   students?: Prisma.StudentCreateNestedManyWithoutClassInput
@@ -231,6 +280,7 @@ export type ClassUncheckedCreateInput = {
   id?: string
   licenseId: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutClassInput
 }
@@ -238,6 +288,7 @@ export type ClassUncheckedCreateInput = {
 export type ClassUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   license?: Prisma.LicenseUpdateOneRequiredWithoutClassesNestedInput
   students?: Prisma.StudentUpdateManyWithoutClassNestedInput
@@ -247,6 +298,7 @@ export type ClassUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   licenseId?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUncheckedUpdateManyWithoutClassNestedInput
 }
@@ -255,12 +307,14 @@ export type ClassCreateManyInput = {
   id?: string
   licenseId: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
 }
 
 export type ClassUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -268,6 +322,7 @@ export type ClassUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   licenseId?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -285,13 +340,19 @@ export type ClassCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   licenseId?: Prisma.SortOrder
   className?: Prisma.SortOrder
+  quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type ClassAvgOrderByAggregateInput = {
+  quizMode?: Prisma.SortOrder
 }
 
 export type ClassMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   licenseId?: Prisma.SortOrder
   className?: Prisma.SortOrder
+  quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -299,7 +360,12 @@ export type ClassMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   licenseId?: Prisma.SortOrder
   className?: Prisma.SortOrder
+  quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+}
+
+export type ClassSumOrderByAggregateInput = {
+  quizMode?: Prisma.SortOrder
 }
 
 export type ClassScalarRelationFilter = {
@@ -349,6 +415,14 @@ export type ClassUncheckedUpdateManyWithoutLicenseNestedInput = {
   deleteMany?: Prisma.ClassScalarWhereInput | Prisma.ClassScalarWhereInput[]
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type ClassCreateNestedOneWithoutStudentsInput = {
   create?: Prisma.XOR<Prisma.ClassCreateWithoutStudentsInput, Prisma.ClassUncheckedCreateWithoutStudentsInput>
   connectOrCreate?: Prisma.ClassCreateOrConnectWithoutStudentsInput
@@ -366,6 +440,7 @@ export type ClassUpdateOneRequiredWithoutStudentsNestedInput = {
 export type ClassCreateWithoutLicenseInput = {
   id?: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
   students?: Prisma.StudentCreateNestedManyWithoutClassInput
 }
@@ -373,6 +448,7 @@ export type ClassCreateWithoutLicenseInput = {
 export type ClassUncheckedCreateWithoutLicenseInput = {
   id?: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutClassInput
 }
@@ -410,12 +486,14 @@ export type ClassScalarWhereInput = {
   id?: Prisma.StringFilter<"Class"> | string
   licenseId?: Prisma.StringFilter<"Class"> | string
   className?: Prisma.StringFilter<"Class"> | string
+  quizMode?: Prisma.IntFilter<"Class"> | number
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
 }
 
 export type ClassCreateWithoutStudentsInput = {
   id?: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
   license: Prisma.LicenseCreateNestedOneWithoutClassesInput
 }
@@ -424,6 +502,7 @@ export type ClassUncheckedCreateWithoutStudentsInput = {
   id?: string
   licenseId: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
 }
 
@@ -446,6 +525,7 @@ export type ClassUpdateToOneWithWhereWithoutStudentsInput = {
 export type ClassUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   license?: Prisma.LicenseUpdateOneRequiredWithoutClassesNestedInput
 }
@@ -454,18 +534,21 @@ export type ClassUncheckedUpdateWithoutStudentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   licenseId?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ClassCreateManyLicenseInput = {
   id?: string
   className: string
+  quizMode?: number
   createdAt?: Date | string
 }
 
 export type ClassUpdateWithoutLicenseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUpdateManyWithoutClassNestedInput
 }
@@ -473,6 +556,7 @@ export type ClassUpdateWithoutLicenseInput = {
 export type ClassUncheckedUpdateWithoutLicenseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUncheckedUpdateManyWithoutClassNestedInput
 }
@@ -480,6 +564,7 @@ export type ClassUncheckedUpdateWithoutLicenseInput = {
 export type ClassUncheckedUpdateManyWithoutLicenseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   className?: Prisma.StringFieldUpdateOperationsInput | string
+  quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -518,6 +603,7 @@ export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   id?: boolean
   licenseId?: boolean
   className?: boolean
+  quizMode?: boolean
   createdAt?: boolean
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
@@ -528,6 +614,7 @@ export type ClassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   licenseId?: boolean
   className?: boolean
+  quizMode?: boolean
   createdAt?: boolean
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["class"]>
@@ -536,6 +623,7 @@ export type ClassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   id?: boolean
   licenseId?: boolean
   className?: boolean
+  quizMode?: boolean
   createdAt?: boolean
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["class"]>
@@ -544,10 +632,11 @@ export type ClassSelectScalar = {
   id?: boolean
   licenseId?: boolean
   className?: boolean
+  quizMode?: boolean
   createdAt?: boolean
 }
 
-export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "licenseId" | "className" | "createdAt", ExtArgs["result"]["class"]>
+export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "licenseId" | "className" | "quizMode" | "createdAt", ExtArgs["result"]["class"]>
 export type ClassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
@@ -570,6 +659,7 @@ export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: string
     licenseId: string
     className: string
+    quizMode: number
     createdAt: Date
   }, ExtArgs["result"]["class"]>
   composites: {}
@@ -999,6 +1089,7 @@ export interface ClassFieldRefs {
   readonly id: Prisma.FieldRef<"Class", 'String'>
   readonly licenseId: Prisma.FieldRef<"Class", 'String'>
   readonly className: Prisma.FieldRef<"Class", 'String'>
+  readonly quizMode: Prisma.FieldRef<"Class", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Class", 'DateTime'>
 }
     

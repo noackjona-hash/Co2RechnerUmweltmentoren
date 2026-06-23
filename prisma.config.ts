@@ -4,6 +4,11 @@ import { defineConfig } from 'prisma/config';
 export default defineConfig({
   schema: 'prisma/schema.prisma',
   datasource: {
-    url: process.env.DATABASE_URL || 'postgresql://co2user:co2pass@localhost:5432/co2rechner',
+    // Direct connection für Prisma CLI (db push, migrate, seed)
+    // Die App nutzt DATABASE_URL über src/lib/prisma.ts
+    url: process.env.DIRECT_URL || process.env.DATABASE_URL!,
+  },
+  migrations: {
+    seed: 'npx tsx prisma/seed.ts',
   },
 });
