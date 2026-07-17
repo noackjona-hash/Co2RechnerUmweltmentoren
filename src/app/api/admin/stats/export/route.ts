@@ -5,7 +5,7 @@ import { getSession } from '@/lib/auth';
 export async function GET() {
   try {
     const session = await getSession();
-    if (!session || (session.role !== 'super-admin' && session.role !== 'editor')) {
+    if (!session || session.role !== 'super-admin' || (session.adminRole !== 'super-admin' && session.adminRole !== 'editor')) {
       return new Response('Unauthorized', { status: 403 });
     }
 
