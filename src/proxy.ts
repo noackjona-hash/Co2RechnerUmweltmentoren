@@ -33,9 +33,12 @@ export async function proxy(request: NextRequest) {
 
   // 2. Local Backend Protection Mode
   // If BACKEND_SECRET_KEY is set on the remote backend, verify that incoming API requests
-  // have the correct secret key (meaning they came via Vercel).
+  // coming via public tunnels have the correct secret key (meaning they came via Vercel).
   const localSecret = process.env.BACKEND_SECRET_KEY;
-  if (pathname.startsWith('/api/') && localSecret && !backendUrl) {
+  const host = request.headers.get('host') || '';
+  const isPublicTunnel = host.includes('ngrok-free.dev') || host.includes('lhr.life');
+
+  if (pathname.startsWith('/api/') && localSecret && !backendUrl && isPublicTunnel) {
     const incomingSecret = request.headers.get('x-backend-secret-key');
     if (incomingSecret !== localSecret) {
       return NextResponse.json(
