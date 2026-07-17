@@ -39,6 +39,10 @@ export async function proxy(request: NextRequest) {
       // Construct a new response to return to the client
       const responseHeaders = new Headers(res.headers);
       
+      // Remove content encoding and length because fetch automatically decompresses the body
+      responseHeaders.delete('content-encoding');
+      responseHeaders.delete('content-length');
+      
       // Return the proxied response content
       const resBody = await res.arrayBuffer();
       return new NextResponse(resBody, {
