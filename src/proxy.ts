@@ -45,11 +45,19 @@ export async function proxy(request: NextRequest) {
       
       // Return the proxied response content
       const resBody = await res.arrayBuffer();
-      return new NextResponse(resBody, {
+      const response = new NextResponse(resBody, {
         status: res.status,
         statusText: res.statusText,
         headers: responseHeaders,
       });
+
+      // Explicitly forward Set-Cookie headers because the NextResponse constructor strips them
+      const setCookie = res.headers.get('set-cookie');
+      if (setCookie) {
+        response.headers.set('set-cookie', setCookie);
+      }
+
+      return response;
     } catch (error: any) {
       console.error('Vercel API Proxy error:', error);
       return NextResponse.json(
