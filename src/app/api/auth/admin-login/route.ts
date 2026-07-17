@@ -5,7 +5,9 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const rawBody = await request.text();
+    console.log("Raw body received in admin-login:", rawBody);
+    const { email, password } = JSON.parse(rawBody);
 
     if (!email || !password) {
       return NextResponse.json(
