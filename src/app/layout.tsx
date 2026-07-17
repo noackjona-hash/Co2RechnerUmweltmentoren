@@ -8,7 +8,10 @@ export const metadata = {
     'Berechne deinen persönlichen CO₂-Fußabdruck. Ein Projekt für Umweltmentoren an Schulen in Deutschland.',
   keywords: ['CO2', 'Fußabdruck', 'Rechner', 'Schule', 'Umwelt', 'Klima'],
   icons: {
-    icon: '/favicon.ico',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' }
+    ],
   },
 };
 
