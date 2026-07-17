@@ -47,7 +47,7 @@ export async function setSession(payload: JWTPayload): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set('session', token, {
     httpOnly: true,
-    secure: false, // Allow HTTP connections on local/private networks
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: '/',
