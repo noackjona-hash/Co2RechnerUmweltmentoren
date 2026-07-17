@@ -5,8 +5,8 @@ import { verifyToken } from '@/lib/auth';
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Vercel Rewrite Proxy Mode
-  // If BACKEND_URL is set, we are running on Vercel and need to rewrite /api/* to the remote backend.
+  // 1. Vercel Proxy Mode (Manual Fetch to bypass bugged cross-origin NextResponse.rewrite POST body drops)
+  // If BACKEND_URL is set, we are running on Vercel and need to proxy /api/* to the remote backend.
   const backendUrl = process.env.BACKEND_URL;
   const backendSecret = process.env.BACKEND_SECRET_KEY;
 
@@ -24,11 +24,35 @@ export async function proxy(request: NextRequest) {
     // Build external destination URL (preserving path and query parameters)
     const destinationUrl = new URL(pathname + request.nextUrl.search, backendUrl);
     
-    return NextResponse.rewrite(destinationUrl, {
-      request: {
+    try {
+      // Determine if we need to pass a body (GET/HEAD requests cannot have bodies)
+      const hasBody = !['GET', 'HEAD'].includes(request.method);
+      const requestBody = hasBody ? await request.arrayBuffer() : undefined;
+
+      const res = await fetch(destinationUrl, {
+        method: request.method,
         headers: requestHeaders,
-      },
-    });
+        body: requestBody,
+        redirect: 'manual',
+      });
+
+      // Construct a new response to return to the client
+      const responseHeaders = new Headers(res.headers);
+      
+      // Return the proxied response content
+      const resBody = await res.arrayBuffer();
+      return new NextResponse(resBody, {
+        status: res.status,
+        statusText: res.statusText,
+        headers: responseHeaders,
+      });
+    } catch (error: any) {
+      console.error('Vercel API Proxy error:', error);
+      return NextResponse.json(
+        { error: 'Vercel API Proxy failed: ' + error.message },
+        { status: 502 }
+      );
+    }
   }
 
   // 2. Local Backend Protection Mode
