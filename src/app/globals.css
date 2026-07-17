@@ -146,6 +146,7 @@
     mask-composite: exclude;
     animation: shimmerBorder 3s linear infinite;
     background-size: 200% 100%;
+    pointer-events: none;
   }
 
   /* ── Glow effects ── */

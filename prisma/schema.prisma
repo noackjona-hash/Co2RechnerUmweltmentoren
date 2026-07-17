@@ -11,6 +11,7 @@ model SuperAdmin {
   id           String   @id @default(cuid())
   email        String   @unique
   passwordHash String   @map("password_hash")
+  role         String   @default("super-admin")
   createdAt    DateTime @default(now()) @map("created_at")
 
   @@map("super_admins")

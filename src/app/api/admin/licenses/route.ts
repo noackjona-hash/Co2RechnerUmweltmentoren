@@ -28,7 +28,7 @@ export async function GET() {
 // CREATE new license
 export async function POST(request: Request) {
   const session = await getSession();
-  if (!session || session.role !== 'super-admin') {
+  if (!session || session.role !== 'super-admin' || session.adminRole !== 'super-admin') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 

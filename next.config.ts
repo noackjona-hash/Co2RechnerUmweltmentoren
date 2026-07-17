@@ -1,6 +1,4 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
+const nextConfig = {
   cacheComponents: true,
   experimental: {
     instantNavigationDevToolsToggle: true,

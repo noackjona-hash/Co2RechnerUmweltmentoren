@@ -1,13 +1,15 @@
-import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { CookieBanner } from '@/components/cookie-banner';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'CO₂ Rechner – Dein ökologischer Fußabdruck',
   description:
     'Berechne deinen persönlichen CO₂-Fußabdruck. Ein Projekt für Umweltmentoren an Schulen in Deutschland.',
   keywords: ['CO2', 'Fußabdruck', 'Rechner', 'Schule', 'Umwelt', 'Klima'],
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({

@@ -28,6 +28,7 @@ export type SuperAdminMinAggregateOutputType = {
   id: string | null
   email: string | null
   passwordHash: string | null
+  role: string | null
   createdAt: Date | null
 }
 
@@ -35,6 +36,7 @@ export type SuperAdminMaxAggregateOutputType = {
   id: string | null
   email: string | null
   passwordHash: string | null
+  role: string | null
   createdAt: Date | null
 }
 
@@ -42,6 +44,7 @@ export type SuperAdminCountAggregateOutputType = {
   id: number
   email: number
   passwordHash: number
+  role: number
   createdAt: number
   _all: number
 }
@@ -51,6 +54,7 @@ export type SuperAdminMinAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
+  role?: true
   createdAt?: true
 }
 
@@ -58,6 +62,7 @@ export type SuperAdminMaxAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
+  role?: true
   createdAt?: true
 }
 
@@ -65,6 +70,7 @@ export type SuperAdminCountAggregateInputType = {
   id?: true
   email?: true
   passwordHash?: true
+  role?: true
   createdAt?: true
   _all?: true
 }
@@ -145,6 +151,7 @@ export type SuperAdminGroupByOutputType = {
   id: string
   email: string
   passwordHash: string
+  role: string
   createdAt: Date
   _count: SuperAdminCountAggregateOutputType | null
   _min: SuperAdminMinAggregateOutputType | null
@@ -173,6 +180,7 @@ export type SuperAdminWhereInput = {
   id?: Prisma.StringFilter<"SuperAdmin"> | string
   email?: Prisma.StringFilter<"SuperAdmin"> | string
   passwordHash?: Prisma.StringFilter<"SuperAdmin"> | string
+  role?: Prisma.StringFilter<"SuperAdmin"> | string
   createdAt?: Prisma.DateTimeFilter<"SuperAdmin"> | Date | string
 }
 
@@ -180,6 +188,7 @@ export type SuperAdminOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -190,6 +199,7 @@ export type SuperAdminWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.SuperAdminWhereInput[]
   NOT?: Prisma.SuperAdminWhereInput | Prisma.SuperAdminWhereInput[]
   passwordHash?: Prisma.StringFilter<"SuperAdmin"> | string
+  role?: Prisma.StringFilter<"SuperAdmin"> | string
   createdAt?: Prisma.DateTimeFilter<"SuperAdmin"> | Date | string
 }, "id" | "email">
 
@@ -197,6 +207,7 @@ export type SuperAdminOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.SuperAdminCountOrderByAggregateInput
   _max?: Prisma.SuperAdminMaxOrderByAggregateInput
@@ -210,6 +221,7 @@ export type SuperAdminScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"SuperAdmin"> | string
   email?: Prisma.StringWithAggregatesFilter<"SuperAdmin"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"SuperAdmin"> | string
+  role?: Prisma.StringWithAggregatesFilter<"SuperAdmin"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SuperAdmin"> | Date | string
 }
 
@@ -217,6 +229,7 @@ export type SuperAdminCreateInput = {
   id?: string
   email: string
   passwordHash: string
+  role?: string
   createdAt?: Date | string
 }
 
@@ -224,6 +237,7 @@ export type SuperAdminUncheckedCreateInput = {
   id?: string
   email: string
   passwordHash: string
+  role?: string
   createdAt?: Date | string
 }
 
@@ -231,6 +245,7 @@ export type SuperAdminUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -238,6 +253,7 @@ export type SuperAdminUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -245,6 +261,7 @@ export type SuperAdminCreateManyInput = {
   id?: string
   email: string
   passwordHash: string
+  role?: string
   createdAt?: Date | string
 }
 
@@ -252,6 +269,7 @@ export type SuperAdminUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -259,6 +277,7 @@ export type SuperAdminUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -266,6 +285,7 @@ export type SuperAdminCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -273,6 +293,7 @@ export type SuperAdminMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -280,6 +301,7 @@ export type SuperAdminMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -297,6 +319,7 @@ export type SuperAdminSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  role?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["superAdmin"]>
 
@@ -304,6 +327,7 @@ export type SuperAdminSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  role?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["superAdmin"]>
 
@@ -311,6 +335,7 @@ export type SuperAdminSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  role?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["superAdmin"]>
 
@@ -318,10 +343,11 @@ export type SuperAdminSelectScalar = {
   id?: boolean
   email?: boolean
   passwordHash?: boolean
+  role?: boolean
   createdAt?: boolean
 }
 
-export type SuperAdminOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "createdAt", ExtArgs["result"]["superAdmin"]>
+export type SuperAdminOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "role" | "createdAt", ExtArgs["result"]["superAdmin"]>
 
 export type $SuperAdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SuperAdmin"
@@ -330,6 +356,7 @@ export type $SuperAdminPayload<ExtArgs extends runtime.Types.Extensions.Internal
     id: string
     email: string
     passwordHash: string
+    role: string
     createdAt: Date
   }, ExtArgs["result"]["superAdmin"]>
   composites: {}
@@ -757,6 +784,7 @@ export interface SuperAdminFieldRefs {
   readonly id: Prisma.FieldRef<"SuperAdmin", 'String'>
   readonly email: Prisma.FieldRef<"SuperAdmin", 'String'>
   readonly passwordHash: Prisma.FieldRef<"SuperAdmin", 'String'>
+  readonly role: Prisma.FieldRef<"SuperAdmin", 'String'>
   readonly createdAt: Prisma.FieldRef<"SuperAdmin", 'DateTime'>
 }
     

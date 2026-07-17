@@ -37,9 +37,10 @@ export async function POST(request: Request) {
       id: admin.id,
       role: 'super-admin',
       email: admin.email,
+      adminRole: admin.role as 'super-admin' | 'editor' | 'viewer',
     });
 
-    return NextResponse.json({ success: true, role: 'super-admin' });
+    return NextResponse.json({ success: true, role: 'super-admin', adminRole: admin.role });
   } catch (error) {
     console.error('Admin login error:', error);
     return NextResponse.json(

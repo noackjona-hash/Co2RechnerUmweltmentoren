@@ -11,6 +11,7 @@ export interface JWTPayload {
   id: string;
   role: UserRole;
   email?: string;
+  adminRole?: 'super-admin' | 'editor' | 'viewer';
   schoolName?: string;
   licenseId?: string;
   classId?: string;
@@ -46,7 +47,7 @@ export async function setSession(payload: JWTPayload): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set('session', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: false, // Allow HTTP connections on local/private networks
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: '/',
