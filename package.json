@@ -50,5 +50,12 @@
     "ts-node": "^10.9.2",
     "tsx": "^4.23.1",
     "typescript": "^5"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not dead",
+    "chrome >= 90",
+    "safari >= 14"
+  ]
 }

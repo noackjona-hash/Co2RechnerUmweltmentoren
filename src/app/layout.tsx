@@ -1,6 +1,9 @@
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { CookieBanner } from '@/components/cookie-banner';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'CO₂ Rechner – Dein ökologischer Fußabdruck',
@@ -22,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="min-h-screen">
+      <body className={`${inter.className} min-h-screen`}>
         <ThemeProvider>
           {children}
           <CookieBanner />
