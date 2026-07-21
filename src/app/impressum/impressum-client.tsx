@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Leaf, Mail, MapPin, ShieldAlert } from 'lucide-react';
+import { ArrowLeft, Leaf, Mail, MapPin, ShieldAlert, Code } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
 
@@ -87,6 +87,19 @@ export default function ImpressumClient() {
             <h3 className="font-bold text-base">Vertretungsberechtigte Personen</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Dieses Softwareprojekt wird betreut von der Arbeitsgemeinschaft der Umweltmentoren an baden-württembergischen Schulen. Projektleiter und inhaltlich Verantwortlicher gemäß § 18 Abs. 2 MStV: Dr. Paul Schmidt (Anschrift wie oben).
+            </p>
+          </div>
+
+          <hr className="border-border/50" />
+
+          {/* Credits */}
+          <div className="space-y-4">
+            <h3 className="font-bold text-base flex items-center gap-2">
+              <Code className="w-4 h-4 text-emerald-500" />
+              Entwicklung & Design
+            </h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Diese App zum CO₂-Fußabdruck wurde exklusiv entwickelt von <strong>Jona und Paul vom Hilda-Gymnasium</strong> für die Abschlussveranstaltung des Umweltmentorenprogramms Kurs 2025/2026 (25.09.2026).
             </p>
           </div>
 
