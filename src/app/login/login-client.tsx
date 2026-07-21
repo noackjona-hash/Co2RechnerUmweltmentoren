@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Leaf, KeyRound, School, Shield, ArrowLeft, Eye, EyeOff, Target, Trophy, Award, Lock, Sparkles } from 'lucide-react';
+import { Leaf, KeyRound, School, Shield, ArrowLeft, Eye, EyeOff, Target, Trophy, Award, Lock, Sparkles, GraduationCap } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { TiltCard } from '@/components/tilt-card';
 import { MagneticButton } from '@/components/magnetic-button';
@@ -89,7 +89,7 @@ export default function LoginClient() {
 
   const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
     { key: 'student', label: 'Schüler:in', icon: <KeyRound className="w-4 h-4" /> },
-    { key: 'teacher', label: 'Lehrkraft', icon: <School className="w-4 h-4" /> },
+    { key: 'teacher', label: 'Lehrkraft', icon: <GraduationCap className="w-4 h-4" /> },
     { key: 'school', label: 'Schule', icon: <School className="w-4 h-4" /> },
     { key: 'admin', label: 'Admin', icon: <Shield className="w-4 h-4" /> },
   ];
