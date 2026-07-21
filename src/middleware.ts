@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { verifyToken } from '@/lib/auth';
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 1. Vercel Proxy Mode (Manual Fetch to bypass bugged cross-origin NextResponse.rewrite POST body drops)
@@ -21,10 +21,10 @@ export async function proxy(request: NextRequest) {
       requestHeaders.set('x-backend-secret-key', backendSecret);
     }
 
-    // Build external destination URL (preserving path and query parameters)
-    const destinationUrl = new URL(pathname + request.nextUrl.search, backendUrl);
-    
     try {
+      // Build external destination URL (preserving path and query parameters)
+      const destinationUrl = new URL(pathname + request.nextUrl.search, backendUrl);
+      
       // Determine if we need to pass a body (GET/HEAD requests cannot have bodies)
       const hasBody = !['GET', 'HEAD'].includes(request.method);
       const requestBody = hasBody ? await request.arrayBuffer() : undefined;
@@ -43,9 +43,8 @@ export async function proxy(request: NextRequest) {
       responseHeaders.delete('content-encoding');
       responseHeaders.delete('content-length');
       
-      // Return the proxied response content
-      const resBody = await res.arrayBuffer();
-      const response = new NextResponse(resBody, {
+      // Return the proxied response content directly via stream
+      const response = new NextResponse(res.body, {
         status: res.status,
         statusText: res.statusText,
         headers: responseHeaders,
