@@ -36,12 +36,7 @@ export default function LoginClient() {
   };
 
   const formatLicenseKey = (value: string) => {
-    const clean = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-    const parts = [];
-    for (let i = 0; i < clean.length && i < 16; i += 4) {
-      parts.push(clean.slice(i, i + 4));
-    }
-    return parts.join('-');
+    return value.toUpperCase().replace(/[^A-Z0-9-]/g, '');
   };
 
   const handleStudentLogin = async (e: React.FormEvent) => {
@@ -92,8 +87,9 @@ export default function LoginClient() {
     } catch { setError('Verbindungsfehler.'); setLoading(false); }
   };
 
-  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
+  const tabs: { key: Tab | 'teacher'; label: string; icon: React.ReactNode }[] = [
     { key: 'student', label: 'Schüler:in', icon: <KeyRound className="w-4 h-4" /> },
+    { key: 'teacher', label: 'Lehrkraft', icon: <School className="w-4 h-4" /> },
     { key: 'school', label: 'Schule', icon: <School className="w-4 h-4" /> },
     { key: 'admin', label: 'Admin', icon: <Shield className="w-4 h-4" /> },
   ];
@@ -181,7 +177,7 @@ export default function LoginClient() {
               </form>
             )}
 
-            {activeTab === 'school' && (
+            {(activeTab === 'school' || activeTab === 'teacher') && (
               <form onSubmit={handleSchoolLogin} className="space-y-4">
                 <div>
                   <label htmlFor="school-license-key" className="block text-sm font-medium mb-2">
@@ -225,7 +221,7 @@ export default function LoginClient() {
                   className="w-full py-3 rounded-xl gradient-primary text-white font-semibold shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 disabled:opacity-40 transition-all duration-300 flex items-center justify-center cursor-pointer"
                   strength={6}
                 >
-                  {loading ? 'Anmelden...' : 'Schul-Dashboard öffnen'}
+                  {loading ? 'Anmelden...' : (activeTab === 'teacher' ? 'Lehrer-Dashboard öffnen' : 'Schul-Dashboard öffnen')}
                 </MagneticButton>
               </form>
             )}
