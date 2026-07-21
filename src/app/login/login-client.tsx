@@ -104,7 +104,7 @@ export default function LoginClient() {
         <div className="absolute top-2/3 left-1/3 w-48 h-48 bg-cyan-300/10 dark:bg-cyan-400/5 rounded-full blur-3xl animate-pulse-slow" />
       </div>
 
-      <div className="w-full max-w-md px-6 py-8 flex-1 flex flex-col justify-center">
+      <div className="w-full max-w-[520px] px-6 py-8 flex-1 flex flex-col justify-center">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
@@ -131,7 +131,7 @@ export default function LoginClient() {
             <button
               key={tab.key}
               onClick={() => { setActiveTab(tab.key); setError(''); }}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+              className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-1 sm:px-3 rounded-xl text-[11px] sm:text-sm font-medium transition-all duration-300 ${
                 activeTab === tab.key
                   ? 'gradient-primary text-white shadow-lg shadow-emerald-500/25'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
