@@ -87,7 +87,7 @@ export async function middleware(request: NextRequest) {
   const token = request.cookies.get('session')?.value;
 
   // Public routes - always accessible
-  const publicPaths = ['/', '/login', '/api/auth', '/api/stats'];
+  const publicPaths = ['/', '/login', '/api/auth', '/api/stats', '/impressum', '/datenschutz'];
   if (publicPaths.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
     return NextResponse.next();
   }
