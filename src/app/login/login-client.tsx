@@ -9,7 +9,7 @@ import { MagneticButton } from '@/components/magnetic-button';
 import Link from 'next/link';
 import { LegalFooter } from '@/components/legal-footer';
 
-type Tab = 'student' | 'school' | 'admin';
+type Tab = 'student' | 'school' | 'admin' | 'teacher';
 
 export default function LoginClient() {
   const [activeTab, setActiveTab] = useState<Tab>('student');
@@ -87,7 +87,7 @@ export default function LoginClient() {
     } catch { setError('Verbindungsfehler.'); setLoading(false); }
   };
 
-  const tabs: { key: Tab | 'teacher'; label: string; icon: React.ReactNode }[] = [
+  const tabs: { key: Tab; label: string; icon: React.ReactNode }[] = [
     { key: 'student', label: 'Schüler:in', icon: <KeyRound className="w-4 h-4" /> },
     { key: 'teacher', label: 'Lehrkraft', icon: <School className="w-4 h-4" /> },
     { key: 'school', label: 'Schule', icon: <School className="w-4 h-4" /> },
