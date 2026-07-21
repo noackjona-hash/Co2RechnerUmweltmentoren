@@ -44,7 +44,7 @@ export function TiltCard({
       rafId = requestAnimationFrame(() => {
         card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
 
-        if (glareRef.current) {
+        if (glareRef.current && rect) {
           const glareX = (x / rect.width) * 100;
           const glareY = (y / rect.height) * 100;
           glareRef.current.style.background = `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.15) 0%, transparent 60%)`;
