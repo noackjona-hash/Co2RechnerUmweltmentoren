@@ -224,6 +224,7 @@ export default function HomePage() {
                 <div className="flex items-center gap-2">
                   <input
                     id="access-key-input"
+                    aria-label="Zugangscode"
                     type="text"
                     placeholder="XXXX-XXXX"
                     value={accessKey}
@@ -373,6 +374,7 @@ export default function HomePage() {
                 {CLIMATE_FACTS.map((_, i) => (
                   <button
                     key={i}
+                    aria-label={`Fakt ${i + 1} anzeigen`}
                     onClick={() => setCurrentFact(i)}
                     className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                       i === currentFact ? 'bg-emerald-500 w-4' : 'bg-muted-foreground/20 hover:bg-muted-foreground/40'

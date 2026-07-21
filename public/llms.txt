@@ -1,0 +1,15 @@
+# CO2 Rechner für Umweltmentoren
+
+Dieses Projekt ist ein interaktiver CO2-Fußabdruck-Rechner für Schulen in Deutschland. 
+Es hilft Schülern und Lehrern, den ökologischen Fußabdruck in vier Kategorien (Mobilität, Ernährung, Energie, Konsum) zu analysieren.
+
+## Hauptfunktionen
+- **Für Schüler**: Anonyme Eingabe über einen 8-stelligen Zugangscode. 10 Minuten Quiz, das den persönlichen Fußabdruck berechnet und eine Urkunde generiert.
+- **Für Schulen/Lehrer**: Ein Dashboard zur Übersicht der anonymisierten Klassendaten, Leaderboards für Challenges und Export-Funktionen.
+- **Für Admins**: Verwaltung von Lizenzen, Schulen und Fragenkatalogen.
+
+## Technologie
+- Next.js (App Router)
+- React, TailwindCSS, Lucide Icons
+- Prisma ORM mit PostgreSQL
+- Vercel Hosting mit Ngrok Backend Tunneling
