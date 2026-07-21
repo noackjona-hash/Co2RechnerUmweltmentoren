@@ -28,10 +28,12 @@ export function MagneticButton({
   disabled,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!ref.current || disabled) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!rectRef.current) rectRef.current = ref.current.getBoundingClientRect();
+    const rect = rectRef.current;
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
     ref.current.style.transform = `translate(${x * (strength / 40)}px, ${y * (strength / 40)}px)`;
@@ -39,6 +41,7 @@ export function MagneticButton({
 
   const handleMouseLeave = () => {
     if (!ref.current) return;
+    rectRef.current = null;
     ref.current.style.transform = 'translate(0px, 0px)';
     ref.current.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
     setTimeout(() => {
@@ -49,6 +52,7 @@ export function MagneticButton({
   const handleMouseEnter = () => {
     if (!ref.current) return;
     ref.current.style.transition = 'transform 0.15s ease-out';
+    rectRef.current = ref.current.getBoundingClientRect();
   };
 
   const props = {

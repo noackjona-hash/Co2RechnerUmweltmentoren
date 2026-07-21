@@ -28,10 +28,11 @@ export function TiltCard({
     const card = cardRef.current;
     if (!card) return;
 
+    let rect: DOMRect | null = null;
     let rafId: number;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
+      if (!rect) rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       const centerX = rect.width / 2;
@@ -54,6 +55,7 @@ export function TiltCard({
 
     const handleMouseLeave = () => {
       cancelAnimationFrame(rafId);
+      rect = null;
       card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
       card.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
       if (glareRef.current) {
@@ -66,6 +68,7 @@ export function TiltCard({
 
     const handleMouseEnter = () => {
       card.style.transition = 'transform 0.1s ease-out';
+      rect = card.getBoundingClientRect();
     };
 
     card.addEventListener('mousemove', handleMouseMove);
