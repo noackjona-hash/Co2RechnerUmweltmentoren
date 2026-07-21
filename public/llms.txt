@@ -8,8 +8,13 @@ Es hilft Schülern und Lehrern, den ökologischen Fußabdruck in vier Kategorien
 - **Für Schulen/Lehrer**: Ein Dashboard zur Übersicht der anonymisierten Klassendaten, Leaderboards für Challenges und Export-Funktionen.
 - **Für Admins**: Verwaltung von Lizenzen, Schulen und Fragenkatalogen.
 
+## Wichtige Links
+- [Startseite](/)
+- [Impressum](/impressum)
+- [Datenschutz](/datenschutz)
+
 ## Technologie
-- Next.js (App Router)
-- React, TailwindCSS, Lucide Icons
-- Prisma ORM mit PostgreSQL
-- Vercel Hosting mit Ngrok Backend Tunneling
+- [Next.js (App Router)](https://nextjs.org)
+- [React](https://react.dev), [TailwindCSS](https://tailwindcss.com), [Lucide Icons](https://lucide.dev)
+- [Prisma ORM](https://www.prisma.io) mit PostgreSQL
+- [Vercel](https://vercel.com) Hosting mit Ngrok Backend Tunneling

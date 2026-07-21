@@ -12,10 +12,10 @@ export async function middleware(request: NextRequest) {
 
   if (pathname.startsWith('/api/') && backendUrl) {
     const requestHeaders = new Headers(request.headers);
-    
+
     // Add ngrok skip header to bypass the browser warning page
     requestHeaders.set('ngrok-skip-browser-warning', 'true');
-    
+
     // Add secret key header to authenticate against the backend
     if (backendSecret) {
       requestHeaders.set('x-backend-secret-key', backendSecret);
@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
     try {
       // Build external destination URL (preserving path and query parameters)
       const destinationUrl = new URL(pathname + request.nextUrl.search, backendUrl);
-      
+
       // Determine if we need to pass a body (GET/HEAD requests cannot have bodies)
       const hasBody = !['GET', 'HEAD'].includes(request.method);
       const requestBody = hasBody ? await request.arrayBuffer() : undefined;
@@ -38,11 +38,11 @@ export async function middleware(request: NextRequest) {
 
       // Construct a new response to return to the client
       const responseHeaders = new Headers(res.headers);
-      
+
       // Remove content encoding and length because fetch automatically decompresses the body
       responseHeaders.delete('content-encoding');
       responseHeaders.delete('content-length');
-      
+
       // Return the proxied response content directly via stream
       const response = new NextResponse(res.body, {
         status: res.status,
