@@ -276,6 +276,14 @@ export default function ResultsClient() {
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowCertificate(true)}
+              className="paper-btn-primary text-xs flex items-center gap-1.5"
+              title="Urkunde erstellen & drucken"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Urkunde</span>
+            </button>
             <ThemeToggle />
             <button
               onClick={handleLogout}
@@ -308,10 +316,17 @@ export default function ResultsClient() {
             pro Jahr (12 Monate)
           </span>
 
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <span className="paper-stamp">
               {rating.label} — {rating.desc}
             </span>
+            <button
+              onClick={() => setShowCertificate(true)}
+              className="paper-btn-primary text-xs flex items-center gap-1.5 cursor-pointer"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Urkunde erstellen & drucken</span>
+            </button>
           </div>
         </article>
 
@@ -447,6 +462,28 @@ export default function ResultsClient() {
                 ))}
               </ul>
             </div>
+
+            {/* Certificate Call-to-Action in Tab 1 */}
+            <article className="paper-sheet p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground block">
+                  Offizielle Auszeichnung
+                </span>
+                <h3 className="text-base font-serif font-normal text-foreground">
+                  Deine Klimaschutz-Urkunde
+                </h3>
+                <p className="text-xs text-muted-foreground font-sans mt-0.5">
+                  Drucke dein persönliches Zertifikat mit deinem Ergebnis aus oder speichere es als PDF.
+                </p>
+              </div>
+              <button
+                onClick={() => setShowCertificate(true)}
+                className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span>Urkunde erstellen & drucken</span>
+              </button>
+            </article>
           </div>
         )}
 
@@ -465,17 +502,11 @@ export default function ResultsClient() {
                 </div>
 
                 <button
-                  onClick={() => {
-                    if (co2Saved === 0) {
-                      alert('Wähle bitte mindestens ein Versprechen aus, um eine Urkunde zu drucken.');
-                      return;
-                    }
-                    setShowCertificate(true);
-                  }}
-                  className="paper-btn-primary text-xs shrink-0"
+                  onClick={() => setShowCertificate(true)}
+                  className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  Urkunde erstellen
+                  Urkunde erstellen & drucken
                 </button>
               </div>
 
@@ -604,42 +635,65 @@ export default function ResultsClient() {
 
       {/* Printable Paper Certificate Modal */}
       {showCertificate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 overflow-y-auto print:p-0 print:bg-white print:static">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 overflow-y-auto print:p-0 print:bg-white print:static"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowCertificate(false);
+          }}
+        >
           <div className="w-full max-w-xl bg-card rounded-sm p-6 sm:p-8 border border-border relative print:border-none print:p-0">
             <button
               onClick={() => setShowCertificate(false)}
               className="absolute right-4 top-4 p-1.5 text-muted-foreground hover:text-foreground cursor-pointer print:hidden"
+              title="Schließen"
             >
               <X className="w-4 h-4" />
             </button>
 
             <div className="mb-6 space-y-3 print:hidden font-mono text-xs">
-              <h3 className="uppercase tracking-wider text-muted-foreground">
-                Angaben für Urkunde:
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-2">
-                <input
-                  type="text"
-                  placeholder="Vor- und Nachname"
-                  value={studentName}
-                  onChange={(e) => setStudentName(e.target.value)}
-                  className="px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
-                />
-                <input
-                  type="text"
-                  placeholder={results.isGuest ? 'Schule / Wohnort (optional)' : results.className || 'Klasse'}
-                  value={customSchoolName}
-                  onChange={(e) => setCustomSchoolName(e.target.value)}
-                  className="px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
-                />
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <h3 className="uppercase tracking-wider text-foreground font-semibold">
+                  Urkunde anpassen & drucken:
+                </h3>
+                <span className="text-[10px] text-muted-foreground">Vorschau live</span>
               </div>
-              <div className="flex justify-end pt-1">
+              <div className="grid sm:grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[10px] text-muted-foreground uppercase mb-1">Name (optional)</label>
+                  <input
+                    type="text"
+                    placeholder="Vor- und Nachname"
+                    value={studentName}
+                    onChange={(e) => setStudentName(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] text-muted-foreground uppercase mb-1">Schule / Klasse (optional)</label>
+                  <input
+                    type="text"
+                    placeholder={results.isGuest ? 'Schule / Wohnort' : results.className || 'Klasse'}
+                    value={customSchoolName}
+                    onChange={(e) => setCustomSchoolName(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center justify-between pt-2">
                 <button
+                  type="button"
+                  onClick={() => setShowCertificate(false)}
+                  className="paper-btn-secondary text-xs"
+                >
+                  Zurück
+                </button>
+                <button
+                  type="button"
                   onClick={() => window.print()}
-                  className="paper-btn-primary text-xs flex items-center gap-1.5"
+                  className="paper-btn-primary text-xs flex items-center gap-1.5 cursor-pointer shadow-sm"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  Drucken / Als PDF speichern
+                  <span>Jetzt drucken / Als PDF speichern</span>
                 </button>
               </div>
             </div>
@@ -649,7 +703,7 @@ export default function ResultsClient() {
               id="print-certificate"
               className="border-4 border-double border-stone-900 p-8 sm:p-12 text-center bg-white text-stone-900 font-serif"
             >
-              <span className="text-[11px] font-mono tracking-widest uppercase text-stone-500 block mb-2">
+              <span className="text-[11px] font-mono tracking-widest uppercase text-stone-600 block mb-2">
                 Umweltmentoren Baden-Württemberg
               </span>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-wider text-stone-900 mb-1">
@@ -657,12 +711,12 @@ export default function ResultsClient() {
               </h2>
               <div className="w-16 h-0.5 bg-stone-900 mx-auto my-4" />
 
-              <p className="text-xs italic text-stone-600 mb-4">
+              <p className="text-xs italic text-stone-700 mb-4">
                 Hiermit wird bescheinigt, dass
               </p>
 
-              <div className="border-b border-stone-400 max-w-xs mx-auto pb-1 mb-2">
-                <span className="text-xl font-bold text-stone-900 font-sans">
+              <div className="border-b-2 border-stone-400 max-w-xs mx-auto pb-1 mb-2">
+                <span className="text-xl font-bold text-stone-900 font-sans tracking-wide">
                   {studentName.trim() || '_______________________'}
                 </span>
               </div>
@@ -674,37 +728,51 @@ export default function ResultsClient() {
                   : `Klasse: ${results.className || 'Schule'}`}
               </p>
 
-              <p className="text-xs leading-relaxed max-w-md mx-auto mb-6">
+              <p className="text-xs leading-relaxed max-w-md mx-auto mb-6 text-stone-800">
                 den persönlichen CO₂-Fußabdruck analysiert und ein Jahresergebnis von{' '}
-                <strong className="font-sans text-stone-900">{formatCO2(totalCo2)}</strong> ermittelt hat.
+                <strong className="font-sans text-stone-900 font-bold">{formatCO2(totalCo2)}</strong> ermittelt hat.
               </p>
 
               {/* Pledges box */}
-              <div className="border border-stone-300 p-4 max-w-md mx-auto text-left mb-6 text-xs font-sans">
-                <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
-                  Persönliches Klima-Versprechen:
-                </span>
-                <ul className="list-disc list-inside space-y-0.5 text-stone-700 text-[11px]">
-                  {pledges.vegetarian && <li>Vegetarische Ernährung</li>}
-                  {pledges.vegan && <li>Vegane Ernährung</li>}
-                  {pledges.bioRegional && <li>Regionale & saisonale Lebensmittel</li>}
-                  {pledges.activeTransit && <li>Schulweg zu Fuß oder mit dem Fahrrad</li>}
-                  {pledges.noFlights && <li>Verzicht auf Flugreisen</li>}
-                  {pledges.greenPower && <li>Einsatz für 100% Ökostrom</li>}
-                  {pledges.lowerHeating && <li>Heizung um 1–2 Grad senken</li>}
-                  {pledges.secondHand && <li>Second-Hand bevorzugen</li>}
-                  {pledges.digitalReduction && <li>Bewusster Umgang mit Streaming & Geräten</li>}
-                </ul>
-              </div>
+              {Object.values(pledges).some(Boolean) ? (
+                <div className="border border-stone-400 p-4 max-w-md mx-auto text-left mb-6 text-xs font-sans bg-stone-50/50">
+                  <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
+                    Persönliches Klima-Versprechen:
+                  </span>
+                  <ul className="list-disc list-inside space-y-1 text-stone-800 text-[11px]">
+                    {pledges.vegetarian && <li>Vegetarische Ernährung</li>}
+                    {pledges.vegan && <li>Vegane Ernährung</li>}
+                    {pledges.bioRegional && <li>Regionale & saisonale Lebensmittel</li>}
+                    {pledges.activeTransit && <li>Schulweg zu Fuß oder mit dem Fahrrad</li>}
+                    {pledges.noFlights && <li>Verzicht auf Flugreisen</li>}
+                    {pledges.greenPower && <li>Einsatz für 100% Ökostrom</li>}
+                    {pledges.lowerHeating && <li>Heizung um 1–2 Grad senken</li>}
+                    {pledges.secondHand && <li>Second-Hand bevorzugen</li>}
+                    {pledges.digitalReduction && <li>Bewusster Umgang mit Streaming & Geräten</li>}
+                  </ul>
+                  {co2Saved > 0 && (
+                    <p className="text-xs text-stone-700 mt-3 pt-2 border-t border-stone-300 font-medium">
+                      Prognostizierte Einsparung:{' '}
+                      <strong className="font-bold text-stone-900">-{formatCO2(co2Saved)} CO₂/Jahr</strong>{' '}
+                      (ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}).
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="border border-stone-400 p-4 max-w-md mx-auto text-center mb-6 text-xs font-sans bg-stone-50/50">
+                  <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
+                    Auszeichnung für Engagement
+                  </span>
+                  <p className="text-[11px] text-stone-700 leading-relaxed">
+                    Ausgezeichnet für die erfolgreiche Reflexion des Alltagsverbrauchs und den aktiven Beitrag zum Klimabewusstsein an der Schule.
+                  </p>
+                </div>
+              )}
 
-              <p className="text-xs text-stone-600 mb-10">
-                Prognostizierte Einsparung:{' '}
-                <strong className="font-sans text-stone-900">-{formatCO2(co2Saved)} CO₂/Jahr</strong>{' '}
-                (entspricht ca. {treesSaved} Bäumen).
-              </p>
-
-              <div className="grid grid-cols-2 gap-8 pt-4 max-w-sm mx-auto text-[10px] font-mono text-stone-500">
-                <div className="border-t border-stone-400 pt-1">Datum & Ort</div>
+              <div className="grid grid-cols-2 gap-8 pt-6 max-w-sm mx-auto text-[10px] font-mono text-stone-600">
+                <div className="border-t border-stone-400 pt-1">
+                  Datum: {new Date().toLocaleDateString('de-DE')}
+                </div>
                 <div className="border-t border-stone-400 pt-1">Unterschrift Lehrkraft / Mentor:in</div>
               </div>
             </div>

@@ -194,56 +194,56 @@
 
 /* ═══ Global Print Styles for Certificate (Urkunde) ═══ */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
   }
 
-  body > div:not(.fixed),
-  body > nav,
-  body > header,
-  body > footer,
-  .print\:hidden,
-  button,
-  nav {
-    display: none !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-  }
-
-  .fixed.inset-0.z-50 {
-    position: absolute !important;
-    background: white !important;
-    padding: 0 !important;
+  html, body {
+    background: #ffffff !important;
+    color: #1c1917 !important;
     margin: 0 !important;
-    display: block !important;
-    z-index: 99999 !important;
-    left: 0 !important;
-    top: 0 !important;
+    padding: 0 !important;
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  .fixed.inset-0.z-50 > div {
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    background: white !important;
-    color: black !important;
-    max-width: 100% !important;
+  /* Hide everything on page by default */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Show ONLY the certificate and its descendants */
+  #print-certificate,
+  #print-certificate * {
+    visibility: visible !important;
   }
 
   #print-certificate {
-    border: 3px double #1c1917 !important;
-    box-shadow: none !important;
-    background: white !important;
-    color: black !important;
-    padding: 48px !important;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
     width: 100% !important;
-    max-width: 720px !important;
-    margin: 20px auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 2.5rem !important;
+    border: 4px double #1c1917 !important;
+    background: #ffffff !important;
+    color: #1c1917 !important;
     box-sizing: border-box !important;
+    display: block !important;
+    z-index: 9999999 !important;
+  }
+
+  .print\:hidden,
+  .no-print,
+  button,
+  nav,
+  header,
+  footer {
+    display: none !important;
   }
 }
