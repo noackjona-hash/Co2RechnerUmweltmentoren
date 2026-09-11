@@ -16,21 +16,21 @@ export function LegalFooter() {
   };
 
   return (
-    <footer className="text-center py-6 px-4 text-xs text-muted-foreground mt-auto w-full border-t border-border/80 bg-background">
+    <footer className="w-full border-t border-border bg-background py-5 px-4 font-mono text-[11px] text-muted-foreground mt-auto">
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p>© {year} CO₂-Rechner • Jona Noack & Umweltmentoren</p>
-        <div className="flex flex-wrap justify-center gap-3 font-medium">
+        <p>© {year} CO₂-Rechner · Jona Noack & Umweltmentoren</p>
+        <div className="flex items-center gap-3 uppercase tracking-wider">
           <Link href="/impressum" className="hover:text-foreground transition-colors">
             Impressum
           </Link>
-          <span className="text-border">•</span>
+          <span className="text-border">·</span>
           <Link href="/datenschutz" className="hover:text-foreground transition-colors">
             Datenschutz
           </Link>
-          <span className="text-border">•</span>
+          <span className="text-border">·</span>
           <button
             onClick={handleOpenCookies}
-            className="hover:text-foreground transition-colors cursor-pointer focus:outline-none"
+            className="hover:text-foreground transition-colors cursor-pointer"
           >
             Cookies
           </button>

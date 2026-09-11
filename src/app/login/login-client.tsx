@@ -2,11 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  ArrowLeft,
-  Eye,
-  EyeOff,
-} from 'lucide-react';
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import Link from 'next/link';
 import { LegalFooter } from '@/components/legal-footer';
@@ -113,29 +109,40 @@ export default function LoginClient() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between pb-8 selection:bg-stone-200 dark:selection:bg-stone-800">
+    <div className="min-h-screen flex flex-col justify-between pb-8 bg-background">
       {/* Top bar */}
-      <header className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between border-b border-border/80">
-        <Link
-          href="/"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg paper-btn-secondary text-xs"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Startseite</span>
-        </Link>
-        <ThemeToggle />
+      <header className="w-full border-b border-border bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between font-mono text-xs">
+          <Link
+            href="/"
+            className="paper-btn-secondary text-xs"
+          >
+            <ArrowLeft className="w-3 h-3" />
+            <span>Zurück zur Startseite</span>
+          </Link>
+          <ThemeToggle />
+        </div>
       </header>
 
       {/* Main card */}
-      <main className="w-full max-w-sm mx-auto px-4 py-8 flex-1 flex flex-col justify-center">
-        <div className="paper-card p-6 sm:p-7 space-y-6">
-          <div className="text-center space-y-1">
-            <h1 className="text-xl font-bold text-foreground">Anmeldung</h1>
-            <p className="text-xs text-muted-foreground">Wähle deinen Bereich:</p>
+      <main className="w-full max-w-sm mx-auto px-4 py-12 flex-1 flex flex-col justify-center">
+        <article className="paper-sheet p-6 sm:p-8 space-y-6">
+          <div className="border-b border-border pb-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+            <span>Zugangskontrolle</span>
+            <span>UM-AUTH</span>
           </div>
 
-          {/* Minimalist Tabs */}
-          <div className="flex border-b border-border text-xs font-semibold">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-serif font-normal text-foreground">
+              Anmeldung
+            </h1>
+            <p className="text-xs text-muted-foreground font-sans">
+              Wähle deinen Zuständigkeitsbereich:
+            </p>
+          </div>
+
+          {/* Minimalist Paper Tabs */}
+          <div className="flex border-b border-border text-xs font-mono uppercase tracking-wider">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -146,7 +153,7 @@ export default function LoginClient() {
                 }}
                 className={`flex-1 pb-2 text-center border-b-2 -mb-px transition-colors cursor-pointer ${
                   activeTab === tab.key
-                    ? 'border-primary text-foreground'
+                    ? 'border-foreground text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -155,81 +162,84 @@ export default function LoginClient() {
             ))}
           </div>
 
-          {/* Forms */}
+          {/* Tab 1: Student */}
           {activeTab === 'student' && (
             <form onSubmit={handleStudentLogin} className="space-y-4">
               <div>
-                <label
-                  htmlFor="student-access-key"
-                  className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1.5"
-                >
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5">
                   Zugangscode
                 </label>
                 <input
-                  id="student-access-key"
                   type="text"
                   placeholder="XXXX-XXXX"
                   value={accessKey}
                   onChange={(e) => setAccessKey(formatAccessKey(e.target.value))}
                   maxLength={9}
-                  className="w-full px-3 py-2.5 text-center font-mono font-bold text-xl rounded-xl bg-muted/40 border border-border text-foreground focus:outline-none focus:border-primary"
-                  autoComplete="off"
+                  className="w-full px-3 py-2 text-center font-mono text-lg font-semibold tracking-wider border border-border rounded-sm bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
                 />
-                <span className="text-[11px] text-muted-foreground mt-1 block">
-                  Erhalten von deiner Lehrkraft.
-                </span>
               </div>
 
               <button
                 type="submit"
                 disabled={accessKey.length < 9 || loading}
-                className="w-full py-2.5 rounded-xl paper-btn-primary text-xs cursor-pointer disabled:opacity-40"
+                className="w-full py-2.5 paper-btn-primary"
               >
-                {loading ? 'Wird geprüft...' : 'Quiz starten'}
+                {loading ? 'Prüfe...' : 'Weiter zum Fragebogen'}
               </button>
             </form>
           )}
 
-          {(activeTab === 'school' || activeTab === 'teacher') && (
-            <form onSubmit={handleSchoolLogin} className="space-y-3">
+          {/* Tab 2: Teacher */}
+          {activeTab === 'teacher' && (
+            <div className="space-y-4 font-sans text-xs">
+              <div className="p-3.5 border border-border bg-muted/30 leading-relaxed text-muted-foreground">
+                <strong className="text-foreground block mb-1 font-mono uppercase text-[11px]">
+                  Hinweis für Lehrkräfte:
+                </strong>
+                Die Verwaltung von Schulklassen und Schülercodes erfolgt über den zentralen Schullizenz-Zugang. Melde dich bitte über den Tab <strong>Schule</strong> mit dem Schullizenz-Schlüssel und Schulkennwort an.
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveTab('school')}
+                className="w-full py-2.5 paper-btn-secondary font-mono text-xs"
+              >
+                Zum Schul-Login wechseln →
+              </button>
+            </div>
+          )}
+
+          {/* Tab 3: School */}
+          {activeTab === 'school' && (
+            <form onSubmit={handleSchoolLogin} className="space-y-4 font-sans">
               <div>
-                <label
-                  htmlFor="school-license-key"
-                  className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1"
-                >
-                  Lizenzschlüssel
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5">
+                  Schullizenz-Schlüssel
                 </label>
                 <input
-                  id="school-license-key"
                   type="text"
-                  placeholder="XXXX-XXXX-XXXX-XXXX"
+                  placeholder="SCHULE-XXXX-XXXX"
                   value={licenseKey}
                   onChange={(e) => setLicenseKey(formatLicenseKey(e.target.value))}
-                  maxLength={19}
-                  className="w-full px-3 py-2 text-xs font-mono text-center rounded-xl bg-muted/40 border border-border text-foreground focus:outline-none focus:border-primary"
-                  autoComplete="off"
+                  className="w-full px-3 py-2 font-mono text-xs border border-border rounded-sm bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
                 />
               </div>
 
               <div>
-                <label
-                  htmlFor="school-password"
-                  className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1"
-                >
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5">
                   Passwort
                 </label>
                 <div className="relative">
                   <input
-                    id="school-password"
                     type={showPassword ? 'text' : 'password'}
+                    placeholder="••••••••"
                     value={schoolPassword}
                     onChange={(e) => setSchoolPassword(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl bg-muted/40 border border-border text-foreground focus:outline-none focus:border-primary pr-9"
+                    className="w-full px-3 py-2 text-xs border border-border rounded-sm bg-muted/30 text-foreground focus:outline-none focus:border-foreground pr-9"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
                     {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                   </button>
@@ -239,72 +249,58 @@ export default function LoginClient() {
               <button
                 type="submit"
                 disabled={!licenseKey || !schoolPassword || loading}
-                className="w-full py-2.5 rounded-xl paper-btn-primary text-xs cursor-pointer disabled:opacity-40 mt-1"
+                className="w-full py-2.5 paper-btn-primary"
               >
-                {loading ? 'Wird angemeldet...' : 'Zum Schul-Bereich'}
+                {loading ? 'Prüfe...' : 'Schulportal öffnen'}
               </button>
             </form>
           )}
 
+          {/* Tab 4: Admin */}
           {activeTab === 'admin' && (
-            <form onSubmit={handleAdminLogin} className="space-y-3">
+            <form onSubmit={handleAdminLogin} className="space-y-4 font-sans">
               <div>
-                <label
-                  htmlFor="admin-email"
-                  className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1"
-                >
-                  E-Mail
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5">
+                  Admin-E-Mail
                 </label>
                 <input
-                  id="admin-email"
                   type="email"
+                  placeholder="admin@umweltmentoren.de"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl bg-muted/40 border border-border text-foreground focus:outline-none focus:border-primary"
+                  className="w-full px-3 py-2 text-xs border border-border rounded-sm bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
                 />
               </div>
 
               <div>
-                <label
-                  htmlFor="admin-password"
-                  className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-1"
-                >
-                  Passwort
+                <label className="block text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5">
+                  Admin-Passwort
                 </label>
-                <div className="relative">
-                  <input
-                    id="admin-password"
-                    type={showPassword ? 'text' : 'password'}
-                    value={adminPassword}
-                    onChange={(e) => setAdminPassword(e.target.value)}
-                    className="w-full px-3 py-2 text-xs rounded-xl bg-muted/40 border border-border text-foreground focus:outline-none focus:border-primary pr-9"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  className="w-full px-3 py-2 text-xs border border-border rounded-sm bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
+                />
               </div>
 
               <button
                 type="submit"
                 disabled={!email || !adminPassword || loading}
-                className="w-full py-2.5 rounded-xl paper-btn-primary text-xs cursor-pointer disabled:opacity-40 mt-1"
+                className="w-full py-2.5 paper-btn-primary"
               >
-                {loading ? 'Wird angemeldet...' : 'Zum Admin-Bereich'}
+                {loading ? 'Prüfe...' : 'Admin-Bereich öffnen'}
               </button>
             </form>
           )}
 
           {error && (
-            <div className="p-2.5 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium text-center">
+            <div className="p-3 border border-destructive/30 bg-destructive/5 text-destructive text-xs font-mono">
               {error}
             </div>
           )}
-        </div>
+        </article>
       </main>
 
       <LegalFooter />

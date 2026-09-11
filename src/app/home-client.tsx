@@ -1,46 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
-import {
-  ArrowRight,
-  Compass,
-  CheckCircle2,
-  Award,
-  Lock,
-} from 'lucide-react';
+import { ArrowRight, Lock } from 'lucide-react';
 import { LegalFooter } from '@/components/legal-footer';
-
-const CLIMATE_FACTS = [
-  { text: '5 km mit dem Rad statt Auto spart rund 1 kg CO₂ ein.' },
-  { text: 'Ein großer Baum bindet etwa 12,5 kg CO₂ pro Jahr.' },
-  { text: 'Ein fleischfreier Tag pro Woche spart jährlich rund 350 kg CO₂.' },
-  { text: 'Licht ausschalten beim Verlassen des Raumes schont sofort Energie.' },
-  { text: 'Kleidung länger tragen und Second-Hand kaufen spart Wasser und CO₂.' },
-  { text: 'Regionales und saisonales Obst hat einen viel kleineren CO₂-Rucksack.' },
-];
 
 export default function HomePage() {
   const [accessKey, setAccessKey] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [currentFact, setCurrentFact] = useState(0);
-  const [stats, setStats] = useState({ totalCompleted: 0, totalSchools: 0, totalClasses: 0 });
   const router = useRouter();
-
-  useEffect(() => {
-    async function fetchStats() {
-      try {
-        const res = await fetch('/api/stats');
-        const data = await res.json();
-        setStats(data);
-      } catch {
-        /* ignore */
-      }
-    }
-    fetchStats();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,185 +43,119 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between selection:bg-stone-200 dark:selection:bg-stone-800">
-      {/* Header */}
-      <header className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-5 flex items-center justify-between border-b border-border/80">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
-            CO₂
-          </div>
-          <div>
-            <span className="font-bold text-base text-foreground tracking-tight block leading-tight">
+    <div className="min-h-screen flex flex-col justify-between">
+      {/* Editorial Top Bar */}
+      <header className="w-full border-b border-border bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+              Umweltmentoren
+            </span>
+            <span className="text-border">/</span>
+            <span className="font-serif text-sm font-semibold text-foreground">
               CO₂-Rechner
             </span>
-            <span className="text-xs text-muted-foreground block">
-              Umweltmentoren an Schulen
-            </span>
           </div>
-        </div>
 
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <a
-            href="/login"
-            className="px-3.5 py-1.5 text-xs font-semibold rounded-lg paper-btn-secondary"
-          >
-            Lehrkräfte-Login
-          </a>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <a
+              href="/login"
+              className="paper-btn-secondary text-xs"
+            >
+              Lehrkräfte-Login
+            </a>
+          </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-12 flex-1 flex flex-col items-center text-center">
-        {/* Paper Tag */}
-        <div className="paper-badge mb-6">
-          <span>Schuljahr 2025/2026</span>
-          <span className="text-muted-foreground">•</span>
-          <span>Klimaschutz an Schulen</span>
-        </div>
+      {/* Main Paper Worksheet */}
+      <main className="max-w-xl w-full mx-auto px-4 py-12 sm:py-16 flex-1 flex flex-col justify-center">
+        <article className="paper-sheet p-6 sm:p-10 relative">
+          {/* Top Document Header Line */}
+          <div className="border-b border-border pb-4 mb-6 flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+            <span>Fragebogen · Schuljahr 2025/2026</span>
+            <span>Formular UM-CO₂</span>
+          </div>
 
-        {/* Title */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-foreground tracking-tight leading-tight mb-4">
-          Dein persönlicher CO₂-Fußabdruck
-        </h1>
+          {/* Document Title */}
+          <div className="mb-6 space-y-2">
+            <h1 className="text-2xl sm:text-3xl font-serif font-normal text-foreground tracking-tight">
+              Erfassung des persönlichen CO₂-Fußabdrucks
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Ermittle deinen jährlichen Ausstoß in den Bereichen Mobilität, Ernährung, Energie und Konsum. Die Erhebung erfolgt vollständig anonym.
+            </p>
+          </div>
 
-        <p className="text-sm sm:text-base text-muted-foreground max-w-lg mb-8 leading-relaxed">
-          Beantworte kurze Fragen zu deinem Alltag. Finde heraus, wie viel CO₂ du verursachst, vergleiche dich mit deiner Klasse und drucke deine Urkunde aus.
-        </p>
-
-        {/* Code Input Card */}
-        <div className="w-full max-w-md paper-card p-6 text-left mb-8">
-          <label
-            htmlFor="access-key-input"
-            className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2"
-          >
-            Zugangscode eingeben
-          </label>
-
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <input
-              id="access-key-input"
-              type="text"
-              placeholder="XXXX-XXXX"
-              value={accessKey}
-              onChange={(e) => setAccessKey(formatKey(e.target.value))}
-              maxLength={9}
-              className="w-full px-4 py-3 text-center text-2xl font-mono font-bold tracking-widest bg-muted/40 border border-border rounded-xl text-foreground focus:outline-none focus:border-primary transition-colors"
-              autoComplete="off"
-            />
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+            <div>
+              <label
+                htmlFor="access-key-input"
+                className="block text-[11px] font-mono uppercase tracking-widest text-muted-foreground mb-1.5"
+              >
+                Schüler-Zugangscode (8 Stellen)
+              </label>
+              <input
+                id="access-key-input"
+                type="text"
+                placeholder="XXXX-XXXX"
+                value={accessKey}
+                onChange={(e) => setAccessKey(formatKey(e.target.value))}
+                maxLength={9}
+                className="w-full px-4 py-3 text-center text-xl font-mono font-semibold tracking-widest bg-muted/40 border border-border rounded-sm text-foreground focus:outline-none focus:border-foreground transition-colors"
+                autoComplete="off"
+                autoFocus
+              />
+            </div>
 
             <button
               type="submit"
               disabled={accessKey.length < 9 || loading}
-              className="w-full py-3 rounded-xl paper-btn-primary text-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full py-3 paper-btn-primary"
             >
               {loading ? (
-                'Überprüfe Code...'
+                'Überprüfe...'
               ) : (
                 <>
-                  Quiz starten
-                  <ArrowRight className="w-4 h-4" />
+                  Fragebogen starten
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
             </button>
           </form>
 
           {error && (
-            <div className="mt-3 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium">
+            <div className="mt-4 p-3 border border-destructive/30 bg-destructive/5 text-destructive text-xs font-mono">
               {error}
             </div>
           )}
 
-          <div className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-            <Lock className="w-3.5 h-3.5" />
+          <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] font-mono text-muted-foreground">
+            <Lock className="w-3 h-3" />
             <span>Den 8-stelligen Code erhältst du von deiner Lehrkraft.</span>
           </div>
-        </div>
 
-        {/* Quick Stats Line */}
-        {stats.totalCompleted > 0 && (
-          <p className="text-xs text-muted-foreground mb-12">
-            Bereits <strong className="text-foreground font-semibold">{stats.totalCompleted}</strong> Schüler:innen haben an diesem Rechner teilgenommen.
-          </p>
-        )}
+          {/* Subtle Perforation Divider */}
+          <div className="my-8 border-t border-dashed border-border" />
 
-        {/* 4 Categories Overview (Notebook style) */}
-        <div className="w-full text-left mb-12">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 text-center">
-            Die 4 Bereiche des Fragebogens
-          </h2>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-            {[
-              { title: 'Mobilität', desc: 'Schulweg & Reisen' },
-              { title: 'Ernährung', desc: 'Essen & Trinken' },
-              { title: 'Energie', desc: 'Heizung & Strom' },
-              { title: 'Konsum', desc: 'Kleidung & Medien' },
-            ].map((cat, idx) => (
-              <div key={cat.title} className="paper-card p-3.5">
-                <span className="text-xs font-mono text-muted-foreground block mb-1">
-                  0{idx + 1}
-                </span>
-                <h3 className="font-bold text-sm text-foreground mb-0.5">{cat.title}</h3>
-                <p className="text-[11px] text-muted-foreground leading-snug">{cat.desc}</p>
-              </div>
-            ))}
+          {/* Compact Footnote / Guide */}
+          <div className="space-y-2 text-[11px] text-muted-foreground">
+            <div className="flex items-center justify-between font-mono">
+              <span>Themenbereiche:</span>
+              <span className="text-foreground">01 Mobilität · 02 Ernährung · 03 Energie · 04 Konsum</span>
+            </div>
+            <div className="flex items-center justify-between font-mono">
+              <span>Dauer:</span>
+              <span>ca. 8–10 Minuten</span>
+            </div>
+            <div className="flex items-center justify-between font-mono">
+              <span>Abschluss:</span>
+              <span>Druckbare Urkunde & Zertifikat</span>
+            </div>
           </div>
-        </div>
-
-        {/* How it works (Clean minimal 3 steps) */}
-        <div className="w-full text-left mb-12 paper-card p-6 sm:p-7">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">
-            Ablauf
-          </h2>
-
-          <div className="grid sm:grid-cols-3 gap-5">
-            {[
-              {
-                step: '1',
-                title: 'Code eingeben',
-                desc: 'Tippe deinen 8-stelligen Schüler-Code ein.',
-              },
-              {
-                step: '2',
-                title: 'Fragen beantworten',
-                desc: 'Dauert ca. 10 Minuten. Alles ist 100% anonym.',
-              },
-              {
-                step: '3',
-                title: 'Urkunde erhalten',
-                desc: 'Erfahre deinen Wert und drucke deine Urkunde.',
-              },
-            ].map((s) => (
-              <div key={s.step} className="space-y-1">
-                <span className="text-xs font-bold text-primary block">
-                  Schritt {s.step}
-                </span>
-                <h3 className="font-bold text-sm text-foreground">{s.title}</h3>
-                <p className="text-xs text-muted-foreground leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Climate Note Box */}
-        <div className="w-full text-left paper-card p-4 border-l-4 border-l-primary flex items-start justify-between gap-3">
-          <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-primary block mb-0.5">
-              Notiz zum Klimaschutz
-            </span>
-            <p className="text-xs text-foreground leading-relaxed">
-              {CLIMATE_FACTS[currentFact].text}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => setCurrentFact((prev) => (prev + 1) % CLIMATE_FACTS.length)}
-            className="text-xs text-muted-foreground hover:text-foreground font-semibold shrink-0 cursor-pointer pt-0.5"
-          >
-            Nächster Tipp →
-          </button>
-        </div>
+        </article>
       </main>
 
       <LegalFooter />

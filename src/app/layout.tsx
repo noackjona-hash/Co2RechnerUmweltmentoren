@@ -1,13 +1,19 @@
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { CookieBanner } from '@/components/cookie-banner';
-import { Plus_Jakarta_Sans } from 'next/font/google';
+import { Lora, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
 
-const fontSans = Plus_Jakarta_Sans({
+const fontSerif = Lora({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-sans',
+  variable: '--font-serif',
+});
+
+const fontMono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
 });
 
 export const metadata = {
@@ -29,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de" suppressHydrationWarning className={fontSans.variable}>
-      <body className={`${fontSans.className} min-h-screen antialiased selection:bg-emerald-200 dark:selection:bg-emerald-800`}>
+    <html lang="de" suppressHydrationWarning className={`${fontSerif.variable} ${fontMono.variable}`}>
+      <body className="min-h-screen antialiased selection:bg-stone-200 dark:selection:bg-stone-800">
         <ThemeProvider>
           {children}
           <CookieBanner />
