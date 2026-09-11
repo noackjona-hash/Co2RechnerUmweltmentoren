@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
+import { ParticleField } from '@/components/particle-field';
 
 // Recharts components
 import {
@@ -569,7 +570,7 @@ export default function AdminClient() {
 
   return (
     <div className="min-h-screen relative flex flex-col justify-between">
-      <div className="fixed inset-0 -z-10 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-950" />
+      <ParticleField />
 
       {/* Nav Header */}
       <nav className="sticky top-0 z-20 glass-strong border-b border-border/50">

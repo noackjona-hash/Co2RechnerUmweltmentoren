@@ -4,133 +4,135 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Leaf, Mail, MapPin, ShieldAlert, Code } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
+import { ParticleField } from '@/components/particle-field';
 
 export default function ImpressumClient() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex flex-col relative">
-      {/* Background gradients */}
-      <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-950" />
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-400/10 dark:bg-emerald-400/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-teal-400/10 dark:bg-teal-400/5 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen flex flex-col justify-between relative pb-8">
+      <ParticleField />
 
       {/* Nav */}
-      <nav className="relative z-10 flex items-center justify-between px-6 py-4 max-w-6xl mx-auto w-full">
+      <header className="relative z-10 flex items-center justify-between px-4 sm:px-6 py-4 max-w-4xl mx-auto w-full">
         <button
           onClick={() => router.back()}
-          className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-xl glass hover:bg-white/80 dark:hover:bg-white/10 transition-all cursor-pointer"
+          className="flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-bold rounded-2xl bg-card border border-border hover:bg-muted text-foreground transition-all cursor-pointer btn-bounce"
         >
           <ArrowLeft className="w-4 h-4" />
           Zurück
         </button>
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
-            <Leaf className="w-4.5 h-4.5 text-white" />
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white shadow-xs">
+            <Leaf className="w-4.5 h-4.5" />
           </div>
-          <span className="font-bold text-sm">CO₂ Rechner</span>
+          <span className="font-bold text-sm text-foreground">CO₂ Rechner</span>
         </div>
         <ThemeToggle />
-      </nav>
+      </header>
 
       {/* Content */}
-      <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full animate-slide-up">
-        <div className="glass-strong rounded-3xl p-6 sm:p-10 shadow-2xl border-white/20 dark:border-white/5 space-y-8">
-          <div className="space-y-3">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground">Impressum</h1>
-            <p className="text-sm text-muted-foreground">
-              Verantwortlich für das Web-Angebot nach § 5 TMG / § 18 MStV.
+      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 py-6 w-full animate-scale-in">
+        <div className="bg-card rounded-3xl p-6 sm:p-10 border-2 border-border shadow-lg space-y-8">
+          <div className="space-y-2 text-center sm:text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 text-xs font-bold text-emerald-700 dark:text-emerald-300 mb-1">
+              Rechtliche Angaben
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
+              Impressum
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Angaben gemäß § 5 TMG und § 18 Abs. 2 MStV
             </p>
           </div>
 
-          <hr className="border-border/50" />
+          <hr className="border-border" />
 
-          {/* Project Details */}
+          {/* Contact & Address */}
           <div className="grid gap-6 sm:grid-cols-2">
-            <div className="space-y-4">
-              <h3 className="font-bold text-base flex items-center gap-2">
+            <div className="space-y-2 p-4 rounded-2xl bg-muted/40 border border-border/60">
+              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-emerald-500" />
-                Herausgeber & Anschrift
+                Angaben gemäß § 5 TMG
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                <span className="font-semibold text-foreground block">Projekt CO₂ Rechner an Schulen</span>
-                Umweltmentoren-Initiative Baden-Württemberg<br />
-                Musterstraße 42<br />
-                70173 Stuttgart<br />
+              <p className="text-xs sm:text-sm text-foreground leading-relaxed">
+                <strong className="font-bold block">Jona Noack</strong>
+                Kiehnlestraße 25<br />
+                75172 Pforzheim<br />
                 Deutschland
               </p>
             </div>
 
-            <div className="space-y-4">
-              <h3 className="font-bold text-base flex items-center gap-2">
+            <div className="space-y-2 p-4 rounded-2xl bg-muted/40 border border-border/60">
+              <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
                 <Mail className="w-4 h-4 text-emerald-500" />
                 Kontakt
               </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-foreground leading-relaxed">
                 E-Mail:{' '}
-                <a href="mailto:info@umweltmentoren.de" className="text-emerald-500 hover:underline">
-                  info@umweltmentoren.de
+                <a
+                  href="mailto:jona.noack@outlook.de"
+                  className="text-emerald-600 dark:text-emerald-400 font-semibold hover:underline"
+                >
+                  jona.noack@outlook.de
                 </a>
-                <br />
-                Telefon: +49 (0) 711 123456-78<br />
-                Web: www.umweltmentoren.de
               </p>
             </div>
           </div>
 
-          <hr className="border-border/50" />
-
-          {/* Reps */}
-          <div className="space-y-4">
-            <h3 className="font-bold text-base">Vertretungsberechtigte Personen</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Dieses Softwareprojekt wird betreut von der Arbeitsgemeinschaft der Umweltmentoren an baden-württembergischen Schulen. Projektleiter und inhaltlich Verantwortlicher gemäß § 18 Abs. 2 MStV: Dr. Paul Schmidt (Anschrift wie oben).
-            </p>
-          </div>
-
-          <hr className="border-border/50" />
-
-          {/* Credits */}
-          <div className="space-y-4">
-            <h3 className="font-bold text-base flex items-center gap-2">
-              <Code className="w-4 h-4 text-emerald-500" />
-              Entwicklung & Design
+          {/* Responsible Person */}
+          <div className="space-y-2">
+            <h3 className="font-bold text-sm text-foreground">
+              Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV
             </h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Diese App zum CO₂-Fußabdruck wurde exklusiv entwickelt von <strong>Jona und Paul vom Hilda-Gymnasium</strong> für die Abschlussveranstaltung des Umweltmentorenprogramms Kurs 2025/2026 (25.09.2026).
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Jona Noack<br />
+              Kiehnlestraße 25<br />
+              75172 Pforzheim
             </p>
           </div>
 
-          <hr className="border-border/50" />
+          <hr className="border-border" />
+
+          {/* Project background */}
+          <div className="space-y-2">
+            <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
+              <Code className="w-4 h-4 text-emerald-500" />
+              Projekt & Entwicklung
+            </h3>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Dieses Softwareprojekt wurde von <strong>Jona Noack</strong> für das Umweltmentorenprogramm konzipiert und entwickelt, um Schülerinnen und Schülern an Schulen einen kindgerechten, transparenten und motivierenden Einstieg in den persönlichen Klimaschutz zu ermöglichen.
+            </p>
+          </div>
+
+          <hr className="border-border" />
 
           {/* Disclaimers */}
-          <div className="space-y-6">
-            <h3 className="font-bold text-base flex items-center gap-2">
+          <div className="space-y-4">
+            <h3 className="font-bold text-sm text-foreground flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-emerald-500" />
-              Rechtliche Hinweise
+              Haftungsausschluss (Disclaimer)
             </h3>
 
-            <div className="space-y-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              <div className="space-y-1">
-                <h4 className="font-semibold text-foreground">Haftung für Inhalte</h4>
+            <div className="space-y-3 text-xs text-muted-foreground leading-relaxed">
+              <div>
+                <h4 className="font-bold text-foreground mb-0.5">Haftung für Inhalte</h4>
                 <p>
                   Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.
                 </p>
               </div>
 
-              <div className="space-y-1">
-                <h4 className="font-semibold text-foreground">Haftung für Links</h4>
+              <div>
+                <h4 className="font-bold text-foreground mb-0.5">Haftung für Links</h4>
                 <p>
-                  Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+                  Unser Angebot kann Links zu externen Websites Dritter enthalten, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
                 </p>
               </div>
 
-              <div className="space-y-1">
-                <h4 className="font-semibold text-foreground">Urheberrecht</h4>
+              <div>
+                <h4 className="font-bold text-foreground mb-0.5">Urheberrecht</h4>
                 <p>
-                  Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
+                  Die durch den Seitenbetreiber erstellten Inhalte, Quellcodes und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der gesetzlichen Schranken des Urheberrechts bedürfen der schriftlichen Zustimmung des Urhebers Jona Noack.
                 </p>
               </div>
             </div>

@@ -1,21 +1,20 @@
-MIT License
+RESTRICTED NON-COMMERCIAL EDUCATIONAL & COPYLEFT LICENSE
 
-Copyright (c) 2026 Jona Noack
+Copyright (c) 2026 Jona Noack. Alle Rechte vorbehalten.
+Kontakt: jona.noack@outlook.de • Kiehnlestraße 25, 75172 Pforzheim
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Dieses Softwarewerk ("CO₂-Rechner Umweltmentoren") wurde von Jona Noack für Bildungs- und Klimaschutzzwecke an Schulen entwickelt.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. NUTZUNGSRECHT (BILDUNG & SCHULEN):
+Die unentgeltliche Nutzung und Ausführung dieser Software ist ausschließlich für gemeinnützige, nicht-kommerzielle Lehr-, Lern- und Bildungszwecke an staatlichen und staatlich anerkannten Schulen sowie anerkannten Umweltbildungsinitiativen gestattet.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+2. STRIKTES KOMMERZIELLES NUTZUNGSVERBOT:
+Jegliche kommerzielle Nutzung, gewerbliche Weiterverwertung, Vermietung, Veräußerung, entgeltliche Bereitstellung (insbesondere als SaaS-, Hosting- oder Cloud-Dienstleistung), Unterlizenzierung oder Verknüpfung mit kommerziellen Produkten ist ohne vorherige, ausdrückliche und schriftliche Genehmigung des Urhebers (Jona Noack) strengstens untersagt.
+
+3. QUELLCODE, MODIFIKATION & COPYLEFT:
+- Modifikationen des Quellcodes sind nur für interne schulische Bildungszwecke zulässig.
+- Jegliche Veröffentlichung oder netzwerkbasierte Bereitstellung abgeleiteter Werke erfordert die vollständige Offenlegung des Quellcodes unter identischen, restriktiven Lizenzbedingungen.
+- Alle Urheberrechtsvermerke, Autorenangaben ("Jona Noack"), Lizenztexte und Impressumshinweise MÜSSEN in jedem Codebestandteil sowie in der sichtbaren Benutzeroberfläche unverändert erhalten bleiben.
+
+4. HAFTUNGSAUSSCHLUSS:
+DIE SOFTWARE WIRD "WIE BESEHEN" BEREITGESTELLT, OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, FEHLERFREIHEIT ODER EIGNUNG FÜR EINEN BESTIMMTEN ZWECK. IN KEINEM FALL HAFTET DER URHEBER FÜR DIREKTE ODER INDIREKTE SCHÄDEN.
