@@ -589,10 +589,6 @@ export type QuizQuestionScalarRelationFilter = {
   isNot?: Prisma.QuizQuestionWhereInput
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type FloatFieldUpdateOperationsInput = {
   set?: number
   increment?: number

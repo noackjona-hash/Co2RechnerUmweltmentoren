@@ -38,7 +38,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { className, quizMode } = await request.json();
+    const { className, quizMode, teacherName, teacherEmail } = await request.json();
 
     if (!className) {
       return NextResponse.json(
@@ -58,6 +58,8 @@ export async function POST(request: Request) {
     const newClass = await prisma.class.create({
       data: {
         className,
+        teacherName: teacherName ? String(teacherName).trim() : null,
+        teacherEmail: teacherEmail ? String(teacherEmail).trim() : null,
         quizMode: mode,
         licenseId: session.licenseId!,
       },

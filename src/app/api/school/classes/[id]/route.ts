@@ -99,3 +99,57 @@ export async function DELETE(
     );
   }
 }
+
+// PATCH / UPDATE class details (className, teacherName, teacherEmail, quizMode)
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await getSession();
+  if (!session || session.role !== 'school-admin') {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+
+  try {
+    const { id } = await params;
+    const body = await request.json();
+
+    const classRecord = await prisma.class.findFirst({
+      where: { id, licenseId: session.licenseId },
+    });
+
+    if (!classRecord) {
+      return NextResponse.json(
+        { error: 'Klasse nicht gefunden.' },
+        { status: 404 }
+      );
+    }
+
+    const updateData: any = {};
+    if (typeof body.className === 'string' && body.className.trim()) {
+      updateData.className = body.className.trim();
+    }
+    if (body.teacherName !== undefined) {
+      updateData.teacherName = body.teacherName ? String(body.teacherName).trim() : null;
+    }
+    if (body.teacherEmail !== undefined) {
+      updateData.teacherEmail = body.teacherEmail ? String(body.teacherEmail).trim() : null;
+    }
+    if (body.quizMode && [10, 30, 60].includes(Number(body.quizMode))) {
+      updateData.quizMode = Number(body.quizMode);
+    }
+
+    const updated = await prisma.class.update({
+      where: { id },
+      data: updateData,
+    });
+
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error('Update class error:', error);
+    return NextResponse.json(
+      { error: 'Fehler beim Aktualisieren der Klasse.' },
+      { status: 500 }
+    );
+  }
+}

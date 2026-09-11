@@ -920,6 +920,8 @@ export const ClassScalarFieldEnum = {
   id: 'id',
   licenseId: 'licenseId',
   className: 'className',
+  teacherName: 'teacherName',
+  teacherEmail: 'teacherEmail',
   quizMode: 'quizMode',
   createdAt: 'createdAt'
 } as const

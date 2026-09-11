@@ -41,6 +41,9 @@ import {
   Target,
   Trophy,
   BookOpen,
+  Leaf,
+  BarChart3,
+  Sparkles,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
@@ -117,29 +120,35 @@ export default function SchoolAnalyticsClient() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between pb-12 bg-background">
-      {/* Editorial Header */}
-      <header className="w-full border-b border-border bg-background">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between font-mono text-xs">
-          <div className="flex items-center gap-2">
+      {/* Modern Sticky Header */}
+      <header className="w-full border-b border-border/70 bg-card/75 backdrop-blur-md sticky top-0 z-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
             <Link
               href="/school"
               className="paper-btn-secondary text-xs"
-              title="Zurück zum Dashboard"
+              title="Zurück zur Klassenverwaltung"
             >
-              <ArrowLeft className="w-3 h-3" />
-              <span>Zurück zum Dashboard</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Klassenverwaltung</span>
             </Link>
+            <span className="text-border">/</span>
+            <div className="flex items-center gap-2">
+              <BarChart3 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span className="text-xs font-semibold text-foreground tracking-tight">
+                Schulauswertung & Gesamtanalyse
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="font-serif text-sm font-semibold text-foreground">Schulauswertung</span>
+          <div className="flex items-center gap-2.5">
             <ThemeToggle />
             <button
               onClick={handleLogout}
               className="paper-btn-secondary text-xs"
               title="Abmelden"
             >
-              <LogOut className="w-3 h-3" />
+              <LogOut className="w-3.5 h-3.5" />
               <span>Abmelden</span>
             </button>
           </div>
@@ -147,94 +156,140 @@ export default function SchoolAnalyticsClient() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex-1 w-full space-y-6">
-        {/* Top 4 Stat Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono">
-          <div className="paper-sheet p-4">
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground block mb-1">
-              Teilnehmer
-            </span>
-            <div className="text-2xl font-semibold text-foreground">
-              {data.totalParticipants}
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex-1 w-full space-y-6 animate-fade-in">
+        {/* Top 4 KPI Metric Cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+          <div className="paper-sheet p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-muted-foreground">
+                Teilnehmer:innen
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                <Users className="w-4 h-4" />
+              </div>
             </div>
-            <span className="text-[10px] text-muted-foreground block mt-1">
-              {data.totalCompleted} abgeschlossen
-            </span>
+            <div>
+              <div className="text-2xl font-bold tracking-tight text-foreground">
+                {data.totalParticipants}
+              </div>
+              <span className="text-[11px] text-muted-foreground block mt-0.5">
+                {data.totalCompleted} Fragebögen fertig
+              </span>
+            </div>
           </div>
 
-          <div className="paper-sheet p-4">
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground block mb-1">
-              Ø Schulausstoß
-            </span>
-            <div className="text-2xl font-semibold text-foreground">
-              {formatCO2(data.schoolAverage)}
+          <div className="paper-sheet p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-muted-foreground">
+                Ø Schulausstoß
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <Leaf className="w-4 h-4" />
+              </div>
             </div>
-            <span className="text-[10px] text-muted-foreground block mt-1">
-              pro Schüler:in / Jahr
-            </span>
+            <div>
+              <div className="text-2xl font-bold tracking-tight text-foreground">
+                {formatCO2(data.schoolAverage)}
+              </div>
+              <span className="text-[11px] text-muted-foreground block mt-0.5">
+                pro Schüler:in / Jahr
+              </span>
+            </div>
           </div>
 
-          <div className="paper-sheet p-4">
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground block mb-1">
-              vs. Bundesschnitt
-            </span>
-            <div className="text-2xl font-semibold text-foreground">
-              {belowAverage ? '-' : '+'}
-              {formatCO2(Math.abs(data.schoolAverage - NATIONAL_AVERAGE_CO2))}
+          <div className="paper-sheet p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-muted-foreground">
+                vs. Bundesschnitt
+              </span>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                belowAverage
+                  ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                  : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+              }`}>
+                <Target className="w-4 h-4" />
+              </div>
             </div>
-            <span className="text-[10px] text-muted-foreground block mt-1">
-              {belowAverage ? 'unter' : 'über'} Bundesdurchschnitt
-            </span>
+            <div>
+              <div className="text-2xl font-bold tracking-tight text-foreground">
+                {belowAverage ? '-' : '+'}
+                {formatCO2(Math.abs(data.schoolAverage - NATIONAL_AVERAGE_CO2))}
+              </div>
+              <span className="text-[11px] text-muted-foreground block mt-0.5">
+                {belowAverage ? 'unter' : 'über'} Bundesdurchschnitt (10,8 t)
+              </span>
+            </div>
           </div>
 
-          <div className="paper-sheet p-4">
-            <span className="text-[11px] uppercase tracking-wider text-muted-foreground block mb-1">
-              Abschlussquote
-            </span>
-            <div className="text-2xl font-semibold text-foreground">
-              {data.totalParticipants > 0
-                ? Math.round((data.totalCompleted / data.totalParticipants) * 100)
-                : 0}
-              %
+          <div className="paper-sheet p-4 flex flex-col justify-between">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-medium text-muted-foreground">
+                Abschlussquote
+              </span>
+              <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center">
+                <Sparkles className="w-4 h-4" />
+              </div>
             </div>
-            <div className="w-full h-1 bg-border mt-2 overflow-hidden">
-              <div
-                className="h-full bg-foreground"
-                style={{
-                  width: `${
-                    data.totalParticipants > 0
-                      ? (data.totalCompleted / data.totalParticipants) * 100
-                      : 0
-                  }%`,
-                }}
-              />
+            <div>
+              <div className="text-2xl font-bold tracking-tight text-foreground">
+                {data.totalParticipants > 0
+                  ? Math.round((data.totalCompleted / data.totalParticipants) * 100)
+                  : 0}
+                %
+              </div>
+              <div className="w-full h-1.5 bg-stone-100 dark:bg-stone-800 rounded-full mt-2 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-emerald-500 transition-all duration-500"
+                  style={{
+                    width: `${
+                      data.totalParticipants > 0
+                        ? (data.totalCompleted / data.totalParticipants) * 100
+                        : 0
+                    }%`,
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
 
         {data.totalCompleted === 0 ? (
-          <div className="paper-sheet p-10 text-center font-mono text-xs text-muted-foreground">
-            Noch keine Schülerdaten abgeschlossen.
+          <div className="paper-sheet p-12 text-center space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+              <BarChart3 className="w-6 h-6" />
+            </div>
+            <h3 className="text-sm font-semibold text-foreground">
+              Noch keine abgeschlossenen Schüler-Fragebögen
+            </h3>
+            <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+              Sobald Schüler:innen ihre Fragebögen abgeschlossen haben, erscheinen hier aggregierte Diagramme und Klassenvergleiche.
+            </p>
           </div>
         ) : (
           <>
             {/* Charts Grid */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="paper-sheet p-5">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">
-                  Verteilung nach Bereichen (Schule)
-                </h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="paper-sheet p-5 space-y-3">
+                <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Verteilung nach Bereichen (Schulweit)
+                  </h3>
+                  <span className="text-[11px] text-muted-foreground">Anteile</span>
+                </div>
                 <SchoolCategoryPieChart data={categoryPieData} />
               </div>
 
-              <div className="paper-sheet p-5">
-                <h3 className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">
-                  Klassen-Vergleich (Ø Ausstoß)
-                </h3>
+              <div className="paper-sheet p-5 space-y-3">
+                <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Klassen-Vergleich (Ø Jahresausstoß)
+                  </h3>
+                  <span className="text-[11px] text-muted-foreground">kg CO₂</span>
+                </div>
                 {classComparisonData.length > 0 ? (
                   <SchoolClassBarChart data={classComparisonData} />
                 ) : (
-                  <p className="font-mono text-xs text-muted-foreground text-center py-8">
+                  <p className="text-xs text-muted-foreground text-center py-12">
                     Noch keine abgeschlossenen Klassen.
                   </p>
                 )}
@@ -243,16 +298,21 @@ export default function SchoolAnalyticsClient() {
 
             {/* School Leaderboard Table */}
             <article className="paper-sheet p-6 space-y-4">
-              <div className="border-b border-border pb-3">
-                <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground block">
-                  Ranking
+              <div className="border-b border-border/70 pb-3 flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+                    Ranking
+                  </span>
+                  <h3 className="text-base font-bold text-foreground">
+                    Klassen-Rangliste der Schule
+                  </h3>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  Sortiert nach geringstem Ø CO₂
                 </span>
-                <h3 className="text-base font-serif font-normal text-foreground">
-                  Klassen-Rangliste der Schule
-                </h3>
               </div>
 
-              <div className="divide-y divide-border border border-border">
+              <div className="divide-y divide-border/60 border border-border/80 rounded-xl overflow-hidden">
                 {data.classStats
                   .sort((a, b) => {
                     if (a.completedStudents === 0 && b.completedStudents > 0) return 1;
@@ -261,22 +321,28 @@ export default function SchoolAnalyticsClient() {
                   })
                   .map((cls, index) => {
                     const hasCompletions = cls.completedStudents > 0;
+                    const rankMedal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+
                     return (
                       <div
                         key={cls.id}
-                        className="p-3.5 flex items-center justify-between font-mono text-xs bg-card"
+                        className="p-3.5 flex items-center justify-between text-xs bg-card hover:bg-stone-50/50 dark:hover:bg-stone-900/30 transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="w-5 text-muted-foreground">{index + 1}.</span>
+                          <span className="w-6 text-center font-bold text-sm">
+                            {rankMedal}
+                          </span>
                           <div>
-                            <span className="text-foreground block">{cls.className}</span>
-                            <span className="text-[11px] text-muted-foreground font-sans block">
-                              {cls.completedStudents} / {cls.totalStudents} abgeschlossen
+                            <span className="text-foreground font-semibold block">
+                              {cls.className}
+                            </span>
+                            <span className="text-[11px] text-muted-foreground block">
+                              {cls.completedStudents} von {cls.totalStudents} Schüler:innen abgeschlossen
                             </span>
                           </div>
                         </div>
 
-                        <div className="text-right font-semibold text-foreground">
+                        <div className="text-right font-bold text-foreground">
                           {hasCompletions ? formatCO2(cls.averageCo2) : '---'}
                         </div>
                       </div>
@@ -285,32 +351,31 @@ export default function SchoolAnalyticsClient() {
               </div>
             </article>
 
-            {/* Didactic Teacher Guide */}
-            <article className="paper-sheet p-6 space-y-3">
-              <div className="border-b border-border pb-2">
-                <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground block">
-                  Unterricht
-                </span>
-                <h3 className="text-base font-serif font-normal text-foreground">
-                  Didaktische Anregungen für den Unterricht
+            {/* Didactic Classroom Guide */}
+            <article className="paper-sheet p-6 space-y-4">
+              <div className="border-b border-border/70 pb-3 flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                <h3 className="text-sm font-bold text-foreground">
+                  Didaktische Impulse für den Unterricht
                 </h3>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-3 text-xs font-sans">
-                <div className="p-3 border border-border bg-muted/20 space-y-1">
-                  <span className="font-mono font-semibold text-foreground text-[11px] uppercase tracking-wider block">
-                    Ergebnisse reflektieren
+              <div className="grid sm:grid-cols-2 gap-3.5 text-xs">
+                <div className="p-4 rounded-xl border border-border/80 bg-stone-50/50 dark:bg-stone-900/20 space-y-1.5">
+                  <span className="font-semibold text-foreground block text-xs">
+                    1. Ergebnisse reflektieren & diskutieren
                   </span>
                   <p className="text-muted-foreground leading-relaxed">
-                    Vergleicht den Klassendurchschnitt mit dem bundesweiten Schnitt (10,8 t) und diskutiert die Ursachen im Unterricht.
+                    Vergleicht den Klassendurchschnitt mit dem bundesweiten Schnitt (10,8 t) und analysiert gemeinsam, in welchem Lebensbereich (Ernährung, Mobilität, Wohnen) die größten Hebel liegen.
                   </p>
                 </div>
-                <div className="p-3 border border-border bg-muted/20 space-y-1">
-                  <span className="font-mono font-semibold text-foreground text-[11px] uppercase tracking-wider block">
-                    Aktionswoche starten
+
+                <div className="p-4 rounded-xl border border-border/80 bg-stone-50/50 dark:bg-stone-900/20 space-y-1.5">
+                  <span className="font-semibold text-foreground block text-xs">
+                    2. Schulweite Aktionswoche starten
                   </span>
                   <p className="text-muted-foreground leading-relaxed">
-                    Ruft eine Woche ohne Elterntaxi aus oder führt einen fleischfreien Schultag durch und analysiert den Effekt.
+                    Ruft eine gemeinsame Aktion wie »Eine Woche Fahrrad statt Elterntaxi« oder einen saisonalen Aktionstag in der Schulmensa aus und berechnet die konkrete CO₂-Einsparung im Simulator.
                   </p>
                 </div>
               </div>
