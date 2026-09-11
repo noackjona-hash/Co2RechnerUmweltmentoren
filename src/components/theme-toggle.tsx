@@ -17,10 +17,10 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(nextTheme)}
-      className="p-2 rounded-xl hover:bg-muted transition-all duration-300 group"
+      className="p-1.5 border border-border hover:border-foreground text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
       aria-label="Toggle theme"
     >
-      <Icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+      <Icon className="w-4 h-4" />
     </button>
   );
 }

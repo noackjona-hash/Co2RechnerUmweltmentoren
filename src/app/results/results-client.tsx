@@ -40,17 +40,6 @@ import {
   X,
   Check,
   Award,
-  TreePine,
-  Car,
-  Utensils,
-  Zap,
-  ShoppingBag,
-  Sparkles,
-  Trophy,
-  BarChart3,
-  Leaf,
-  ArrowRight,
-  ShieldCheck,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
@@ -276,27 +265,23 @@ export default function ResultsClient() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between pb-12 bg-background">
-      {/* Modern Sticky Header */}
-      <header className="w-full border-b border-border/70 bg-card/75 backdrop-blur-md sticky top-0 z-30">
+      {/* Minimal Header */}
+      <header className="w-full border-b border-border bg-background sticky top-0 z-30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-sm">
-              UM
-            </div>
-            <div>
-              <span className="text-xs font-semibold text-foreground tracking-tight block">
-                CO₂-Auswertung
-              </span>
-              <span className="text-[11px] text-muted-foreground block">
-                {results.isGuest ? 'Gast-Teilnahme (Freier Modus)' : `Klasse: ${results.className || 'Schule'}`}
-              </span>
-            </div>
+          <div className="flex items-center gap-2.5">
+            <span className="font-semibold text-sm tracking-tight text-foreground">
+              CO₂-Auswertung
+            </span>
+            <span className="text-muted-foreground text-xs">/</span>
+            <span className="text-xs text-muted-foreground">
+              {results.isGuest ? 'Gast-Modus' : `Klasse ${results.className || 'Schule'}`}
+            </span>
           </div>
 
           <div className="flex items-center gap-2.5">
             <button
               onClick={() => setShowCertificate(true)}
-              className="paper-btn-primary text-xs flex items-center gap-1.5 shadow-xs"
+              className="paper-btn-primary text-xs flex items-center gap-1.5"
               title="Urkunde erstellen & drucken"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -317,116 +302,107 @@ export default function ResultsClient() {
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex-1 w-full space-y-6 animate-fade-in">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex-1 w-full space-y-6">
         {/* Scorecard Hero Banner */}
-        <article className="paper-sheet p-6 sm:p-10 text-center relative overflow-hidden bg-gradient-to-b from-card via-card to-emerald-500/[0.04]">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-xs font-medium border border-emerald-500/20 mb-3">
-            <Leaf className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>Dein persönlicher CO₂-Fußabdruck</span>
-          </div>
-
-          <div className="text-5xl sm:text-6xl font-bold text-foreground tracking-tight py-1 font-sans">
-            {formatCO2(animatedTotal)}
-          </div>
-          <span className="text-xs text-muted-foreground font-medium block mb-4">
-            geschätzte Treibhausgas-Emissionen pro Jahr
+        <article className="paper-sheet p-8 sm:p-12 text-center space-y-4">
+          <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono block">
+            Dein persönlicher CO₂-Fußabdruck
           </span>
 
-          <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              {rating.label} — {rating.desc}
-            </span>
+          <div className="text-5xl sm:text-6xl font-mono font-semibold text-foreground tracking-tight py-1">
+            {formatCO2(animatedTotal)}
+          </div>
 
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-foreground">
+              {rating.label}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {rating.desc}
+            </p>
+          </div>
+
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
             <button
               onClick={() => setShowCertificate(true)}
-              className="paper-btn-primary text-xs flex items-center gap-1.5 cursor-pointer shadow-xs"
+              className="paper-btn-primary text-xs flex items-center gap-1.5"
             >
               <Award className="w-3.5 h-3.5" />
-              <span>Urkunde öffnen & anpassen</span>
+              <span>Urkunde erstellen & anpassen</span>
             </button>
           </div>
         </article>
 
         {/* 3 Meaningful Equivalents */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="paper-sheet p-4 flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-              <TreePine className="w-5 h-5" />
+          <div className="paper-sheet p-5 space-y-1 text-left">
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+              Kompensation
+            </span>
+            <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
+              {Math.round(totalCo2 / 12.5)} Bäume
             </div>
-            <div>
-              <div className="text-xl font-bold text-foreground tracking-tight">
-                {Math.round(totalCo2 / 12.5)} Bäume
-              </div>
-              <span className="text-xs text-muted-foreground block leading-tight">
-                nötig zur jährlichen Bindung
-              </span>
-            </div>
+            <p className="text-xs text-muted-foreground leading-snug">
+              notwendig zur jährlichen Bindung dieser Emissionen
+            </p>
           </div>
 
-          <div className="paper-sheet p-4 flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
-              <Car className="w-5 h-5" />
+          <div className="paper-sheet p-5 space-y-1 text-left">
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+              Mobilität
+            </span>
+            <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
+              {(totalCo2 / 0.15 / 1000).toFixed(0)}.000 km
             </div>
-            <div>
-              <div className="text-xl font-bold text-foreground tracking-tight">
-                {(totalCo2 / 0.15 / 1000).toFixed(0)}k km
-              </div>
-              <span className="text-xs text-muted-foreground block leading-tight">
-                PKW-Fahrtstrecke im Vergleich
-              </span>
-            </div>
+            <p className="text-xs text-muted-foreground leading-snug">
+              Fahrtstrecke mit einem durchschnittlichen Benziner-PKW
+            </p>
           </div>
 
-          <div className="paper-sheet p-4 flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-              <Utensils className="w-5 h-5" />
+          <div className="paper-sheet p-5 space-y-1 text-left">
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+              Ernährung
+            </span>
+            <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
+              {Math.round(totalCo2 / 3.6)} Portionen
             </div>
-            <div>
-              <div className="text-xl font-bold text-foreground tracking-tight">
-                {Math.round(totalCo2 / 3.6)}
-              </div>
-              <span className="text-xs text-muted-foreground block leading-tight">
-                typische Fleischmahlzeiten
-              </span>
-            </div>
+            <p className="text-xs text-muted-foreground leading-snug">
+              äquivalente durchschnittliche Fleischmahlzeiten
+            </p>
           </div>
         </div>
 
-        {/* Modern Segmented Navigation Tabs */}
-        <div className="p-1 bg-stone-100 dark:bg-stone-900 rounded-2xl flex gap-1 text-xs font-medium">
+        {/* Minimal Underline Navigation Tabs */}
+        <div className="border-b border-border flex gap-6 text-xs font-medium pt-2">
           <button
             onClick={() => setActiveTab('analysis')}
-            className={`flex-1 py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`pb-2.5 transition-colors cursor-pointer border-b-2 -mb-px ${
               activeTab === 'analysis'
-                ? 'bg-card text-foreground font-semibold shadow-xs'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'border-foreground text-foreground font-semibold'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            <BarChart3 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>01 Detail-Analyse</span>
+            01 Detail-Analyse
           </button>
           <button
             onClick={() => setActiveTab('simulator')}
-            className={`flex-1 py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`pb-2.5 transition-colors cursor-pointer border-b-2 -mb-px ${
               activeTab === 'simulator'
-                ? 'bg-card text-foreground font-semibold shadow-xs'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'border-foreground text-foreground font-semibold'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>02 Versprechen & Simulator</span>
+            02 Versprechen & Simulator
           </button>
           <button
             onClick={() => setActiveTab('challenge')}
-            className={`flex-1 py-2 px-3 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
+            className={`pb-2.5 transition-colors cursor-pointer border-b-2 -mb-px ${
               activeTab === 'challenge'
-                ? 'bg-card text-foreground font-semibold shadow-xs'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'border-foreground text-foreground font-semibold'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            <Trophy className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-            <span>03 Klassen-Vergleich</span>
+            03 Klassen-Vergleich
           </button>
         </div>
 
@@ -435,45 +411,32 @@ export default function ResultsClient() {
           <div className="space-y-6">
             <div className="grid md:grid-cols-2 gap-4">
               <div className="paper-sheet p-5 space-y-3">
-                <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <div className="flex items-center justify-between border-b border-border pb-2.5">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
                     Anteile nach Bereich
                   </h3>
-                  <span className="text-[11px] text-muted-foreground">Tortendiagramm</span>
+                  <span className="text-[11px] text-muted-foreground font-mono">Tortendiagramm</span>
                 </div>
                 <CategoryPieChart data={pieData} />
               </div>
 
               <div className="paper-sheet p-5 space-y-3">
-                <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <div className="flex items-center justify-between border-b border-border pb-2.5">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
                     Vergleichswerte
                   </h3>
-                  <span className="text-[11px] text-muted-foreground">Benchmark</span>
+                  <span className="text-[11px] text-muted-foreground font-mono">Benchmark</span>
                 </div>
                 <ComparisonBarChart data={comparisonData} />
               </div>
             </div>
 
-            {/* 4 Category Cards with Progress Bars */}
+            {/* 4 Category Cards with Clean Progress Bars */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {Object.entries(categoryTotals).map(([key, value]) => {
                 const cat = CATEGORIES[key as Category];
                 if (!cat) return null;
                 const percent = Math.round((Math.max(0, value) / Math.max(1, totalCo2)) * 100);
-
-                const getIcon = () => {
-                  switch (key) {
-                    case 'mobility':
-                      return <Car className="w-4 h-4 text-sky-600 dark:text-sky-400" />;
-                    case 'food':
-                      return <Utensils className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />;
-                    case 'energy':
-                      return <Zap className="w-4 h-4 text-amber-600 dark:text-amber-400" />;
-                    default:
-                      return <ShoppingBag className="w-4 h-4 text-purple-600 dark:text-purple-400" />;
-                  }
-                };
 
                 return (
                   <div key={key} className="paper-sheet p-4 space-y-2">
@@ -481,19 +444,15 @@ export default function ResultsClient() {
                       <span className="text-xs font-medium text-muted-foreground">
                         {cat.label}
                       </span>
-                      {getIcon()}
+                      <span className="text-[11px] font-mono text-muted-foreground">{percent}%</span>
                     </div>
-                    <div className="text-lg font-bold text-foreground">
+                    <div className="text-lg font-mono font-semibold text-foreground">
                       {formatCO2(Math.max(0, value))}
                     </div>
                     <div>
-                      <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
-                        <span>Anteil</span>
-                        <span className="font-semibold">{percent}%</span>
-                      </div>
-                      <div className="w-full h-1.5 bg-stone-100 dark:bg-stone-800 rounded-full overflow-hidden">
+                      <div className="w-full h-1 bg-border rounded-full overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-emerald-500"
+                          className="h-full bg-foreground"
                           style={{ width: `${Math.min(100, percent)}%` }}
                         />
                       </div>
@@ -504,49 +463,49 @@ export default function ResultsClient() {
             </div>
 
             {/* Practical Recommendations */}
-            <div className="paper-sheet p-6 space-y-3">
-              <div className="border-b border-border/70 pb-3 flex items-center justify-between">
+            <div className="paper-sheet p-6 space-y-4">
+              <div className="border-b border-border pb-3 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
                     Empfehlungen
                   </span>
-                  <h3 className="text-sm font-bold text-foreground">
+                  <h3 className="text-sm font-semibold text-foreground">
                     Gezielte Praxistipps für {CATEGORIES[highestCategory]?.label}
                   </h3>
                 </div>
-                <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
+                <span className="text-xs font-mono text-muted-foreground">
                   Größter Hebel
                 </span>
               </div>
-              <div className="grid sm:grid-cols-3 gap-3 pt-1">
+              <div className="grid sm:grid-cols-3 gap-3">
                 {tips[highestCategory]?.map((tip, i) => (
                   <div
                     key={i}
-                    className="p-3.5 rounded-xl border border-border/80 bg-card/60 text-xs text-foreground leading-relaxed flex items-start gap-2.5"
+                    className="p-3.5 rounded-lg border border-border bg-background text-xs text-foreground leading-relaxed flex items-start gap-2.5"
                   >
-                    <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                    <span>{tip}</span>
+                    <span className="font-mono text-muted-foreground text-xs">{i + 1}.</span>
+                    <span className="text-muted-foreground">{tip}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Certificate Call-to-Action */}
-            <article className="paper-sheet p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-card via-card to-emerald-500/[0.05]">
+            <article className="paper-sheet p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1">
-                <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
                   Offizieller Nachweis
                 </span>
-                <h3 className="text-base font-bold text-foreground">
+                <h3 className="text-sm font-semibold text-foreground">
                   Deine persönliche Klimaschutz-Urkunde
                 </h3>
                 <p className="text-xs text-muted-foreground max-w-lg">
-                  Drucke dein Zertifikat mit deinem Ergebnis und deinen Zielen aus oder speichere es als PDF.
+                  Erstelle dein Zertifikat mit deinen Ergebnissen und deinen Zielen zum Ausdrucken oder als PDF.
                 </p>
               </div>
               <button
                 onClick={() => setShowCertificate(true)}
-                className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer shadow-sm"
+                className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Urkunde erstellen & drucken</span>
@@ -559,9 +518,9 @@ export default function ResultsClient() {
         {activeTab === 'simulator' && (
           <div className="space-y-6">
             <article className="paper-sheet p-6 sm:p-8 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/70 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
                 <div>
-                  <h3 className="text-base font-bold text-foreground">
+                  <h3 className="text-sm font-semibold text-foreground">
                     Klimaschutz-Versprechen & Simulator
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -571,7 +530,7 @@ export default function ResultsClient() {
 
                 <button
                   onClick={() => setShowCertificate(true)}
-                  className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Urkunde mit Versprechen drucken</span>
@@ -579,25 +538,25 @@ export default function ResultsClient() {
               </div>
 
               {/* Dynamic Savings Display */}
-              <div className="p-5 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-5 rounded-lg border border-border bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-xs font-medium text-muted-foreground block mb-1">
-                    Deine prognostizierte Einsparung:
+                  <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground block mb-1">
+                    Prognostizierte Einsparung
                   </span>
-                  <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-300">
-                    -{formatCO2(co2Saved)} pro Jahr
+                  <div className="text-2xl font-mono font-semibold text-foreground">
+                    -{formatCO2(co2Saved)} / Jahr
                   </div>
-                  <span className="text-[11px] text-muted-foreground block mt-0.5">
-                    Neuer Ausstoß: {formatCO2(simulatedTotalCo2)} (vorher: {formatCO2(totalCo2)})
+                  <span className="text-xs text-muted-foreground block mt-0.5">
+                    Neuer Ausstoß: {formatCO2(simulatedTotalCo2)} (Ausgangswert: {formatCO2(totalCo2)})
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-xl bg-card border border-border/80 text-center min-w-[110px]">
-                    <span className="text-[10px] text-muted-foreground block uppercase font-medium">
+                  <div className="p-3 rounded-lg bg-background border border-border text-center min-w-[110px]">
+                    <span className="text-[10px] text-muted-foreground block uppercase font-mono">
                       Entlastung
                     </span>
-                    <span className="text-base font-bold text-foreground">
+                    <span className="text-sm font-mono font-semibold text-foreground">
                       ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}
                     </span>
                   </div>
@@ -612,7 +571,7 @@ export default function ResultsClient() {
               </div>
 
               {/* Interactive Checklist */}
-              <div className="space-y-2.5 pt-1">
+              <div className="space-y-2 pt-1">
                 {[
                   { key: 'vegetarian', title: 'Vegetarische Ernährung', desc: 'Ca. 33% weniger Emissionen bei Lebensmitteln.' },
                   { key: 'vegan', title: 'Vegane Ernährung', desc: 'Ca. 45% weniger Emissionen bei Lebensmitteln.' },
@@ -628,10 +587,10 @@ export default function ResultsClient() {
                   return (
                     <label
                       key={item.key}
-                      className={`p-4 rounded-xl border flex items-start gap-3.5 cursor-pointer text-xs transition-all ${
+                      className={`p-3.5 rounded-lg border flex items-start gap-3.5 cursor-pointer text-xs transition-colors ${
                         isChecked
-                          ? 'border-emerald-500/50 bg-emerald-500/[0.06] text-foreground font-medium shadow-xs'
-                          : 'border-border/80 bg-card hover:bg-stone-50 dark:hover:bg-stone-900/40 text-foreground'
+                          ? 'border-foreground bg-muted font-medium text-foreground'
+                          : 'border-border bg-background hover:bg-muted/40 text-foreground'
                       }`}
                     >
                       <input
@@ -645,10 +604,10 @@ export default function ResultsClient() {
                             ...(item.key === 'vegetarian' && e.target.checked ? { vegan: false } : {}),
                           }))
                         }
-                        className="mt-0.5 accent-emerald-600 rounded"
+                        className="mt-0.5 accent-foreground rounded"
                       />
                       <div className="flex-1">
-                        <span className="font-semibold block text-xs">{item.title}</span>
+                        <span className="font-medium block text-xs">{item.title}</span>
                         <span className="text-[11px] text-muted-foreground block mt-0.5">{item.desc}</span>
                       </div>
                     </label>
@@ -663,18 +622,18 @@ export default function ResultsClient() {
         {activeTab === 'challenge' && (
           <div className="space-y-6">
             <article className="paper-sheet p-6 space-y-4">
-              <div className="border-b border-border/70 pb-3">
-                <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+              <div className="border-b border-border pb-3">
+                <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
                   Schul-Übersicht
                 </span>
-                <h3 className="text-base font-bold text-foreground">
+                <h3 className="text-sm font-semibold text-foreground">
                   Klassen-Rangliste der Schule
                 </h3>
               </div>
 
               {results.isGuest ? (
-                <div className="p-4 rounded-xl border border-border/80 bg-stone-50 dark:bg-stone-900/30 space-y-2 text-xs">
-                  <span className="font-semibold text-foreground block">
+                <div className="p-4 rounded-lg border border-border bg-muted/40 space-y-2 text-xs">
+                  <span className="font-medium text-foreground block">
                     Gast-Teilnahme · Keine Schulklasse zugeordnet
                   </span>
                   <p className="text-muted-foreground leading-relaxed">
@@ -683,20 +642,20 @@ export default function ResultsClient() {
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-border/60 border border-border/80 rounded-xl overflow-hidden">
+                <div className="divide-y divide-border border border-border rounded-lg overflow-hidden">
                   {results.schoolLeaderboard?.map((entry, index) => {
                     const isOwn = entry.className === results.className;
-                    const rankMedal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                    const rankMedal = index === 0 ? '1.' : index === 1 ? '2.' : index === 2 ? '3.' : `${index + 1}.`;
 
                     return (
                       <div
                         key={entry.classId}
                         className={`p-3.5 flex items-center justify-between text-xs transition-colors ${
-                          isOwn ? 'bg-emerald-500/10 font-semibold' : 'bg-card hover:bg-stone-50/50 dark:hover:bg-stone-900/30'
+                          isOwn ? 'bg-muted font-medium text-foreground' : 'bg-background hover:bg-muted/40 text-foreground'
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <span className="w-6 text-center font-bold text-sm">
+                          <span className="w-6 text-center font-mono font-semibold text-xs text-muted-foreground">
                             {rankMedal}
                           </span>
                           <div>
@@ -709,7 +668,7 @@ export default function ResultsClient() {
                           </div>
                         </div>
 
-                        <div className="text-right font-bold text-foreground">
+                        <div className="text-right font-mono font-medium text-foreground">
                           {entry.completedCount > 0 ? formatCO2(entry.averageCo2) : '---'}
                         </div>
                       </div>
@@ -730,10 +689,10 @@ export default function ResultsClient() {
             if (e.target === e.currentTarget) setShowCertificate(false);
           }}
         >
-          <div className="w-full max-w-xl bg-card rounded-2xl p-6 sm:p-8 border border-border shadow-xl relative print:border-none print:p-0">
+          <div className="w-full max-w-xl bg-card p-6 sm:p-8 border border-border relative print:border-none print:p-0">
             <button
               onClick={() => setShowCertificate(false)}
-              className="absolute right-4 top-4 p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-stone-100 dark:hover:bg-stone-800 cursor-pointer print:hidden transition-colors"
+              className="absolute right-4 top-4 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer print:hidden transition-colors"
               title="Schließen"
             >
               <X className="w-4 h-4" />
@@ -741,14 +700,14 @@ export default function ResultsClient() {
 
             {/* Customization controls on top */}
             <div className="mb-6 space-y-3.5 print:hidden text-xs">
-              <div className="flex items-center justify-between border-b border-border/70 pb-2.5">
+              <div className="flex items-center justify-between border-b border-border pb-2.5">
                 <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  <h3 className="font-bold text-foreground">
+                  <Award className="w-4 h-4 text-foreground" />
+                  <h3 className="font-semibold text-foreground">
                     Urkunde anpassen & drucken
                   </h3>
                 </div>
-                <span className="text-[11px] text-muted-foreground">Vorschau live</span>
+                <span className="text-[11px] font-mono text-muted-foreground">Vorschau live</span>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-3">
@@ -761,7 +720,7 @@ export default function ResultsClient() {
                     placeholder="Vor- und Nachname"
                     value={studentName}
                     onChange={(e) => setStudentName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
                 <div>
@@ -773,7 +732,7 @@ export default function ResultsClient() {
                     placeholder={results.isGuest ? 'Schule / Wohnort' : results.className || 'Klasse'}
                     value={customSchoolName}
                     onChange={(e) => setCustomSchoolName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-emerald-500"
+                    className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
               </div>
@@ -789,7 +748,7 @@ export default function ResultsClient() {
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="paper-btn-primary text-xs flex items-center gap-1.5 cursor-pointer shadow-sm"
+                  className="paper-btn-primary text-xs flex items-center gap-1.5 cursor-pointer"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Jetzt drucken / Als PDF speichern</span>

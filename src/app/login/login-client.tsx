@@ -111,7 +111,7 @@ export default function LoginClient() {
   return (
     <div className="min-h-screen flex flex-col justify-between pb-8 bg-background">
       {/* Top bar */}
-      <header className="w-full border-b border-border/70 bg-card/60 backdrop-blur-md sticky top-0 z-10">
+      <header className="w-full border-b border-border bg-background sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <Link
             href="/"
@@ -125,23 +125,20 @@ export default function LoginClient() {
       </header>
 
       {/* Main card */}
-      <main className="w-full max-w-md mx-auto px-4 py-10 sm:py-14 flex-1 flex flex-col justify-center">
-        <article className="paper-sheet p-6 sm:p-8 space-y-6 animate-fade-in shadow-sm">
-          {/* Header with badge */}
-          <div className="text-center space-y-2">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold text-sm flex items-center justify-center mx-auto mb-3">
-              UM
-            </div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+      <main className="w-full max-w-md mx-auto px-4 py-10 sm:py-16 flex-1 flex flex-col justify-center">
+        <article className="paper-sheet p-6 sm:p-8 space-y-6">
+          {/* Header */}
+          <div className="text-center space-y-1.5">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
               Anmeldung & Zugang
             </h1>
             <p className="text-xs text-muted-foreground max-w-xs mx-auto">
-              Wähle deinen Bereich, um auf deinen CO₂-Fragebogen oder das Schulportal zuzugreifen.
+              Wähle deinen Bereich für Schüler, Lehrkräfte, Schule oder Admin.
             </p>
           </div>
 
-          {/* Modern Segmented Tabs */}
-          <div className="p-1 bg-stone-100 dark:bg-stone-900 rounded-xl flex gap-1 text-xs font-medium">
+          {/* Minimal Tabs */}
+          <div className="border-b border-border flex gap-4 text-xs font-medium justify-center">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -150,10 +147,10 @@ export default function LoginClient() {
                   setActiveTab(tab.key);
                   setError('');
                 }}
-                className={`flex-1 py-1.5 px-2 rounded-lg text-center transition-all cursor-pointer ${
+                className={`pb-2 transition-colors cursor-pointer border-b-2 -mb-px ${
                   activeTab === tab.key
-                    ? 'bg-card text-foreground font-semibold shadow-xs'
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'border-foreground text-foreground font-semibold'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {tab.label}
@@ -175,7 +172,7 @@ export default function LoginClient() {
                   onChange={(e) => setAccessKey(formatAccessKey(e.target.value))}
                   maxLength={9}
                   autoFocus
-                  className="w-full px-3 py-2.5 text-center font-mono text-lg font-bold tracking-widest border border-border rounded-xl bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all placeholder:text-muted-foreground/40 placeholder:tracking-normal"
+                  className="w-full px-3 py-2.5 text-center font-mono text-lg font-bold tracking-widest border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/40 placeholder:tracking-normal"
                 />
                 <span className="text-[11px] text-muted-foreground block text-center">
                   Den 8-stelligen Code erhältst du von deiner Lehrkraft.
@@ -190,7 +187,7 @@ export default function LoginClient() {
                 {loading ? 'Code wird geprüft...' : 'Weiter zum Fragebogen →'}
               </button>
 
-              <div className="pt-3 border-t border-border/70 text-center">
+              <div className="pt-3 border-t border-border text-center">
                 <button
                   type="button"
                   onClick={async () => {
@@ -209,7 +206,7 @@ export default function LoginClient() {
                       setLoading(false);
                     }
                   }}
-                  className="text-xs text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 font-medium cursor-pointer transition-colors"
+                  className="text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
                 >
                   Kein Code? Als Gast ohne Speicherung starten →
                 </button>
@@ -220,15 +217,15 @@ export default function LoginClient() {
           {/* Tab 2: Teacher */}
           {activeTab === 'teacher' && (
             <div className="space-y-4 text-xs">
-              <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 leading-relaxed text-muted-foreground space-y-2">
+              <div className="p-4 rounded-md border border-border bg-muted/40 leading-relaxed text-muted-foreground space-y-2">
                 <span className="font-semibold text-foreground block text-xs">
                   Informationen für Lehrkräfte
                 </span>
                 <p>
-                  Als Lehrkraft kannst du die Klassen und Schülercodes deiner Schule über den <strong>Schulzugang</strong> einsehen und verwalten.
+                  Als Lehrkraft kannst du die Klassen und Schülercodes deiner Schule über das <strong>Schulportal</strong> einsehen und verwalten.
                 </p>
                 <p>
-                  Falls deine Schulleitung bereits eine Lizenz aktiviert hat, melde dich einfach mit den Zugangsdaten der Schule an.
+                  Falls deine Schulleitung bereits eine Schullizenz aktiviert hat, melde dich einfach mit den Zugangsdaten der Schule an.
                 </p>
               </div>
               <button
@@ -254,7 +251,7 @@ export default function LoginClient() {
                   value={licenseKey}
                   onChange={(e) => setLicenseKey(formatLicenseKey(e.target.value))}
                   autoFocus
-                  className="w-full px-3 py-2 text-xs font-mono border border-border rounded-xl bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all uppercase"
+                  className="w-full px-3 py-2 text-xs font-mono border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground transition-colors uppercase"
                 />
               </div>
 
@@ -268,7 +265,7 @@ export default function LoginClient() {
                     placeholder="••••••••"
                     value={schoolPassword}
                     onChange={(e) => setSchoolPassword(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-border rounded-xl bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all pr-9"
+                    className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground transition-colors pr-9"
                   />
                   <button
                     type="button"
@@ -304,7 +301,7 @@ export default function LoginClient() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoFocus
-                  className="w-full px-3 py-2 text-xs border border-border rounded-xl bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground transition-colors"
                 />
               </div>
 
@@ -317,7 +314,7 @@ export default function LoginClient() {
                   placeholder="••••••••"
                   value={adminPassword}
                   onChange={(e) => setAdminPassword(e.target.value)}
-                  className="w-full px-3 py-2 text-xs border border-border rounded-xl bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground transition-colors"
                 />
               </div>
 
@@ -332,7 +329,7 @@ export default function LoginClient() {
           )}
 
           {error && (
-            <div className="p-3 rounded-xl border border-destructive/30 bg-destructive/5 text-destructive text-xs font-medium">
+            <div className="p-3 rounded-md border border-destructive/20 bg-destructive/10 text-destructive text-xs font-medium">
               {error}
             </div>
           )}

@@ -65,7 +65,7 @@ export function CookieBanner() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 flex justify-center">
-      <div className="w-full max-w-2xl paper-sheet p-5 sm:p-6 space-y-4 shadow-md bg-card">
+      <div className="w-full max-w-2xl paper-sheet p-5 sm:p-6 space-y-4 border border-border bg-card">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between border-b border-border pb-3">
           <div className="space-y-1 flex-1">
             <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground block">

@@ -307,32 +307,29 @@ export default function QuizPage() {
   const catInfo = CATEGORIES[currentCategory] || { label: 'Fragebogen' };
   const isLastQuestion = currentIndex === questions.length - 1;
 
-  // Intermission between categories (Clean paper chapter page)
+  // Intermission between categories
   if (showCategoryIntro && isNewCategory) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-        <div className="paper-sheet w-full max-w-md p-8 sm:p-10 text-left space-y-6">
-          <div className="border-b border-border/80 pb-3 flex items-center justify-between text-xs font-mono text-muted-foreground">
-            <span>Kapitel {categories.indexOf(currentCategory) + 1} von {categories.length}</span>
-            <span className="text-emerald-600 dark:text-emerald-400 font-semibold">CO₂-Erfassung</span>
+        <div className="paper-sheet w-full max-w-md p-8 sm:p-10 space-y-6">
+          <div className="border-b border-border pb-3 flex items-center justify-between text-xs text-muted-foreground">
+            <span>Abschnitt {categories.indexOf(currentCategory) + 1} von {categories.length}</span>
+            <span className="font-mono text-[11px]">CO₂-Erfassung</span>
           </div>
 
           <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-mono block">
-              Themenbereich
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
               {catInfo.label}
             </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pt-1 font-sans">
-              Es folgen {categoryQuestions.length} Fragen zu deinen persönlichen Gewohnheiten im Bereich {catInfo.label}.
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Es folgen {categoryQuestions.length} Fragen zu deinen Gewohnheiten im Bereich {catInfo.label}.
             </p>
           </div>
 
           <div className="pt-2">
             <button
               onClick={() => setShowCategoryIntro(false)}
-              className="w-full py-3 paper-btn-primary text-xs"
+              className="w-full py-2.5 paper-btn-primary text-xs"
             >
               Abschnitt beginnen →
             </button>
@@ -344,48 +341,48 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between pb-8 bg-background">
-      {/* Top Header & Progress Hairline */}
-      <header className="w-full border-b border-border/80 bg-card/80 backdrop-blur-md sticky top-0 z-20">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between text-xs">
+      {/* Minimal Header & Progress Line */}
+      <header className="w-full border-b border-border bg-background sticky top-0 z-20">
+        <div className="max-w-2xl mx-auto px-4 py-3.5 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
             {isGuest && (
-              <span className="paper-stamp text-[10px] mr-1">
-                Gast-Modus
+              <span className="text-[10px] px-1.5 py-0.5 border border-border rounded text-muted-foreground">
+                Gast
               </span>
             )}
-            <span className="text-muted-foreground">Thema:</span>
-            <span className="font-semibold text-foreground">
+            <span className="text-muted-foreground">Bereich:</span>
+            <span className="font-medium text-foreground">
               {catInfo.label}
             </span>
           </div>
           <span className="text-muted-foreground font-mono text-[11px]">
-            Frage {currentIndex + 1} von {questions.length} ({totalProgress}%)
+            Frage {currentIndex + 1} von {questions.length}
           </span>
         </div>
 
-        {/* Emerald Progress Bar */}
-        <div className="w-full h-1.5 bg-emerald-500/15">
+        {/* 2px Minimal Progress Line */}
+        <div className="w-full h-[2px] bg-border">
           <div
-            className="h-full bg-emerald-600 rounded-r-full transition-all duration-300"
+            className="h-full bg-foreground transition-all duration-200"
             style={{ width: `${totalProgress}%` }}
           />
         </div>
       </header>
 
-      {/* Main Paper Question Sheet */}
-      <main className="max-w-2xl w-full mx-auto px-4 py-8 sm:py-12 flex-1 flex flex-col justify-center">
-        <article className="paper-sheet p-6 sm:p-10 space-y-6 relative">
-          {/* Header of Question Sheet */}
-          <div className="flex items-center justify-between border-b border-border/80 pb-3 text-xs text-muted-foreground">
+      {/* Main Minimal Question Box */}
+      <main className="max-w-xl w-full mx-auto px-4 py-8 sm:py-14 flex-1 flex flex-col justify-center">
+        <article className="paper-sheet p-6 sm:p-8 space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-border pb-3 text-xs text-muted-foreground">
             <span className="font-mono text-[11px]">
-              Frage {categoryIndex + 1} von {categoryQuestions.length} · {catInfo.label}
+              {catInfo.label} · Frage {categoryIndex + 1} / {categoryQuestions.length}
             </span>
 
             {currentQuestion.helpText && (
               <button
                 type="button"
                 onClick={() => setShowHelp(!showHelp)}
-                className="flex items-center gap-1.5 text-muted-foreground hover:text-emerald-600 cursor-pointer text-xs transition-colors"
+                className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground cursor-pointer text-xs transition-colors"
               >
                 <HelpCircle className="w-3.5 h-3.5" />
                 <span>Hinweis</span>
@@ -395,8 +392,8 @@ export default function QuizPage() {
 
           {/* Help box */}
           {showHelp && currentQuestion.helpText && (
-            <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-50/50 dark:bg-emerald-950/20 text-xs text-foreground flex items-start gap-2.5 leading-relaxed animate-fade-in">
-              <p className="flex-1 text-emerald-950 dark:text-emerald-200">{currentQuestion.helpText}</p>
+            <div className="p-3.5 rounded-lg border border-border bg-muted/50 text-xs text-foreground flex items-start gap-2.5 leading-relaxed">
+              <p className="flex-1 text-muted-foreground">{currentQuestion.helpText}</p>
               <button
                 type="button"
                 onClick={() => setShowHelp(false)}
@@ -408,21 +405,21 @@ export default function QuizPage() {
           )}
 
           {/* Question Text */}
-          <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-snug tracking-tight">
+          <h2 className="text-lg sm:text-xl font-medium text-foreground leading-snug tracking-tight">
             {currentQuestion.questionText}
           </h2>
 
           {/* Inputs Section */}
-          <div className="space-y-4 pt-2">
+          <div className="space-y-4 pt-1">
             {/* 1. SLIDER */}
             {currentQuestion.questionType === 'slider' && (
-              <div className="space-y-6 py-3">
+              <div className="space-y-5 py-2">
                 <div className="text-center">
-                  <span className="text-4xl sm:text-5xl font-mono font-bold text-foreground">
+                  <span className="text-3xl sm:text-4xl font-mono font-semibold text-foreground">
                     {currentValue ?? currentQuestion.defaultValue ?? currentQuestion.minValue ?? 0}
                   </span>
                   {currentQuestion.unit && (
-                    <span className="text-sm font-medium text-muted-foreground ml-2">
+                    <span className="text-xs text-muted-foreground ml-2">
                       {currentQuestion.unit}
                     </span>
                   )}
@@ -432,9 +429,9 @@ export default function QuizPage() {
                   <button
                     type="button"
                     onClick={handleDecrement}
-                    className="w-10 h-10 border border-border rounded-xl hover:border-emerald-500 hover:text-emerald-600 bg-card flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-all active:scale-95"
+                    className="w-9 h-9 border border-border rounded-md hover:bg-muted flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-colors"
                   >
-                    <Minus className="w-4 h-4" />
+                    <Minus className="w-3.5 h-3.5" />
                   </button>
 
                   <input
@@ -450,9 +447,9 @@ export default function QuizPage() {
                   <button
                     type="button"
                     onClick={handleIncrement}
-                    className="w-10 h-10 border border-border rounded-xl hover:border-emerald-500 hover:text-emerald-600 bg-card flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-all active:scale-95"
+                    className="w-9 h-9 border border-border rounded-md hover:bg-muted flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-colors"
                   >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
@@ -465,13 +462,13 @@ export default function QuizPage() {
 
             {/* 2. NUMBER INPUT */}
             {currentQuestion.questionType === 'number' && (
-              <div className="flex items-center justify-center gap-3 py-4">
+              <div className="flex items-center justify-center gap-3 py-3">
                 <button
                   type="button"
                   onClick={handleDecrement}
-                  className="w-10 h-10 border border-border rounded-xl hover:border-emerald-500 hover:text-emerald-600 bg-card flex items-center justify-center cursor-pointer text-foreground transition-all active:scale-95"
+                  className="w-9 h-9 border border-border rounded-md hover:bg-muted flex items-center justify-center cursor-pointer text-foreground transition-colors"
                 >
-                  <Minus className="w-4 h-4" />
+                  <Minus className="w-3.5 h-3.5" />
                 </button>
 
                 <div className="flex items-center gap-2">
@@ -481,10 +478,10 @@ export default function QuizPage() {
                     max={currentQuestion.maxValue ?? undefined}
                     value={currentValue ?? ''}
                     onChange={(e) => handleAnswer(parseFloat(e.target.value) || 0)}
-                    className="w-28 px-3 py-2.5 text-xl font-mono font-bold text-center border border-border rounded-xl bg-muted/40 text-foreground focus:outline-none focus:border-emerald-500"
+                    className="w-24 px-3 py-2 text-lg font-mono font-medium text-center border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                   {currentQuestion.unit && (
-                    <span className="text-xs font-medium text-muted-foreground">
+                    <span className="text-xs text-muted-foreground">
                       {currentQuestion.unit}
                     </span>
                   )}
@@ -493,9 +490,9 @@ export default function QuizPage() {
                 <button
                   type="button"
                   onClick={handleIncrement}
-                  className="w-10 h-10 border border-border rounded-xl hover:border-emerald-500 hover:text-emerald-600 bg-card flex items-center justify-center cursor-pointer text-foreground transition-all active:scale-95"
+                  className="w-9 h-9 border border-border rounded-md hover:bg-muted flex items-center justify-center cursor-pointer text-foreground transition-colors"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
             )}
@@ -503,7 +500,7 @@ export default function QuizPage() {
             {/* 3. MULTIPLE CHOICE */}
             {(currentQuestion.questionType === 'select' || currentQuestion.questionType === 'radio') &&
               currentQuestion.options && (
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {(currentQuestion.options as { label: string; value: number }[]).map((option, i) => {
                     const isSelected =
                       answers[currentQuestion.id]?.optionIndex !== undefined
@@ -518,27 +515,27 @@ export default function QuizPage() {
                         key={i}
                         type="button"
                         onClick={() => handleAnswer(option.value, i)}
-                        className={`w-full text-left p-4 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${
+                        className={`w-full text-left p-3.5 rounded-lg border transition-colors flex items-center justify-between cursor-pointer text-xs sm:text-sm ${
                           isSelected
-                            ? 'border-emerald-500 bg-emerald-50/60 dark:bg-emerald-950/30 text-emerald-950 dark:text-emerald-100 font-semibold shadow-2xs'
-                            : 'border-border bg-card hover:bg-muted/40 text-foreground hover:border-border/80'
+                            ? 'border-foreground bg-muted font-medium text-foreground'
+                            : 'border-border bg-background hover:bg-muted/40 text-foreground'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs font-mono text-muted-foreground w-4 text-center">
+                        <div className="flex items-center gap-2.5">
+                          <span className="text-xs font-mono text-muted-foreground w-4">
                             {i + 1}.
                           </span>
-                          <span className="text-xs sm:text-sm leading-snug">{option.label}</span>
+                          <span className="leading-snug">{option.label}</span>
                         </div>
 
                         <div
-                          className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                          className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
                             isSelected
-                              ? 'border-emerald-600 bg-emerald-600 text-white'
+                              ? 'border-foreground bg-foreground text-background'
                               : 'border-border'
                           }`}
                         >
-                          {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                          {isSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
                         </div>
                       </button>
                     );
@@ -547,11 +544,11 @@ export default function QuizPage() {
               )}
           </div>
 
-          {/* CO2 Hint Stamp */}
+          {/* CO2 Hint */}
           {answers[currentQuestion.id] && (
-            <div className="pt-3 border-t border-border/80 flex items-center justify-between text-xs text-muted-foreground">
-              <span>Prognose für diesen Punkt:</span>
-              <span className="text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+            <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+              <span>Geschätzter Ausstoß:</span>
+              <span className="font-mono text-foreground font-medium">
                 ca. {formatCO2(answers[currentQuestion.id].calculatedCo2)} / Jahr
               </span>
             </div>
@@ -575,7 +572,7 @@ export default function QuizPage() {
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="paper-btn-primary"
+              className="paper-btn-primary text-xs"
             >
               <Check className="w-3.5 h-3.5" />
               {submitting ? 'Wird ausgewertet...' : 'Auswertung anzeigen'}

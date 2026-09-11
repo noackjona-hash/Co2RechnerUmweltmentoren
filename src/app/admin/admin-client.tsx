@@ -684,87 +684,87 @@ export default function AdminClient() {
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
         {/* Banner Messages */}
         {error && (
-          <div className="flex items-center gap-3 p-4 rounded-2xl bg-destructive/10 text-destructive border border-destructive/20 animate-scale-in text-sm font-medium">
-            <AlertTriangle className="w-5 h-5 shrink-0" />
+          <div className="flex items-center gap-3 p-4 border border-destructive bg-destructive/10 text-destructive text-xs font-mono">
+            <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
         {success && (
-          <div className="flex items-center gap-3 p-4 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 animate-scale-in text-sm font-medium">
-            <CheckCircle className="w-5 h-5 shrink-0" />
+          <div className="flex items-center gap-3 p-4 rounded-lg bg-muted text-foreground border border-border text-xs font-mono">
+            <CheckCircle className="w-4 h-4 shrink-0" />
             <span>{success}</span>
           </div>
         )}
 
         {/* Tab Selection */}
-        <div className="flex border-b border-border/60 gap-4 overflow-x-auto pb-1 scrollbar-hide">
+        <div className="flex border-b border-border gap-6 overflow-x-auto pb-1 scrollbar-hide text-xs font-mono">
           <button
             onClick={() => { setActiveTab('stats'); setError(''); setSuccess(''); }}
-            className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+            className={`flex items-center gap-2 pb-2.5 font-medium border-b-2 transition-colors shrink-0 cursor-pointer ${
               activeTab === 'stats'
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-foreground text-foreground font-semibold'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            <BarChart3 className="w-4 h-4" />
+            <BarChart3 className="w-3.5 h-3.5" />
             Statistiken
           </button>
           <button
             onClick={() => { setActiveTab('schools'); setError(''); setSuccess(''); }}
-            className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+            className={`flex items-center gap-2 pb-2.5 font-medium border-b-2 transition-colors shrink-0 cursor-pointer ${
               activeTab === 'schools'
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-foreground text-foreground font-semibold'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            <School className="w-4 h-4" />
+            <School className="w-3.5 h-3.5" />
             Schulen & Lizenzen
           </button>
           <button
             onClick={() => { setActiveTab('questions'); setError(''); setSuccess(''); }}
-            className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+            className={`flex items-center gap-2 pb-2.5 font-medium border-b-2 transition-colors shrink-0 cursor-pointer ${
               activeTab === 'questions'
-                ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                ? 'border-foreground text-foreground font-semibold'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
-            <HelpCircle className="w-4 h-4" />
+            <HelpCircle className="w-3.5 h-3.5" />
             Quiz-Fragen
           </button>
           {isSuperAdmin && (
             <>
               <button
                 onClick={() => { setActiveTab('admins'); setError(''); setSuccess(''); }}
-                className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+                className={`flex items-center gap-2 pb-2.5 font-medium border-b-2 transition-colors shrink-0 cursor-pointer ${
                   activeTab === 'admins'
-                    ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                    ? 'border-foreground text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <Users className="w-4 h-4" />
-                Admins verwalten
+                <Users className="w-3.5 h-3.5" />
+                Admins
               </button>
               <button
                 onClick={() => { setActiveTab('system'); setError(''); setSuccess(''); }}
-                className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+                className={`flex items-center gap-2 pb-2.5 font-medium border-b-2 transition-colors shrink-0 cursor-pointer ${
                   activeTab === 'system'
-                    ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                    ? 'border-foreground text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <Server className="w-4 h-4" />
-                System-Status
+                <Server className="w-3.5 h-3.5" />
+                System
               </button>
               <button
                 onClick={() => { setActiveTab('simulation'); setError(''); setSuccess(''); }}
-                className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+                className={`flex items-center gap-2 pb-2.5 font-medium border-b-2 transition-colors shrink-0 cursor-pointer ${
                   activeTab === 'simulation'
-                    ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                    ? 'border-foreground text-foreground font-semibold'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
-                <Activity className="w-4 h-4" />
-                Simulation & Testdaten
+                <Activity className="w-3.5 h-3.5" />
+                Simulation
               </button>
             </>
           )}
@@ -774,22 +774,27 @@ export default function AdminClient() {
         {activeTab === 'stats' && stats && (
           <div className="space-y-6 animate-slide-up">
             {/* Action Row */}
-            <div className="flex flex-wrap justify-between items-center gap-4">
-              <h2 className="text-lg font-bold">Systemstatistiken</h2>
-              <div className="flex items-center gap-3">
+            <div className="flex flex-wrap justify-between items-center gap-4 border-b border-border pb-4">
+              <div>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground block">
+                  Übersicht
+                </span>
+                <h2 className="font-serif text-xl font-normal text-foreground">Systemstatistiken</h2>
+              </div>
+              <div className="flex items-center gap-2">
                 <a
                   href="/api/admin/stats/export"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-sm font-semibold hover:bg-emerald-500/20 transition-all hover:scale-[1.02]"
+                  className="paper-btn-secondary text-xs flex items-center gap-1.5"
                 >
-                  <Download className="w-4 h-4" />
+                  <Download className="w-3.5 h-3.5" />
                   Daten exportieren (CSV)
                 </a>
                 {isSuperAdmin && (
                   <button
                     onClick={() => setShowCleanupModal(true)}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-destructive/10 text-destructive border border-destructive/20 text-sm font-semibold hover:bg-destructive/20 transition-all hover:scale-[1.02]"
+                    className="paper-btn-secondary text-xs text-destructive hover:border-destructive flex items-center gap-1.5"
                   >
-                    <RefreshCw className="w-4 h-4" />
+                    <RefreshCw className="w-3.5 h-3.5" />
                     Datenbank zurücksetzen
                   </button>
                 )}
@@ -798,41 +803,41 @@ export default function AdminClient() {
 
             {/* Cleanup Modal */}
             {showCleanupModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-                <div className="glass-strong rounded-3xl p-6 max-w-md w-full border border-destructive/20 shadow-2xl animate-scale-in">
-                  <div className="flex items-center gap-3 text-destructive mb-4">
-                    <AlertTriangle className="w-6 h-6 animate-pulse" />
-                    <h3 className="font-extrabold text-lg">Datenbank zurücksetzen?</h3>
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-xs">
+                <div className="border border-border bg-background p-6 max-w-md w-full space-y-4">
+                  <div className="flex items-center gap-2 text-destructive border-b border-border pb-3">
+                    <AlertTriangle className="w-4 h-4" />
+                    <h3 className="font-serif text-base font-normal">Datenbank zurücksetzen?</h3>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
                     Diese Aktion löscht alle Schüler-Accounts und deren eingegebenen CO₂-Ergebnisse unwiderruflich. 
                     Schulen, Klassen, Quiz-Fragen und Admins bleiben erhalten.
                   </p>
-                  <div className="bg-destructive/10 border border-destructive/20 rounded-2xl p-4 mb-4">
-                    <p className="text-xs font-semibold text-destructive mb-2">
-                      Um fortzufahren, tippen Sie bitte das Wort <code className="bg-destructive/20 px-1.5 py-0.5 rounded font-mono font-bold">CLEANUP</code> ein:
+                  <div className="border border-border bg-muted/30 p-3 space-y-2">
+                    <p className="text-[11px] font-mono text-destructive">
+                      Um fortzufahren, bitte <code className="bg-destructive/10 px-1 py-0.5 border border-destructive/30 font-bold">CLEANUP</code> eintippen:
                     </p>
                     <input
                       type="text"
                       value={cleanupInput}
                       onChange={(e) => setCleanupInput(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl bg-background border border-destructive/30 focus:border-destructive focus:ring-2 focus:ring-destructive/20 transition-all text-sm font-mono tracking-widest text-center"
+                      className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-destructive text-xs font-mono tracking-widest text-center"
                       placeholder="CLEANUP"
                     />
                   </div>
-                  <div className="flex justify-end gap-2">
+                  <div className="flex justify-end gap-2 pt-2 border-t border-border">
                     <button
                       onClick={() => { setShowCleanupModal(false); setCleanupInput(''); }}
-                      className="px-4 py-2 rounded-xl hover:bg-muted text-sm font-semibold transition-all"
+                      className="paper-btn-secondary text-xs"
                     >
                       Abbrechen
                     </button>
                     <button
                       onClick={handleCleanup}
                       disabled={cleanupInput !== 'CLEANUP' || cleaning}
-                      className="px-5 py-2 rounded-xl bg-destructive text-white text-sm font-semibold disabled:opacity-50 transition-all hover:bg-destructive/90 shadow-lg shadow-destructive/25 flex items-center gap-2"
+                      className="paper-btn-primary text-xs bg-destructive border-destructive text-destructive-foreground disabled:opacity-50 flex items-center gap-1.5"
                     >
-                      <RefreshCw className={`w-4 h-4 ${cleaning ? 'animate-spin' : ''}`} />
+                      <RefreshCw className={`w-3.5 h-3.5 ${cleaning ? 'animate-spin' : ''}`} />
                       {cleaning ? 'Wird gelöscht...' : 'Ja, unwiderruflich löschen'}
                     </button>
                   </div>
@@ -842,50 +847,47 @@ export default function AdminClient() {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="glass-strong rounded-2xl p-5 shadow-sm">
-                <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+              <div className="border border-border bg-card p-4 space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">
                   Teilnahmen Gesamt
-                </div>
-                <div className="text-3xl font-extrabold gradient-text mt-1">{stats.summary.totalStudents}</div>
-                <div className="text-xs text-muted-foreground mt-2">
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                    {stats.summary.totalCompleted}
-                  </span>{' '}
-                  beendet ({stats.summary.completionRate}%)
+                </span>
+                <div className="font-serif text-3xl font-normal text-foreground">{stats.summary.totalStudents}</div>
+                <div className="text-[11px] text-muted-foreground font-mono pt-1 border-t border-border/60">
+                  <span className="font-semibold text-foreground">{stats.summary.totalCompleted}</span> beendet ({stats.summary.completionRate}%)
                 </div>
               </div>
 
-              <div className="glass-strong rounded-2xl p-5 shadow-sm">
-                <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+              <div className="border border-border bg-card p-4 space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">
                   Registrierte Schulen
-                </div>
-                <div className="text-3xl font-extrabold gradient-text mt-1">{stats.summary.totalSchools}</div>
-                <div className="text-xs text-muted-foreground mt-2">
-                  In insgesamt <span className="font-semibold">{stats.summary.totalClasses}</span> Klassen
+                </span>
+                <div className="font-serif text-3xl font-normal text-foreground">{stats.summary.totalSchools}</div>
+                <div className="text-[11px] text-muted-foreground font-mono pt-1 border-t border-border/60">
+                  In <span className="font-semibold text-foreground">{stats.summary.totalClasses}</span> Klassen
                 </div>
               </div>
 
-              <div className="glass-strong rounded-2xl p-5 shadow-sm">
-                <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+              <div className="border border-border bg-card p-4 space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">
                   CO₂ Ausstoß Gesamt
-                </div>
-                <div className="text-3xl font-extrabold gradient-text mt-1">
+                </span>
+                <div className="font-serif text-3xl font-normal text-foreground">
                   {(stats.summary.totalCo2 / 1000).toFixed(1)} t
                 </div>
-                <div className="text-xs text-muted-foreground mt-2">
-                  Gesamtberechneter Ausstoß aller Teilnehmer
+                <div className="text-[11px] text-muted-foreground font-mono pt-1 border-t border-border/60">
+                  Gesamter Ausstoß
                 </div>
               </div>
 
-              <div className="glass-strong rounded-2xl p-5 shadow-sm">
-                <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-wider">
+              <div className="border border-border bg-card p-4 space-y-1">
+                <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground block">
                   Schnitt pro Schüler:in
-                </div>
-                <div className="text-3xl font-extrabold gradient-text mt-1">
+                </span>
+                <div className="font-serif text-3xl font-normal text-foreground">
                   {stats.summary.avgCo2PerStudent} t
                 </div>
-                <div className="text-xs text-muted-foreground mt-2">
-                  Durchschnittlicher CO₂-Fußabdruck / Jahr
+                <div className="text-[11px] text-muted-foreground font-mono pt-1 border-t border-border/60">
+                  Pro Jahr / Schüler:in
                 </div>
               </div>
             </div>
@@ -893,8 +895,15 @@ export default function AdminClient() {
             {/* Charts Section */}
             <div className="grid md:grid-cols-2 gap-6">
               {/* Category Pie Chart */}
-              <div className="glass-strong rounded-2xl p-6 flex flex-col justify-between min-h-[350px]">
-                <h3 className="text-sm font-bold tracking-tight mb-4">Verteilung nach Kategorien (Schnitt pro Kopf)</h3>
+              <div className="border border-border bg-card p-5 flex flex-col justify-between min-h-[350px]">
+                <div className="border-b border-border pb-2 mb-4">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground block">
+                    Aufschlüsselung
+                  </span>
+                  <h3 className="font-serif text-sm font-normal text-foreground">
+                    Verteilung nach Kategorien (Schnitt pro Kopf)
+                  </h3>
+                </div>
                 <div className="flex-1 min-h-[220px] relative flex items-center justify-center">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
@@ -910,7 +919,7 @@ export default function AdminClient() {
                         }
                       >
                         {stats.categoryStats.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.category] || '#9ca3af'} />
+                          <Cell key={`cell-${index}`} fill={CATEGORY_COLORS[entry.category] || '#71717a'} />
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => [`${value} t CO₂/Jahr`, 'Durchschnitt']} />
@@ -920,8 +929,15 @@ export default function AdminClient() {
               </div>
 
               {/* Transport Bar Chart */}
-              <div className="glass-strong rounded-2xl p-6 flex flex-col justify-between min-h-[350px]">
-                <h3 className="text-sm font-bold tracking-tight mb-4">Schulweg-Transportmittel</h3>
+              <div className="border border-border bg-card p-5 flex flex-col justify-between min-h-[350px]">
+                <div className="border-b border-border pb-2 mb-4">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground block">
+                    Mobilität
+                  </span>
+                  <h3 className="font-serif text-sm font-normal text-foreground">
+                    Schulweg-Transportmittel
+                  </h3>
+                </div>
                 {stats.transportDistribution.length > 0 ? (
                   <div className="flex-1 min-h-[220px]">
                     <ResponsiveContainer width="100%" height="100%">
@@ -929,27 +945,34 @@ export default function AdminClient() {
                         <XAxis dataKey="label" angle={-15} textAnchor="end" interval={0} fontSize={10} />
                         <YAxis allowDecimals={false} fontSize={10} />
                         <Tooltip formatter={(value) => [`${value} Schüler`, 'Anzahl']} />
-                        <Bar dataKey="count" fill="#06b6d4" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="count" fill="#52525b" />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-muted-foreground text-xs">
+                  <div className="flex-1 flex items-center justify-center text-muted-foreground text-xs font-mono">
                     Keine Daten vorhanden.
                   </div>
                 )}
               </div>
 
               {/* History completions */}
-              <div className="glass-strong rounded-2xl p-6 md:col-span-2 min-h-[300px] flex flex-col">
-                <h3 className="text-sm font-bold tracking-tight mb-4">Quiz-Abschlüsse der letzten 7 Tage</h3>
+              <div className="border border-border bg-card p-5 md:col-span-2 min-h-[300px] flex flex-col">
+                <div className="border-b border-border pb-2 mb-4">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground block">
+                    Aktivität
+                  </span>
+                  <h3 className="font-serif text-sm font-normal text-foreground">
+                    Quiz-Abschlüsse der letzten 7 Tage
+                  </h3>
+                </div>
                 <div className="flex-1 min-h-[200px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={stats.completionHistory}>
                       <defs>
                         <linearGradient id="colorCompletions" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                          <stop offset="5%" stopColor="#71717a" stopOpacity={0.2} />
+                          <stop offset="95%" stopColor="#71717a" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <XAxis dataKey="date" fontSize={10} />
@@ -958,10 +981,10 @@ export default function AdminClient() {
                       <Area
                         type="monotone"
                         dataKey="completions"
-                        stroke="#10b981"
+                        stroke="#27272a"
                         fillOpacity={1}
                         fill="url(#colorCompletions)"
-                        strokeWidth={2}
+                        strokeWidth={1.5}
                       />
                     </AreaChart>
                   </ResponsiveContainer>
@@ -979,9 +1002,9 @@ export default function AdminClient() {
               {isSuperAdmin && (
                 <button
                   onClick={() => setShowCreateLicense(!showCreateLicense)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all hover:scale-[1.02]"
+                  className="paper-btn-primary text-xs flex items-center gap-1.5"
                 >
-                  <Plus className="w-4.5 h-4.5" />
+                  <Plus className="w-3.5 h-3.5" />
                   Schule anlegen
                 </button>
               )}
@@ -989,54 +1012,54 @@ export default function AdminClient() {
 
             {/* Create school form */}
             {showCreateLicense && isSuperAdmin && (
-              <div className="glass-strong rounded-2xl p-6 animate-scale-in border border-border/60">
-                <h3 className="text-sm font-bold mb-4">Neue Schule registrieren</h3>
+              <div className="paper-sheet p-6 space-y-4">
+                <h3 className="text-sm font-semibold mb-2">Neue Schule registrieren</h3>
                 <form onSubmit={handleCreateLicense} className="grid sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold mb-1 text-muted-foreground">Schulname</label>
+                    <label className="block text-xs font-medium mb-1 text-muted-foreground">Schulname</label>
                     <input
                       type="text"
                       value={licenseFormData.schoolName}
                       onChange={(e) => setLicenseFormData({ ...licenseFormData, schoolName: e.target.value })}
                       required
-                      className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                      className="w-full px-3 py-2 rounded-md bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       placeholder="z. B. Max-Planck-Gymnasium"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold mb-1 text-muted-foreground">Kontakt-E-Mail</label>
+                    <label className="block text-xs font-medium mb-1 text-muted-foreground">Kontakt-E-Mail</label>
                     <input
                       type="email"
                       value={licenseFormData.contactEmail}
                       onChange={(e) => setLicenseFormData({ ...licenseFormData, contactEmail: e.target.value })}
                       required
-                      className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                      className="w-full px-3 py-2 rounded-md bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       placeholder="admin@mpg-schule.de"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold mb-1 text-muted-foreground">Passwort</label>
+                    <label className="block text-xs font-medium mb-1 text-muted-foreground">Passwort</label>
                     <input
                       type="text"
                       value={licenseFormData.password}
                       onChange={(e) => setLicenseFormData({ ...licenseFormData, password: e.target.value })}
                       required
-                      className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                      className="w-full px-3 py-2 rounded-md bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       placeholder="Zukünftiges Schul-Passwort"
                     />
                   </div>
-                  <div className="sm:col-span-3 flex justify-end gap-2 mt-2">
+                  <div className="sm:col-span-3 flex justify-end gap-2 mt-2 pt-2 border-t border-border">
                     <button
                       type="button"
                       onClick={() => setShowCreateLicense(false)}
-                      className="px-4 py-2 rounded-xl hover:bg-muted text-sm font-semibold transition-all"
+                      className="paper-btn-secondary text-xs"
                     >
                       Abbrechen
                     </button>
                     <button
                       type="submit"
                       disabled={creatingLicense}
-                      className="px-5 py-2 rounded-xl gradient-primary text-white text-sm font-semibold disabled:opacity-50 transition-all"
+                      className="paper-btn-primary text-xs"
                     >
                       {creatingLicense ? 'Wird erstellt...' : 'Lizenz erstellen'}
                     </button>
@@ -1048,69 +1071,69 @@ export default function AdminClient() {
             {/* School Licenses List */}
             <div className="grid md:grid-cols-2 gap-4">
               {licenses.map((lic) => (
-                <div key={lic.id} className="glass-strong rounded-2xl p-5 border border-border/40 shadow-sm flex flex-col justify-between space-y-4">
-                  <div className="flex items-start justify-between">
+                <div key={lic.id} className="border border-border bg-card p-5 flex flex-col justify-between space-y-4">
+                  <div className="flex items-start justify-between border-b border-border pb-3">
                     <div>
-                      <h4 className="font-bold text-sm">{lic.schoolName}</h4>
-                      <span className="text-[10px] text-muted-foreground">{lic.contactEmail}</span>
+                      <h4 className="font-serif text-base font-normal text-foreground">{lic.schoolName}</h4>
+                      <span className="text-xs font-mono text-muted-foreground">{lic.contactEmail}</span>
                     </div>
                     <span
-                      className={`px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider ${
+                      className={`px-2 py-0.5 border text-[10px] font-mono uppercase tracking-wider ${
                         lic.isActive
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                          : 'bg-muted text-muted-foreground'
+                          ? 'border-foreground/30 text-foreground bg-muted/40 font-semibold'
+                          : 'border-border text-muted-foreground bg-muted/10'
                       }`}
                     >
                       {lic.isActive ? 'Aktiv' : 'Inaktiv'}
                     </span>
                   </div>
 
-                  <div className="bg-muted/30 border border-border/40 rounded-xl p-3 flex items-center justify-between">
+                  <div className="border border-border bg-muted/20 p-3 flex items-center justify-between font-mono">
                     <div>
-                      <span className="text-[9px] text-muted-foreground block font-semibold uppercase">
+                      <span className="text-[10px] text-muted-foreground block uppercase">
                         Lizenzschlüssel
                       </span>
-                      <code className="text-xs font-mono font-bold">{lic.licenseKey}</code>
+                      <code className="text-xs font-bold">{lic.licenseKey}</code>
                     </div>
                     <button
                       onClick={() => copyKey(lic.licenseKey)}
-                      className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                      className="p-1.5 border border-border hover:border-foreground text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                       title="Kopieren"
                     >
                       {copiedKey === lic.licenseKey ? (
-                        <Check className="w-4 h-4 text-emerald-500" />
+                        <Check className="w-3.5 h-3.5 text-foreground" />
                       ) : (
-                        <Copy className="w-4 h-4" />
+                        <Copy className="w-3.5 h-3.5" />
                       )}
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border/40 pt-3">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground border-t border-border pt-3 font-mono">
                     <span>
                       Klassen:{' '}
                       <span className="font-bold text-foreground">{lic.classes.length}</span> (
-                      {lic.classes.reduce((sum, c) => sum + c._count.students, 0)} Schüler)
+                      {lic.classes.reduce((sum, c) => sum + c._count.students, 0)} Schüler:innen)
                     </span>
 
                     {isSuperAdmin && (
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2">
                         <button
                           onClick={() => toggleLicense(lic.id, lic.isActive)}
-                          className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                          className="p-1 hover:text-foreground text-muted-foreground transition-colors cursor-pointer"
                           title={lic.isActive ? 'Deaktivieren' : 'Aktivieren'}
                         >
                           {lic.isActive ? (
-                            <ToggleRight className="w-5 h-5 text-emerald-500" />
+                            <ToggleRight className="w-5 h-5 text-foreground" />
                           ) : (
                             <ToggleLeft className="w-5 h-5" />
                           )}
                         </button>
                         <button
                           onClick={() => deleteLicense(lic.id)}
-                          className="p-1.5 rounded-lg hover:bg-muted text-destructive hover:bg-destructive/10 transition-all"
+                          className="p-1 text-destructive hover:opacity-80 transition-opacity cursor-pointer"
                           title="Löschen"
                         >
-                          <Trash2 className="w-4.5 h-4.5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     )}
@@ -1119,7 +1142,7 @@ export default function AdminClient() {
               ))}
 
               {licenses.length === 0 && (
-                <div className="col-span-2 glass-strong rounded-2xl p-8 text-center text-muted-foreground text-sm">
+                <div className="col-span-2 border border-border bg-card p-8 text-center text-muted-foreground text-xs font-mono">
                   Keine registrierten Schullizenzen gefunden.
                 </div>
               )}
@@ -1135,9 +1158,9 @@ export default function AdminClient() {
               {canModify && (
                 <button
                   onClick={() => setShowCreateQuestion(!showCreateQuestion)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all hover:scale-[1.02]"
+                  className="paper-btn-primary text-xs flex items-center gap-1.5"
                 >
-                  <Plus className="w-4.5 h-4.5" />
+                  <Plus className="w-3.5 h-3.5" />
                   Frage hinzufügen
                 </button>
               )}
@@ -1145,8 +1168,8 @@ export default function AdminClient() {
 
             {/* Create Question form */}
             {showCreateQuestion && canModify && (
-              <div className="glass-strong rounded-2xl p-6 border border-border/60 animate-scale-in">
-                <h3 className="text-sm font-bold mb-4">Neue Frage erstellen</h3>
+              <div className="paper-sheet p-6 space-y-4">
+                <h3 className="text-sm font-semibold mb-2">Neue Frage erstellen</h3>
                 <form onSubmit={handleCreateQuestion} className="space-y-4">
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
@@ -1154,7 +1177,7 @@ export default function AdminClient() {
                       <select
                         value={questionFormData.category}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, category: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm text-foreground"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs text-foreground"
                       >
                         <option value="mobility">Mobilität</option>
                         <option value="food">Ernährung</option>
@@ -1168,7 +1191,7 @@ export default function AdminClient() {
                       <select
                         value={questionFormData.questionType}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, questionType: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm text-foreground"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs text-foreground"
                       >
                         <option value="slider">Slider (Schieberegler)</option>
                         <option value="number">Zahleneingabe</option>
@@ -1184,7 +1207,7 @@ export default function AdminClient() {
                         value={questionFormData.co2Factor}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, co2Factor: Number(e.target.value) })}
                         required
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs font-mono"
                       />
                     </div>
                   </div>
@@ -1197,7 +1220,7 @@ export default function AdminClient() {
                         value={questionFormData.questionText}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, questionText: e.target.value })}
                         required
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                         placeholder="Wie viele Kilometer fährst du pro Tag?"
                       />
                     </div>
@@ -1207,7 +1230,7 @@ export default function AdminClient() {
                         type="text"
                         value={questionFormData.helpText}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, helpText: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                         placeholder="Zusatzinfo für Schüler..."
                       />
                     </div>
@@ -1220,7 +1243,7 @@ export default function AdminClient() {
                         type="text"
                         value={questionFormData.unit}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, unit: e.target.value })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                         placeholder="km, kWh etc."
                       />
                     </div>
@@ -1231,7 +1254,7 @@ export default function AdminClient() {
                         value={questionFormData.orderIndex}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, orderIndex: Number(e.target.value) })}
                         required
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs font-mono"
                       />
                     </div>
                     <div>
@@ -1243,7 +1266,7 @@ export default function AdminClient() {
                         value={questionFormData.tier}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, tier: Number(e.target.value) })}
                         required
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs font-mono"
                       />
                     </div>
                     <div>
@@ -1252,22 +1275,22 @@ export default function AdminClient() {
                         type="number"
                         value={questionFormData.defaultValue}
                         onChange={(e) => setQuestionFormData({ ...questionFormData, defaultValue: Number(e.target.value) })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs font-mono"
                       />
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-2 pt-2">
+                  <div className="flex justify-end gap-2 pt-2 border-t border-border">
                     <button
                       type="button"
                       onClick={() => setShowCreateQuestion(false)}
-                      className="px-4 py-2 rounded-xl hover:bg-muted text-sm font-semibold transition-all"
+                      className="paper-btn-secondary text-xs"
                     >
                       Abbrechen
                     </button>
                     <button
                       type="submit"
-                      className="px-5 py-2 rounded-xl gradient-primary text-white text-sm font-semibold transition-all"
+                      className="paper-btn-primary text-xs"
                     >
                       Frage erstellen
                     </button>
@@ -1278,8 +1301,11 @@ export default function AdminClient() {
 
             {/* Editing modal/form */}
             {editingQuestion && canModify && (
-              <div className="glass-strong rounded-2xl p-6 border border-border/60 animate-scale-in">
-                <h3 className="text-sm font-bold mb-4">Frage bearbeiten</h3>
+              <div className="paper-sheet p-6 space-y-4 mb-6 border-foreground/30">
+                <div className="border-b border-border pb-2 flex justify-between items-center">
+                  <h3 className="font-serif text-base font-normal text-foreground">Frage bearbeiten</h3>
+                  <span className="text-[10px] font-mono text-muted-foreground">ID: {editingQuestion.id.slice(0, 8)}...</span>
+                </div>
                 <form onSubmit={handleUpdateQuestion} className="space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
@@ -1289,7 +1315,7 @@ export default function AdminClient() {
                         value={editingQuestion.questionText}
                         onChange={(e) => setEditingQuestion({ ...editingQuestion, questionText: e.target.value })}
                         required
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       />
                     </div>
                     <div>
@@ -1300,7 +1326,7 @@ export default function AdminClient() {
                         value={editingQuestion.co2Factor}
                         onChange={(e) => setEditingQuestion({ ...editingQuestion, co2Factor: Number(e.target.value) })}
                         required
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs font-mono"
                       />
                     </div>
                   </div>
@@ -1312,7 +1338,7 @@ export default function AdminClient() {
                         type="text"
                         value={editingQuestion.unit || ''}
                         onChange={(e) => setEditingQuestion({ ...editingQuestion, unit: e.target.value || null })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                         placeholder="z. B. km, kWh, kg"
                       />
                     </div>
@@ -1322,23 +1348,23 @@ export default function AdminClient() {
                         type="text"
                         value={editingQuestion.helpText || ''}
                         onChange={(e) => setEditingQuestion({ ...editingQuestion, helpText: e.target.value || null })}
-                        className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                        className="w-full px-3 py-2 bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       />
                     </div>
                   </div>
 
-                  <div className="flex justify-end gap-2 pt-2">
+                  <div className="flex justify-end gap-2 pt-2 border-t border-border">
                     <button
                       type="button"
                       onClick={() => setEditingQuestion(null)}
-                      className="px-4 py-2 rounded-xl hover:bg-muted text-sm font-semibold transition-all"
+                      className="paper-btn-secondary text-xs"
                     >
                       Abbrechen
                     </button>
                     <button
                       type="submit"
                       disabled={updatingQuestion}
-                      className="px-5 py-2 rounded-xl gradient-primary text-white text-sm font-semibold disabled:opacity-50 transition-all"
+                      className="paper-btn-primary text-xs"
                     >
                       {updatingQuestion ? 'Wird gespeichert...' : 'Änderungen speichern'}
                     </button>
@@ -1348,59 +1374,53 @@ export default function AdminClient() {
             )}
 
             {/* Questions List Table */}
-            <div className="glass-strong rounded-2xl border border-border/40 overflow-hidden shadow-sm">
+            <div className="border border-border bg-card overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border-collapse">
+                <table className="w-full text-left text-xs border-collapse font-sans">
                   <thead>
-                    <tr className="bg-muted/40 border-b border-border/60">
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Kategorie</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground w-1/3">Frage</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Typ</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Faktor</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Einheit</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground text-right">Aktion</th>
+                    <tr className="bg-muted/30 border-b border-border">
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Kategorie</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground w-1/3">Frage</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Typ</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Faktor</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Einheit</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground text-right">Aktion</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border/40">
+                  <tbody className="divide-y divide-border">
                     {questions.map((q) => (
                       <tr key={q.id} className="hover:bg-muted/20 transition-colors">
-                        <td className="p-4">
-                          <span
-                            className="px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase tracking-wider"
-                            style={{
-                              backgroundColor: `${CATEGORY_COLORS[q.category]}15`,
-                              color: CATEGORY_COLORS[q.category],
-                            }}
-                          >
+                        <td className="p-3">
+                          <span className="px-1.5 py-0.5 border border-border text-[9px] font-mono uppercase tracking-wider text-muted-foreground">
                             {CATEGORY_LABELS[q.category] || q.category}
                           </span>
                         </td>
-                        <td className="p-4 font-medium">{q.questionText}</td>
-                        <td className="p-4 font-mono text-[10px] text-muted-foreground uppercase">{q.questionType}</td>
-                        <td className="p-4 font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                        <td className="p-3 font-medium text-foreground">{q.questionText}</td>
+                        <td className="p-3 font-mono text-[10px] text-muted-foreground uppercase">{q.questionType}</td>
+                        <td className="p-3 font-mono font-bold text-foreground">
                           {q.co2Factor}
                         </td>
-                        <td className="p-4 text-muted-foreground">{q.unit || '-'}</td>
-                        <td className="p-4 text-right flex items-center justify-end gap-1">
+                        <td className="p-3 font-mono text-muted-foreground">{q.unit || '–'}</td>
+                        <td className="p-3 text-right">
                           {canModify ? (
-                            <>
+                            <div className="flex items-center justify-end gap-1.5">
                               <button
                                 onClick={() => setEditingQuestion(q)}
-                                className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all"
+                                className="p-1 border border-border hover:border-foreground text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                                 title="Bearbeiten"
                               >
-                                <Edit2 className="w-4 h-4" />
+                                <Edit2 className="w-3.5 h-3.5" />
                               </button>
                               <button
                                 onClick={() => deleteQuestion(q.id)}
-                                className="p-1.5 rounded-lg hover:bg-destructive/10 text-destructive transition-all"
+                                className="p-1 text-destructive hover:opacity-80 transition-opacity cursor-pointer"
                                 title="Löschen"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-3.5 h-3.5" />
                               </button>
-                            </>
+                            </div>
                           ) : (
-                            <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider">
+                            <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-wider">
                               Read-Only
                             </span>
                           )}
@@ -1421,31 +1441,31 @@ export default function AdminClient() {
               <h2 className="text-lg font-bold">Admin-Konten verwalten</h2>
               <button
                 onClick={() => setShowCreateAdmin(!showCreateAdmin)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-white text-sm font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all hover:scale-[1.02]"
+                className="paper-btn-primary text-xs flex items-center gap-1.5"
               >
-                <UserPlus className="w-4.5 h-4.5" />
+                <UserPlus className="w-3.5 h-3.5" />
                 Admin anlegen
               </button>
             </div>
 
             {/* Create Admin Form */}
             {showCreateAdmin && (
-              <div className="glass-strong rounded-2xl p-6 border border-border/60 animate-scale-in">
-                <h3 className="text-sm font-bold mb-4">Neues Admin-Konto erstellen</h3>
+              <div className="paper-sheet p-6 space-y-4">
+                <h3 className="text-sm font-semibold mb-2">Neues Admin-Konto erstellen</h3>
                 <form onSubmit={handleCreateAdmin} className="grid sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold mb-1 text-muted-foreground">E-Mail</label>
+                    <label className="block text-xs font-medium mb-1 text-muted-foreground">E-Mail</label>
                     <input
                       type="email"
                       value={adminFormData.email}
                       onChange={(e) => setAdminFormData({ ...adminFormData, email: e.target.value })}
                       required
-                      className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                      className="w-full px-3 py-2 rounded-md bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       placeholder="admin@co2rechner.de"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold mb-1 text-muted-foreground">Rolle</label>
+                    <label className="block text-xs font-medium mb-1 text-muted-foreground">Rolle</label>
                     <select
                       value={adminFormData.role}
                       onChange={(e) =>
@@ -1454,7 +1474,7 @@ export default function AdminClient() {
                           role: e.target.value as 'super-admin' | 'editor' | 'viewer',
                         })
                       }
-                      className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm text-foreground"
+                      className="w-full px-3 py-2 rounded-md bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs text-foreground"
                     >
                       <option value="super-admin">Super Admin (Vollzugriff)</option>
                       <option value="editor">Editor (Fragen verwalten)</option>
@@ -1462,28 +1482,28 @@ export default function AdminClient() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold mb-1 text-muted-foreground">Passwort</label>
+                    <label className="block text-xs font-medium mb-1 text-muted-foreground">Passwort</label>
                     <input
                       type="password"
                       value={adminFormData.password}
                       onChange={(e) => setAdminFormData({ ...adminFormData, password: e.target.value })}
                       required
-                      className="w-full px-3 py-2 rounded-xl bg-muted/40 border border-border/70 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all text-sm"
+                      className="w-full px-3 py-2 rounded-md bg-background border border-border focus:outline-none focus:border-foreground transition-colors text-xs"
                       placeholder="Sicheres Passwort"
                     />
                   </div>
-                  <div className="sm:col-span-3 flex justify-end gap-2 mt-2">
+                  <div className="sm:col-span-3 flex justify-end gap-2 mt-2 pt-2 border-t border-border">
                     <button
                       type="button"
                       onClick={() => setShowCreateAdmin(false)}
-                      className="px-4 py-2 rounded-xl hover:bg-muted text-sm font-semibold transition-all"
+                      className="paper-btn-secondary text-xs"
                     >
                       Abbrechen
                     </button>
                     <button
                       type="submit"
                       disabled={creatingAdmin}
-                      className="px-5 py-2 rounded-xl gradient-primary text-white text-sm font-semibold disabled:opacity-50 transition-all"
+                      className="paper-btn-primary text-xs"
                     >
                       {creatingAdmin ? 'Wird erstellt...' : 'Konto erstellen'}
                     </button>
@@ -1493,43 +1513,35 @@ export default function AdminClient() {
             )}
 
             {/* Admins List Table */}
-            <div className="glass-strong rounded-2xl border border-border/40 overflow-hidden shadow-sm">
+            <div className="border border-border bg-card overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-muted/40 border-b border-border/60">
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Admin E-Mail</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Rolle</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground">Erstellt am</th>
-                      <th className="p-4 font-bold uppercase tracking-wider text-muted-foreground text-right">Aktionen</th>
+                    <tr className="bg-muted/30 border-b border-border">
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Admin E-Mail</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Rolle</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Erstellt am</th>
+                      <th className="p-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground text-right">Aktionen</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-border/40">
+                  <tbody className="divide-y divide-border">
                     {admins.map((adm) => (
                       <tr key={adm.id} className="hover:bg-muted/20 transition-colors">
-                        <td className="p-4 font-semibold">{adm.email}</td>
-                        <td className="p-4">
-                          <span
-                            className={`px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider ${
-                              adm.role === 'super-admin'
-                                ? 'bg-red-500/10 text-red-500'
-                                : adm.role === 'editor'
-                                ? 'bg-amber-500/10 text-amber-500'
-                                : 'bg-blue-500/10 text-blue-500'
-                            }`}
-                          >
+                        <td className="p-3 font-semibold text-foreground">{adm.email}</td>
+                        <td className="p-3">
+                          <span className="px-2 py-0.5 border border-border text-[9px] font-mono uppercase tracking-wider text-muted-foreground">
                             {roleLabels[adm.role] || adm.role}
                           </span>
                         </td>
-                        <td className="p-4 text-muted-foreground">{new Date(adm.createdAt).toLocaleDateString('de-DE')}</td>
-                        <td className="p-4 text-right">
+                        <td className="p-3 text-muted-foreground font-mono text-xs">{new Date(adm.createdAt).toLocaleDateString('de-DE')}</td>
+                        <td className="p-3 text-right">
                           <button
                             onClick={() => deleteAdmin(adm.id)}
                             disabled={adm.id === session.id}
-                            className="p-1.5 rounded-lg hover:bg-destructive/10 text-destructive disabled:opacity-30 transition-all"
+                            className="p-1 text-destructive hover:opacity-80 disabled:opacity-20 transition-opacity cursor-pointer"
                             title={adm.id === session.id ? 'Sie können sich nicht selbst löschen' : 'Löschen'}
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </td>
                       </tr>
@@ -1544,14 +1556,19 @@ export default function AdminClient() {
         {/* -------------------- SYSTEM STATUS TAB -------------------- */}
         {activeTab === 'system' && isSuperAdmin && (
           <div className="space-y-6 animate-slide-up">
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold">Server System-Status</h2>
+            <div className="flex justify-between items-center border-b border-border pb-3">
+              <div>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground block">
+                  Infrastruktur
+                </span>
+                <h2 className="font-serif text-lg font-normal text-foreground">Server System-Status</h2>
+              </div>
               <button
                 onClick={fetchSystemStats}
                 disabled={loadingSystem}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border/70 hover:bg-muted text-xs font-semibold disabled:opacity-50 transition-all"
+                className="paper-btn-secondary text-xs flex items-center gap-1.5"
               >
-                <RefreshCw className={`w-4 h-4 ${loadingSystem ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${loadingSystem ? 'animate-spin' : ''}`} />
                 Aktualisieren
               </button>
             </div>
@@ -1559,25 +1576,25 @@ export default function AdminClient() {
             {systemStats ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* CPU Card */}
-                <div className="glass-strong rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
-                    <Cpu className="w-6 h-6" />
-                    <h3 className="font-bold text-sm">Prozessor (CPU)</h3>
+                <div className="border border-border bg-card p-5 space-y-3">
+                  <div className="flex items-center gap-2 text-foreground border-b border-border pb-2">
+                    <Cpu className="w-4 h-4 text-muted-foreground" />
+                    <h3 className="font-serif text-sm font-normal">Prozessor (CPU)</h3>
                   </div>
                   <div className="space-y-2 text-xs">
                     <div>
-                      <span className="text-muted-foreground font-semibold">Modell:</span>
-                      <p className="font-mono mt-0.5 font-bold truncate" title={systemStats.cpu.model}>
+                      <span className="text-muted-foreground font-mono text-[10px] uppercase block">Modell:</span>
+                      <p className="font-mono text-xs font-semibold text-foreground truncate" title={systemStats.cpu.model}>
                         {systemStats.cpu.model}
                       </p>
                     </div>
-                    <div className="flex justify-between border-b border-border/40 py-1.5">
+                    <div className="flex justify-between border-b border-border/40 py-1 font-mono text-[11px]">
                       <span className="text-muted-foreground">Kerne:</span>
-                      <span className="font-bold font-mono">{systemStats.cpu.cores} Cores</span>
+                      <span className="font-bold text-foreground">{systemStats.cpu.cores} Cores</span>
                     </div>
-                    <div className="flex justify-between border-b border-border/40 py-1.5">
-                      <span className="text-muted-foreground">Systemlast (1m/5m/15m):</span>
-                      <span className="font-bold font-mono">
+                    <div className="flex justify-between border-b border-border/40 py-1 font-mono text-[11px]">
+                      <span className="text-muted-foreground">Last (1/5/15m):</span>
+                      <span className="font-bold text-foreground">
                         {systemStats.cpu.load1m} / {systemStats.cpu.load5m} / {systemStats.cpu.load15m}
                       </span>
                     </div>
@@ -1585,81 +1602,81 @@ export default function AdminClient() {
                 </div>
 
                 {/* RAM Card */}
-                <div className="glass-strong rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center gap-3 text-blue-500">
-                    <Activity className="w-6 h-6" />
-                    <h3 className="font-bold text-sm">Arbeitsspeicher (RAM)</h3>
+                <div className="border border-border bg-card p-5 space-y-3">
+                  <div className="flex items-center gap-2 text-foreground border-b border-border pb-2">
+                    <Activity className="w-4 h-4 text-muted-foreground" />
+                    <h3 className="font-serif text-sm font-normal">Arbeitsspeicher (RAM)</h3>
                   </div>
                   <div className="space-y-3">
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs">
+                      <div className="flex justify-between text-xs font-mono">
                         <span className="text-muted-foreground">Auslastung:</span>
-                        <span className="font-bold font-mono">{systemStats.ram.percent}</span>
+                        <span className="font-bold text-foreground">{systemStats.ram.percent}</span>
                       </div>
-                      <div className="w-full bg-muted/60 rounded-full h-2 overflow-hidden border border-border/30">
+                      <div className="w-full bg-muted h-1.5 overflow-hidden border border-border">
                         <div
-                          className="bg-blue-500 h-full rounded-full transition-all duration-500"
+                          className="bg-foreground h-full transition-all duration-300"
                           style={{ width: systemStats.ram.percent }}
                         />
                       </div>
                     </div>
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex justify-between border-b border-border/40 pb-1.5">
+                    <div className="space-y-1 text-xs font-mono text-[11px]">
+                      <div className="flex justify-between border-b border-border/40 py-1">
                         <span className="text-muted-foreground">Belegt:</span>
-                        <span className="font-bold font-mono">{systemStats.ram.used}</span>
+                        <span className="font-bold text-foreground">{systemStats.ram.used}</span>
                       </div>
-                      <div className="flex justify-between border-b border-border/40 py-1.5">
+                      <div className="flex justify-between border-b border-border/40 py-1">
                         <span className="text-muted-foreground">Gesamt:</span>
-                        <span className="font-bold font-mono">{systemStats.ram.total}</span>
+                        <span className="font-bold text-foreground">{systemStats.ram.total}</span>
                       </div>
-                      <div className="flex justify-between border-b border-border/40 py-1.5">
+                      <div className="flex justify-between border-b border-border/40 py-1">
                         <span className="text-muted-foreground">Frei:</span>
-                        <span className="font-bold font-mono">{systemStats.ram.free}</span>
+                        <span className="font-bold text-foreground">{systemStats.ram.free}</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Disk & Platform */}
-                <div className="glass-strong rounded-2xl p-6 space-y-4 md:col-span-2 lg:col-span-1">
-                  <div className="flex items-center gap-3 text-purple-500">
-                    <HardDrive className="w-6 h-6" />
-                    <h3 className="font-bold text-sm">Festplatte & OS</h3>
+                <div className="border border-border bg-card p-5 space-y-3 md:col-span-2 lg:col-span-1">
+                  <div className="flex items-center gap-2 text-foreground border-b border-border pb-2">
+                    <HardDrive className="w-4 h-4 text-muted-foreground" />
+                    <h3 className="font-serif text-sm font-normal">Festplatte & OS</h3>
                   </div>
                   <div className="space-y-3">
                     <div className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">Festplatten-Auslastung (/):</span>
-                        <span className="font-bold font-mono">{systemStats.disk.percent}</span>
+                      <div className="flex justify-between text-xs font-mono">
+                        <span className="text-muted-foreground">Festplatte (/):</span>
+                        <span className="font-bold text-foreground">{systemStats.disk.percent}</span>
                       </div>
-                      <div className="w-full bg-muted/60 rounded-full h-2 overflow-hidden border border-border/30">
+                      <div className="w-full bg-muted h-1.5 overflow-hidden border border-border">
                         <div
-                          className="bg-purple-500 h-full rounded-full transition-all duration-500"
+                          className="bg-foreground h-full transition-all duration-300"
                           style={{ width: systemStats.disk.percent }}
                         />
                       </div>
                     </div>
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex justify-between border-b border-border/40 pb-1.5">
-                        <span className="text-muted-foreground">Freier Speicher:</span>
-                        <span className="font-bold font-mono">{systemStats.disk.free} von {systemStats.disk.total}</span>
+                    <div className="space-y-1 text-xs font-mono text-[11px]">
+                      <div className="flex justify-between border-b border-border/40 py-1">
+                        <span className="text-muted-foreground">Frei:</span>
+                        <span className="font-bold text-foreground">{systemStats.disk.free} / {systemStats.disk.total}</span>
                       </div>
-                      <div className="flex justify-between border-b border-border/40 py-1.5">
-                        <span className="text-muted-foreground">Betriebssystem:</span>
-                        <span className="font-bold font-mono capitalize">
+                      <div className="flex justify-between border-b border-border/40 py-1">
+                        <span className="text-muted-foreground">OS:</span>
+                        <span className="font-bold text-foreground capitalize">
                           {systemStats.platform} ({systemStats.arch})
                         </span>
                       </div>
-                      <div className="flex justify-between border-b border-border/40 py-1.5">
-                        <span className="text-muted-foreground">System-Uptime:</span>
-                        <span className="font-bold font-mono">{systemStats.uptime}</span>
+                      <div className="flex justify-between border-b border-border/40 py-1">
+                        <span className="text-muted-foreground">Uptime:</span>
+                        <span className="font-bold text-foreground">{systemStats.uptime}</span>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="glass-strong rounded-2xl p-8 text-center text-muted-foreground text-sm">
+              <div className="border border-border bg-card p-8 text-center text-muted-foreground text-xs font-mono">
                 Systemdaten werden geladen...
               </div>
             )}
