@@ -60,15 +60,23 @@ interface AnalyticsData {
 
 export default function SchoolAnalyticsClient() {
   const [data, setData] = useState<AnalyticsData | null>(null);
+  const [role, setRole] = useState<string>('school-admin');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const res = await fetch('/api/school/analytics');
-        const result = await res.json();
+        const [analyticsRes, meRes] = await Promise.all([
+          fetch('/api/school/analytics'),
+          fetch('/api/auth/me'),
+        ]);
+        const result = await analyticsRes.json();
         setData(result);
+        if (meRes.ok) {
+          const me = await meRes.json();
+          if (me.role) setRole(me.role);
+        }
       } catch {
         /* ignore */
       }
@@ -127,7 +135,7 @@ export default function SchoolAnalyticsClient() {
             </Link>
             <span className="text-muted-foreground text-xs">/</span>
             <span className="text-xs font-semibold text-foreground tracking-tight">
-              Schulauswertung & Gesamtanalyse
+              {role === 'teacher' ? 'Klassenauswertung & Analyse' : 'Schulauswertung & Gesamtanalyse'}
             </span>
           </div>
 
@@ -163,7 +171,7 @@ export default function SchoolAnalyticsClient() {
 
           <div className="paper-sheet p-4 space-y-1">
             <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
-              Ø Schulausstoß
+              {role === 'teacher' ? 'Ø Klassen-Ausstoß' : 'Ø Schulausstoß'}
             </span>
             <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
               {formatCO2(data.schoolAverage)}

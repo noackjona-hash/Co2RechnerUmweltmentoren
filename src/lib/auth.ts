@@ -5,7 +5,7 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-change-me'
 );
 
-export type UserRole = 'super-admin' | 'school-admin' | 'student';
+export type UserRole = 'super-admin' | 'school-admin' | 'teacher' | 'student';
 
 export interface JWTPayload {
   id: string;
@@ -15,6 +15,8 @@ export interface JWTPayload {
   schoolName?: string;
   licenseId?: string;
   classId?: string;
+  teacherName?: string;
+  className?: string;
   accessKey?: string;
 }
 

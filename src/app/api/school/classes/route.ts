@@ -1,16 +1,37 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
+import bcrypt from 'bcryptjs';
 
-// GET all classes for the logged-in school
+// GET all classes for the logged-in school or teacher
 export async function GET() {
   const session = await getSession();
-  if (!session || session.role !== 'school-admin') {
+  if (!session || (session.role !== 'school-admin' && session.role !== 'teacher')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
+  let whereClause: any = { licenseId: session.licenseId };
+
+  // If teacher, scope to only their classes
+  if (session.role === 'teacher') {
+    if (session.email) {
+      whereClause = {
+        licenseId: session.licenseId,
+        OR: [
+          { id: session.classId },
+          { teacherEmail: { equals: session.email, mode: 'insensitive' } },
+        ],
+      };
+    } else {
+      whereClause = {
+        licenseId: session.licenseId,
+        id: session.classId,
+      };
+    }
+  }
+
   const classes = await prisma.class.findMany({
-    where: { licenseId: session.licenseId },
+    where: whereClause,
     include: {
       students: {
         select: {
@@ -27,10 +48,18 @@ export async function GET() {
     orderBy: { createdAt: 'desc' },
   });
 
-  return NextResponse.json(classes);
+  const sanitizedClasses = classes.map((cls) => {
+    const { teacherPasswordHash, ...rest } = cls;
+    return {
+      ...rest,
+      hasTeacherPassword: !!teacherPasswordHash,
+    };
+  });
+
+  return NextResponse.json(sanitizedClasses);
 }
 
-// CREATE new class
+// CREATE new class (school-admin only)
 export async function POST(request: Request) {
   const session = await getSession();
   if (!session || session.role !== 'school-admin') {
@@ -38,7 +67,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { className, quizMode, teacherName, teacherEmail } = await request.json();
+    const { className, quizMode, teacherName, teacherEmail, teacherPassword } = await request.json();
 
     if (!className) {
       return NextResponse.json(
@@ -55,17 +84,24 @@ export async function POST(request: Request) {
       );
     }
 
+    let teacherPasswordHash: string | null = null;
+    if (teacherPassword && String(teacherPassword).trim().length > 0) {
+      teacherPasswordHash = await bcrypt.hash(String(teacherPassword).trim(), 10);
+    }
+
     const newClass = await prisma.class.create({
       data: {
-        className,
+        className: String(className).trim(),
         teacherName: teacherName ? String(teacherName).trim() : null,
         teacherEmail: teacherEmail ? String(teacherEmail).trim() : null,
+        teacherPasswordHash,
         quizMode: mode,
         licenseId: session.licenseId!,
       },
     });
 
-    return NextResponse.json(newClass, { status: 201 });
+    const { teacherPasswordHash: _, ...result } = newClass;
+    return NextResponse.json({ ...result, hasTeacherPassword: !!teacherPasswordHash }, { status: 201 });
   } catch (error) {
     console.error('Create class error:', error);
     return NextResponse.json(

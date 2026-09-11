@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { generateAccessKey } from '@/lib/utils';
+import bcrypt from 'bcryptjs';
 
 // Generate student access keys for a class
 export async function POST(
@@ -9,7 +10,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
-  if (!session || session.role !== 'school-admin') {
+  if (!session || (session.role !== 'school-admin' && session.role !== 'teacher')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
@@ -24,9 +25,28 @@ export async function POST(
       );
     }
 
-    // Verify the class belongs to this school
+    // Verify the class belongs to this school and teacher
+    let whereClause: any = { id, licenseId: session.licenseId };
+    if (session.role === 'teacher') {
+      if (session.email) {
+        whereClause = {
+          id,
+          licenseId: session.licenseId,
+          OR: [
+            { id: session.classId },
+            { teacherEmail: { equals: session.email, mode: 'insensitive' } },
+          ],
+        };
+      } else {
+        whereClause = {
+          id: session.classId,
+          licenseId: session.licenseId,
+        };
+      }
+    }
+
     const classRecord = await prisma.class.findFirst({
-      where: { id, licenseId: session.licenseId },
+      where: whereClause,
     });
 
     if (!classRecord) {
@@ -65,7 +85,7 @@ export async function POST(
   }
 }
 
-// DELETE a class
+// DELETE a class (school-admin only)
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -100,13 +120,13 @@ export async function DELETE(
   }
 }
 
-// PATCH / UPDATE class details (className, teacherName, teacherEmail, quizMode)
+// PATCH / UPDATE class details (className, teacherName, teacherEmail, quizMode, teacherPassword)
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
-  if (!session || session.role !== 'school-admin') {
+  if (!session || (session.role !== 'school-admin' && session.role !== 'teacher')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
@@ -114,8 +134,27 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
 
+    let whereClause: any = { id, licenseId: session.licenseId };
+    if (session.role === 'teacher') {
+      if (session.email) {
+        whereClause = {
+          id,
+          licenseId: session.licenseId,
+          OR: [
+            { id: session.classId },
+            { teacherEmail: { equals: session.email, mode: 'insensitive' } },
+          ],
+        };
+      } else {
+        whereClause = {
+          id: session.classId,
+          licenseId: session.licenseId,
+        };
+      }
+    }
+
     const classRecord = await prisma.class.findFirst({
-      where: { id, licenseId: session.licenseId },
+      where: whereClause,
     });
 
     if (!classRecord) {
@@ -138,13 +177,20 @@ export async function PATCH(
     if (body.quizMode && [10, 30, 60].includes(Number(body.quizMode))) {
       updateData.quizMode = Number(body.quizMode);
     }
+    if (body.teacherPassword && String(body.teacherPassword).trim().length > 0) {
+      updateData.teacherPasswordHash = await bcrypt.hash(String(body.teacherPassword).trim(), 10);
+    }
 
     const updated = await prisma.class.update({
       where: { id },
       data: updateData,
     });
 
-    return NextResponse.json(updated);
+    const { teacherPasswordHash, ...rest } = updated;
+    return NextResponse.json({
+      ...rest,
+      hasTeacherPassword: !!teacherPasswordHash,
+    });
   } catch (error) {
     console.error('Update class error:', error);
     return NextResponse.json(

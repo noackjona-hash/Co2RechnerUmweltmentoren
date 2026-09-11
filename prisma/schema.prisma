@@ -34,9 +34,10 @@ model Class {
   id           String    @id @default(cuid())
   licenseId    String    @map("license_id")
   className    String    @map("class_name")
-  teacherName  String?   @map("teacher_name")
-  teacherEmail String?   @map("teacher_email")
-  quizMode     Int       @default(60) @map("quiz_mode") // 10, 30, 60 questions
+  teacherName         String?   @map("teacher_name")
+  teacherEmail        String?   @map("teacher_email")
+  teacherPasswordHash String?   @map("teacher_password_hash")
+  quizMode            Int       @default(60) @map("quiz_mode") // 10, 30, 60 questions
   createdAt    DateTime  @default(now()) @map("created_at")
   license      License   @relation(fields: [licenseId], references: [id], onDelete: Cascade)
   students     Student[]

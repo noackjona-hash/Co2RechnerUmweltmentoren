@@ -6,14 +6,32 @@ import { calculateClassBadges } from '@/lib/badges';
 // GET aggregated analytics for the school
 export async function GET() {
   const session = await getSession();
-  if (!session || session.role !== 'school-admin') {
+  if (!session || (session.role !== 'school-admin' && session.role !== 'teacher')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
   try {
-    // Get all classes for this school
+    let whereClause: any = { licenseId: session.licenseId };
+    if (session.role === 'teacher') {
+      if (session.email) {
+        whereClause = {
+          licenseId: session.licenseId,
+          OR: [
+            { id: session.classId },
+            { teacherEmail: { equals: session.email, mode: 'insensitive' } },
+          ],
+        };
+      } else {
+        whereClause = {
+          licenseId: session.licenseId,
+          id: session.classId,
+        };
+      }
+    }
+
+    // Get classes for this school / teacher
     const classes = await prisma.class.findMany({
-      where: { licenseId: session.licenseId },
+      where: whereClause,
       select: {
         id: true,
         className: true,

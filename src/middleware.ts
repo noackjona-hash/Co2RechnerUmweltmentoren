@@ -119,7 +119,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (pathname.startsWith('/school')) {
-    if (payload.role !== 'school-admin') {
+    if (payload.role !== 'school-admin' && payload.role !== 'teacher') {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
@@ -135,7 +135,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 
-  if (pathname.startsWith('/api/school') && payload.role !== 'school-admin') {
+  if (pathname.startsWith('/api/school') && payload.role !== 'school-admin' && payload.role !== 'teacher') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
   }
 

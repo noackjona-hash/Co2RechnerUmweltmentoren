@@ -19,6 +19,8 @@ export default function LoginClient() {
   const [accessKey, setAccessKey] = useState('');
   const [licenseKey, setLicenseKey] = useState('');
   const [schoolPassword, setSchoolPassword] = useState('');
+  const [teacherEmail, setTeacherEmail] = useState('');
+  const [teacherPassword, setTeacherPassword] = useState('');
   const [email, setEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
 
@@ -68,6 +70,29 @@ export default function LoginClient() {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || 'Fehler beim Anmelden.');
+        setLoading(false);
+        return;
+      }
+      router.push('/school');
+    } catch {
+      setError('Verbindungsfehler.');
+      setLoading(false);
+    }
+  };
+
+  const handleTeacherLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/auth/teacher-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: teacherEmail, password: teacherPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Fehler beim Anmelden als Lehrkraft.');
         setLoading(false);
         return;
       }
@@ -216,26 +241,68 @@ export default function LoginClient() {
 
           {/* Tab 2: Teacher */}
           {activeTab === 'teacher' && (
-            <div className="space-y-4 text-xs">
-              <div className="p-4 rounded-md border border-border bg-muted/40 leading-relaxed text-muted-foreground space-y-2">
-                <span className="font-semibold text-foreground block text-xs">
-                  Informationen für Lehrkräfte
-                </span>
-                <p>
-                  Als Lehrkraft kannst du die Klassen und Schülercodes deiner Schule über das <strong>Schulportal</strong> einsehen und verwalten.
-                </p>
-                <p>
-                  Falls deine Schulleitung bereits eine Schullizenz aktiviert hat, melde dich einfach mit den Zugangsdaten der Schule an.
-                </p>
+            <form onSubmit={handleTeacherLogin} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="block text-xs font-medium text-foreground">
+                  E-Mail-Adresse der Lehrkraft
+                </label>
+                <input
+                  type="email"
+                  placeholder="lehrkraft@schule.de"
+                  value={teacherEmail}
+                  onChange={(e) => setTeacherEmail(e.target.value)}
+                  className="paper-input text-xs"
+                  required
+                />
               </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-medium text-foreground">
+                    Passwort
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[11px] text-muted-foreground hover:text-foreground cursor-pointer font-mono"
+                  >
+                    {showPassword ? 'Verbergen' : 'Anzeigen'}
+                  </button>
+                </div>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  value={teacherPassword}
+                  onChange={(e) => setTeacherPassword(e.target.value)}
+                  className="paper-input text-xs font-mono"
+                  required
+                />
+              </div>
+
               <button
-                type="button"
-                onClick={() => setActiveTab('school')}
+                type="submit"
+                disabled={loading}
                 className="w-full py-2.5 paper-btn-primary text-xs"
               >
-                Zum Schul-Login wechseln →
+                {loading ? 'Wird angemeldet...' : 'Als Lehrkraft anmelden →'}
               </button>
-            </div>
+
+              <div className="p-3.5 rounded-md border border-border bg-muted/20 text-xs text-muted-foreground space-y-1.5 leading-relaxed">
+                <span className="font-semibold text-foreground block text-xs">
+                  Zugang für Lehrkräfte:
+                </span>
+                <p>
+                  Das Passwort für deine Klasse wird von deiner Schulleitung im Schulportal unter der Klassenverwaltung eingerichtet.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('school')}
+                  className="text-foreground underline underline-offset-2 hover:opacity-80 block pt-1 cursor-pointer font-medium"
+                >
+                  Zur Schullizenz-Anmeldung wechseln →
+                </button>
+              </div>
+            </form>
           )}
 
           {/* Tab 3: School */}

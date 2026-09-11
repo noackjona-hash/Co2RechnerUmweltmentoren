@@ -40,6 +40,7 @@ export type ClassMinAggregateOutputType = {
   className: string | null
   teacherName: string | null
   teacherEmail: string | null
+  teacherPasswordHash: string | null
   quizMode: number | null
   createdAt: Date | null
 }
@@ -50,6 +51,7 @@ export type ClassMaxAggregateOutputType = {
   className: string | null
   teacherName: string | null
   teacherEmail: string | null
+  teacherPasswordHash: string | null
   quizMode: number | null
   createdAt: Date | null
 }
@@ -60,6 +62,7 @@ export type ClassCountAggregateOutputType = {
   className: number
   teacherName: number
   teacherEmail: number
+  teacherPasswordHash: number
   quizMode: number
   createdAt: number
   _all: number
@@ -80,6 +83,7 @@ export type ClassMinAggregateInputType = {
   className?: true
   teacherName?: true
   teacherEmail?: true
+  teacherPasswordHash?: true
   quizMode?: true
   createdAt?: true
 }
@@ -90,6 +94,7 @@ export type ClassMaxAggregateInputType = {
   className?: true
   teacherName?: true
   teacherEmail?: true
+  teacherPasswordHash?: true
   quizMode?: true
   createdAt?: true
 }
@@ -100,6 +105,7 @@ export type ClassCountAggregateInputType = {
   className?: true
   teacherName?: true
   teacherEmail?: true
+  teacherPasswordHash?: true
   quizMode?: true
   createdAt?: true
   _all?: true
@@ -197,6 +203,7 @@ export type ClassGroupByOutputType = {
   className: string
   teacherName: string | null
   teacherEmail: string | null
+  teacherPasswordHash: string | null
   quizMode: number
   createdAt: Date
   _count: ClassCountAggregateOutputType | null
@@ -230,6 +237,7 @@ export type ClassWhereInput = {
   className?: Prisma.StringFilter<"Class"> | string
   teacherName?: Prisma.StringNullableFilter<"Class"> | string | null
   teacherEmail?: Prisma.StringNullableFilter<"Class"> | string | null
+  teacherPasswordHash?: Prisma.StringNullableFilter<"Class"> | string | null
   quizMode?: Prisma.IntFilter<"Class"> | number
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
   license?: Prisma.XOR<Prisma.LicenseScalarRelationFilter, Prisma.LicenseWhereInput>
@@ -242,6 +250,7 @@ export type ClassOrderByWithRelationInput = {
   className?: Prisma.SortOrder
   teacherName?: Prisma.SortOrderInput | Prisma.SortOrder
   teacherEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  teacherPasswordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   license?: Prisma.LicenseOrderByWithRelationInput
@@ -257,6 +266,7 @@ export type ClassWhereUniqueInput = Prisma.AtLeast<{
   className?: Prisma.StringFilter<"Class"> | string
   teacherName?: Prisma.StringNullableFilter<"Class"> | string | null
   teacherEmail?: Prisma.StringNullableFilter<"Class"> | string | null
+  teacherPasswordHash?: Prisma.StringNullableFilter<"Class"> | string | null
   quizMode?: Prisma.IntFilter<"Class"> | number
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
   license?: Prisma.XOR<Prisma.LicenseScalarRelationFilter, Prisma.LicenseWhereInput>
@@ -269,6 +279,7 @@ export type ClassOrderByWithAggregationInput = {
   className?: Prisma.SortOrder
   teacherName?: Prisma.SortOrderInput | Prisma.SortOrder
   teacherEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  teacherPasswordHash?: Prisma.SortOrderInput | Prisma.SortOrder
   quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ClassCountOrderByAggregateInput
@@ -287,6 +298,7 @@ export type ClassScalarWhereWithAggregatesInput = {
   className?: Prisma.StringWithAggregatesFilter<"Class"> | string
   teacherName?: Prisma.StringNullableWithAggregatesFilter<"Class"> | string | null
   teacherEmail?: Prisma.StringNullableWithAggregatesFilter<"Class"> | string | null
+  teacherPasswordHash?: Prisma.StringNullableWithAggregatesFilter<"Class"> | string | null
   quizMode?: Prisma.IntWithAggregatesFilter<"Class"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Class"> | Date | string
 }
@@ -296,6 +308,7 @@ export type ClassCreateInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
   license: Prisma.LicenseCreateNestedOneWithoutClassesInput
@@ -308,6 +321,7 @@ export type ClassUncheckedCreateInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutClassInput
@@ -318,6 +332,7 @@ export type ClassUpdateInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   license?: Prisma.LicenseUpdateOneRequiredWithoutClassesNestedInput
@@ -330,6 +345,7 @@ export type ClassUncheckedUpdateInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUncheckedUpdateManyWithoutClassNestedInput
@@ -341,6 +357,7 @@ export type ClassCreateManyInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
 }
@@ -350,6 +367,7 @@ export type ClassUpdateManyMutationInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -360,6 +378,7 @@ export type ClassUncheckedUpdateManyInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -380,6 +399,7 @@ export type ClassCountOrderByAggregateInput = {
   className?: Prisma.SortOrder
   teacherName?: Prisma.SortOrder
   teacherEmail?: Prisma.SortOrder
+  teacherPasswordHash?: Prisma.SortOrder
   quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -394,6 +414,7 @@ export type ClassMaxOrderByAggregateInput = {
   className?: Prisma.SortOrder
   teacherName?: Prisma.SortOrder
   teacherEmail?: Prisma.SortOrder
+  teacherPasswordHash?: Prisma.SortOrder
   quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -404,6 +425,7 @@ export type ClassMinOrderByAggregateInput = {
   className?: Prisma.SortOrder
   teacherName?: Prisma.SortOrder
   teacherEmail?: Prisma.SortOrder
+  teacherPasswordHash?: Prisma.SortOrder
   quizMode?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -490,6 +512,7 @@ export type ClassCreateWithoutLicenseInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
   students?: Prisma.StudentCreateNestedManyWithoutClassInput
@@ -500,6 +523,7 @@ export type ClassUncheckedCreateWithoutLicenseInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutClassInput
@@ -540,6 +564,7 @@ export type ClassScalarWhereInput = {
   className?: Prisma.StringFilter<"Class"> | string
   teacherName?: Prisma.StringNullableFilter<"Class"> | string | null
   teacherEmail?: Prisma.StringNullableFilter<"Class"> | string | null
+  teacherPasswordHash?: Prisma.StringNullableFilter<"Class"> | string | null
   quizMode?: Prisma.IntFilter<"Class"> | number
   createdAt?: Prisma.DateTimeFilter<"Class"> | Date | string
 }
@@ -549,6 +574,7 @@ export type ClassCreateWithoutStudentsInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
   license: Prisma.LicenseCreateNestedOneWithoutClassesInput
@@ -560,6 +586,7 @@ export type ClassUncheckedCreateWithoutStudentsInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
 }
@@ -585,6 +612,7 @@ export type ClassUpdateWithoutStudentsInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   license?: Prisma.LicenseUpdateOneRequiredWithoutClassesNestedInput
@@ -596,6 +624,7 @@ export type ClassUncheckedUpdateWithoutStudentsInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -605,6 +634,7 @@ export type ClassCreateManyLicenseInput = {
   className: string
   teacherName?: string | null
   teacherEmail?: string | null
+  teacherPasswordHash?: string | null
   quizMode?: number
   createdAt?: Date | string
 }
@@ -614,6 +644,7 @@ export type ClassUpdateWithoutLicenseInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUpdateManyWithoutClassNestedInput
@@ -624,6 +655,7 @@ export type ClassUncheckedUpdateWithoutLicenseInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   students?: Prisma.StudentUncheckedUpdateManyWithoutClassNestedInput
@@ -634,6 +666,7 @@ export type ClassUncheckedUpdateManyWithoutLicenseInput = {
   className?: Prisma.StringFieldUpdateOperationsInput | string
   teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   teacherEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherPasswordHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   quizMode?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -675,6 +708,7 @@ export type ClassSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   className?: boolean
   teacherName?: boolean
   teacherEmail?: boolean
+  teacherPasswordHash?: boolean
   quizMode?: boolean
   createdAt?: boolean
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
@@ -688,6 +722,7 @@ export type ClassSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   className?: boolean
   teacherName?: boolean
   teacherEmail?: boolean
+  teacherPasswordHash?: boolean
   quizMode?: boolean
   createdAt?: boolean
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
@@ -699,6 +734,7 @@ export type ClassSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   className?: boolean
   teacherName?: boolean
   teacherEmail?: boolean
+  teacherPasswordHash?: boolean
   quizMode?: boolean
   createdAt?: boolean
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
@@ -710,11 +746,12 @@ export type ClassSelectScalar = {
   className?: boolean
   teacherName?: boolean
   teacherEmail?: boolean
+  teacherPasswordHash?: boolean
   quizMode?: boolean
   createdAt?: boolean
 }
 
-export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "licenseId" | "className" | "teacherName" | "teacherEmail" | "quizMode" | "createdAt", ExtArgs["result"]["class"]>
+export type ClassOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "licenseId" | "className" | "teacherName" | "teacherEmail" | "teacherPasswordHash" | "quizMode" | "createdAt", ExtArgs["result"]["class"]>
 export type ClassInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   license?: boolean | Prisma.LicenseDefaultArgs<ExtArgs>
   students?: boolean | Prisma.Class$studentsArgs<ExtArgs>
@@ -739,6 +776,7 @@ export type $ClassPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     className: string
     teacherName: string | null
     teacherEmail: string | null
+    teacherPasswordHash: string | null
     quizMode: number
     createdAt: Date
   }, ExtArgs["result"]["class"]>
@@ -1171,6 +1209,7 @@ export interface ClassFieldRefs {
   readonly className: Prisma.FieldRef<"Class", 'String'>
   readonly teacherName: Prisma.FieldRef<"Class", 'String'>
   readonly teacherEmail: Prisma.FieldRef<"Class", 'String'>
+  readonly teacherPasswordHash: Prisma.FieldRef<"Class", 'String'>
   readonly quizMode: Prisma.FieldRef<"Class", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Class", 'DateTime'>
 }

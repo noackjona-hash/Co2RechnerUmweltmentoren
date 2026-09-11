@@ -26,6 +26,7 @@ interface ClassData {
   className: string;
   teacherName?: string | null;
   teacherEmail?: string | null;
+  hasTeacherPassword?: boolean;
   quizMode: number;
   createdAt: string;
   students: {
@@ -37,13 +38,23 @@ interface ClassData {
   _count: { students: number };
 }
 
+interface CurrentUser {
+  role: 'school-admin' | 'teacher';
+  schoolName?: string;
+  teacherName?: string;
+  className?: string;
+  email?: string;
+}
+
 export default function SchoolDashboardClient() {
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [classes, setClasses] = useState<ClassData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [className, setClassName] = useState('');
   const [teacherName, setTeacherName] = useState('');
   const [teacherEmail, setTeacherEmail] = useState('');
+  const [teacherPassword, setTeacherPassword] = useState('');
   const [quizMode, setQuizMode] = useState<number>(60);
   const [creating, setCreating] = useState(false);
 
@@ -52,6 +63,7 @@ export default function SchoolDashboardClient() {
   const [editClassName, setEditClassName] = useState('');
   const [editTeacherName, setEditTeacherName] = useState('');
   const [editTeacherEmail, setEditTeacherEmail] = useState('');
+  const [editTeacherPassword, setEditTeacherPassword] = useState('');
   const [editQuizMode, setEditQuizMode] = useState<number>(60);
   const [updating, setUpdating] = useState(false);
 
@@ -60,6 +72,24 @@ export default function SchoolDashboardClient() {
   const [keyCount, setKeyCount] = useState(25);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const router = useRouter();
+
+  const fetchSession = async () => {
+    try {
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const data = await res.json();
+        setCurrentUser({
+          role: data.role,
+          schoolName: data.schoolName,
+          teacherName: data.teacherName,
+          className: data.className,
+          email: data.email,
+        });
+      }
+    } catch {
+      /* ignore */
+    }
+  };
 
   const fetchClasses = async () => {
     try {
@@ -73,6 +103,7 @@ export default function SchoolDashboardClient() {
   };
 
   useEffect(() => {
+    fetchSession();
     fetchClasses();
   }, []);
 
@@ -92,6 +123,7 @@ export default function SchoolDashboardClient() {
           className,
           teacherName,
           teacherEmail,
+          teacherPassword,
           quizMode,
         }),
       });
@@ -100,6 +132,7 @@ export default function SchoolDashboardClient() {
         setClassName('');
         setTeacherName('');
         setTeacherEmail('');
+        setTeacherPassword('');
         setQuizMode(60);
         fetchClasses();
       }
@@ -114,6 +147,7 @@ export default function SchoolDashboardClient() {
     setEditClassName(cls.className);
     setEditTeacherName(cls.teacherName || '');
     setEditTeacherEmail(cls.teacherEmail || '');
+    setEditTeacherPassword('');
     setEditQuizMode(cls.quizMode || 60);
   };
 
@@ -129,6 +163,7 @@ export default function SchoolDashboardClient() {
           className: editClassName,
           teacherName: editTeacherName,
           teacherEmail: editTeacherEmail,
+          teacherPassword: editTeacherPassword || undefined,
           quizMode: editQuizMode,
         }),
       });
@@ -238,11 +273,15 @@ export default function SchoolDashboardClient() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <span className="font-semibold text-sm tracking-tight text-foreground">
-              Schulportal
+              {currentUser?.role === 'teacher' ? 'Lehrkräfte-Portal' : 'Schulportal'}
             </span>
             <span className="text-muted-foreground text-xs">/</span>
             <span className="text-xs text-muted-foreground">
-              Klassen & Lehrkräfte
+              {currentUser?.role === 'teacher'
+                ? currentUser.teacherName
+                  ? `Angemeldet als ${currentUser.teacherName}`
+                  : currentUser.email || 'Meine Klasse'
+                : currentUser?.schoolName || 'Klassen & Lehrkräfte'}
             </span>
           </div>
 
@@ -273,7 +312,7 @@ export default function SchoolDashboardClient() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="paper-sheet p-5 space-y-1">
             <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
-              Klassen
+              {currentUser?.role === 'teacher' ? 'Meine Klassen' : 'Klassen'}
             </span>
             <div className="text-3xl font-mono font-semibold text-foreground tracking-tight">
               {classes.length}
@@ -315,20 +354,24 @@ export default function SchoolDashboardClient() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
           <div>
             <h2 className="text-lg font-semibold tracking-tight text-foreground">
-              Klassen & Lehrkräfte
+              {currentUser?.role === 'teacher' ? 'Meine Klasse(n)' : 'Klassen & Lehrkräfte'}
             </h2>
             <p className="text-xs text-muted-foreground">
-              Verwalte Klassen, weise Lehrkräfte zu und erstelle Zugangscodes oder Direktlinks für Schüler:innen.
+              {currentUser?.role === 'teacher'
+                ? 'Verwalte deine Klasse, generiere Schülercodes oder passe den Fragen-Umfang an.'
+                : 'Verwalte Klassen, weise Lehrkräfte zu und erstelle Zugangscodes oder Direktlinks für Schüler:innen.'}
             </p>
           </div>
 
-          <button
-            onClick={() => setShowCreate(!showCreate)}
-            className="paper-btn-primary text-xs self-start sm:self-auto"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Neue Klasse & Lehrkraft anlegen</span>
-          </button>
+          {currentUser?.role !== 'teacher' && (
+            <button
+              onClick={() => setShowCreate(!showCreate)}
+              className="paper-btn-primary text-xs self-start sm:self-auto"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Neue Klasse & Lehrkraft anlegen</span>
+            </button>
+          )}
         </div>
 
         {/* Create Class Form */}
@@ -402,6 +445,22 @@ export default function SchoolDashboardClient() {
                     className="w-full px-3 py-2 border border-border rounded-md bg-background text-xs text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
+
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-medium text-foreground mb-1">
+                    Passwort für Lehrkraft-Login (optional)
+                  </label>
+                  <input
+                    type="password"
+                    value={teacherPassword}
+                    onChange={(e) => setTeacherPassword(e.target.value)}
+                    placeholder="Passwort für den Lehrer-Account vergeben"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-background text-xs text-foreground focus:outline-none focus:border-foreground font-mono"
+                  />
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Ermöglicht der Lehrkraft, sich mit ihrer E-Mail-Adresse und diesem Passwort im Portal anzumelden und die Klasse eigenständig zu verwalten.
+                  </p>
+                </div>
               </div>
 
               <div className="flex justify-end gap-2 pt-2 border-t border-border">
@@ -459,8 +518,8 @@ export default function SchoolDashboardClient() {
                         </span>
                       </div>
 
-                      {/* Teacher Attribution */}
-                      <div className="flex items-center gap-1.5 text-xs text-muted-foreground pt-0.5">
+                      {/* Teacher Attribution & Login Status */}
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground pt-0.5 flex-wrap">
                         {cls.teacherName ? (
                           <span>
                             Lehrkraft: <strong className="text-foreground font-medium">{cls.teacherName}</strong>
@@ -477,6 +536,18 @@ export default function SchoolDashboardClient() {
                           >
                             + Lehrkraft eintragen
                           </button>
+                        )}
+                        <span className="text-border">·</span>
+                        {cls.hasTeacherPassword ? (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            Login aktiv
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-mono text-muted-foreground">
+                            <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40"></span>
+                            Kein Passwort
+                          </span>
                         )}
                       </div>
                     </div>
@@ -496,13 +567,15 @@ export default function SchoolDashboardClient() {
                       >
                         <Printer className="w-3.5 h-3.5" />
                       </button>
-                      <button
-                        onClick={() => handleDeleteClass(cls.id)}
-                        className="p-2 rounded-md border border-border hover:bg-destructive/10 hover:border-destructive/40 text-muted-foreground hover:text-destructive cursor-pointer transition-colors"
-                        title="Klasse löschen"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      {currentUser?.role !== 'teacher' && (
+                        <button
+                          onClick={() => handleDeleteClass(cls.id)}
+                          className="p-2 rounded-md border border-border hover:bg-destructive/10 hover:border-destructive/40 text-muted-foreground hover:text-destructive cursor-pointer transition-colors"
+                          title="Klasse löschen"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
                       <button
                         onClick={() =>
                           setExpandedClass(expandedClass === cls.id ? null : cls.id)
@@ -691,10 +764,28 @@ export default function SchoolDashboardClient() {
                   onChange={(e) => setEditQuizMode(Number(e.target.value))}
                   className="w-full px-3 py-2 border border-border rounded-md bg-background text-xs text-foreground focus:outline-none focus:border-foreground"
                 >
-                  <option value={10}>10 Fragen (Kurz)</option>
-                  <option value={30}>30 Fragen (Mittel)</option>
-                  <option value={60}>60 Fragen (Vollständig)</option>
+                  <option value={10}>10 Fragen (Kurz · ca. 5 Min)</option>
+                  <option value={30}>30 Fragen (Mittel · ca. 12 Min)</option>
+                  <option value={60}>60 Fragen (Vollständig · ca. 20 Min)</option>
                 </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-foreground mb-1">
+                  Neues Lehrkraft-Passwort (optional)
+                </label>
+                <input
+                  type="password"
+                  value={editTeacherPassword}
+                  onChange={(e) => setEditTeacherPassword(e.target.value)}
+                  placeholder="Leer lassen für keine Änderung"
+                  className="w-full px-3 py-2 border border-border rounded-md bg-background text-xs text-foreground focus:outline-none focus:border-foreground font-mono"
+                />
+                <p className="text-[10px] text-muted-foreground mt-1">
+                  {editingClass.hasTeacherPassword
+                    ? 'Ein Lehrer-Passwort ist aktiv. Gib ein neues Passwort ein, um es zu überschreiben.'
+                    : 'Vergib ein Passwort, damit sich die Lehrkraft eigenständig mit ihrer E-Mail anmelden kann.'}
+                </p>
               </div>
 
               <div className="flex justify-end gap-2 pt-3 border-t border-border">

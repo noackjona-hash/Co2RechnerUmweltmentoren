@@ -105,6 +105,7 @@ export const ClassScalarFieldEnum = {
   className: 'className',
   teacherName: 'teacherName',
   teacherEmail: 'teacherEmail',
+  teacherPasswordHash: 'teacherPasswordHash',
   quizMode: 'quizMode',
   createdAt: 'createdAt'
 } as const
