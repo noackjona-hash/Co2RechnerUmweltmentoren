@@ -16,23 +16,23 @@ export function LegalFooter() {
   };
 
   return (
-    <footer className="relative z-10 text-center py-8 px-4 text-xs text-muted-foreground mt-auto w-full border-t border-border/20 bg-background/30 backdrop-blur-sm">
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p>© {year} CO₂ Rechner – Ein Projekt der Umweltmentoren</p>
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 font-medium">
+    <footer className="text-center py-6 px-4 text-xs text-muted-foreground mt-auto w-full border-t border-border/80 bg-background">
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p>© {year} CO₂-Rechner • Jona Noack & Umweltmentoren</p>
+        <div className="flex flex-wrap justify-center gap-3 font-medium">
           <Link href="/impressum" className="hover:text-foreground transition-colors">
             Impressum
           </Link>
-          <span className="hidden sm:inline text-muted-foreground/30">•</span>
+          <span className="text-border">•</span>
           <Link href="/datenschutz" className="hover:text-foreground transition-colors">
-            Datenschutzerklärung
+            Datenschutz
           </Link>
-          <span className="hidden sm:inline text-muted-foreground/30">•</span>
+          <span className="text-border">•</span>
           <button
             onClick={handleOpenCookies}
-            className="hover:text-foreground transition-colors cursor-pointer text-left focus:outline-none"
+            className="hover:text-foreground transition-colors cursor-pointer focus:outline-none"
           >
-            Cookie-Einstellungen
+            Cookies
           </button>
         </div>
       </div>

@@ -67,43 +67,28 @@ export function CookieBanner() {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 md:p-8 flex justify-center animate-slide-up">
-      <div className="w-full max-w-3xl glass-strong rounded-3xl p-5 sm:p-6 shadow-2xl border-emerald-500/20 shadow-emerald-500/5 relative overflow-hidden">
-        {/* Glow accent */}
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 flex flex-col md:flex-row gap-5 items-start md:items-center justify-between">
-          <div className="space-y-2 flex-1">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
-                <Shield className="w-4 h-4" />
-              </div>
-              <h4 className="font-bold text-sm sm:text-base text-foreground">Wir achten auf deinen Datenschutz</h4>
-            </div>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
-              Um deinen CO₂-Fußabdruck präzise berechnen und simulieren zu können, verwenden wir ausschließlich essenzielle und optionale Cookies, um deine Eingaben lokal zu sichern. Keine Daten werden zu Werbezwecken weitergegeben.
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-6 flex justify-center">
+      <div className="w-full max-w-2xl paper-card-elevated p-5 sm:p-6 space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div className="space-y-1 flex-1">
+            <h4 className="font-bold text-sm text-foreground">Datenschutz-Hinweis</h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Wir verwenden ausschließlich notwendige lokale Speicherungen, um deine Antworten während des Quiz zu sichern. Keine Daten werden zu Werbezwecken weitergegeben.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2.5 w-full md:w-auto justify-end shrink-0">
-            <button
-              onClick={() => setShowDetails(!showDetails)}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border bg-muted/30 hover:bg-muted text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer"
-            >
-              <Settings className="w-3.5 h-3.5" />
-              Einstellungen
-            </button>
+          <div className="flex flex-wrap gap-2 shrink-0">
             <button
               onClick={handleAcceptEssential}
-              className="px-4 py-2.5 rounded-xl border border-border bg-background/50 hover:bg-muted text-xs sm:text-sm font-semibold transition-all duration-300 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-lg paper-btn-secondary text-xs cursor-pointer"
             >
               Nur notwendige
             </button>
             <button
               onClick={handleAcceptAll}
-              className="px-5 py-2.5 rounded-xl gradient-primary text-white text-xs sm:text-sm font-semibold shadow-md shadow-emerald-500/15 hover:shadow-emerald-500/25 transition-all duration-300 cursor-pointer"
+              className="px-4 py-1.5 rounded-lg paper-btn-primary text-xs cursor-pointer"
             >
-              Alle akzeptieren
+              Akzeptieren
             </button>
           </div>
         </div>
