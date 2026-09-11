@@ -86,8 +86,15 @@ export async function middleware(request: NextRequest) {
   // 3. Original Access Control Checks
   const token = request.cookies.get('session')?.value;
 
+  // Handle direct code links: e.g. /quiz?code=XXXX-XXXX or /?code=XXXX-XXXX
+  const codeParam = request.nextUrl.searchParams.get('code') || request.nextUrl.searchParams.get('key');
+  if (codeParam && (pathname === '/' || pathname === '/quiz' || pathname === '/login')) {
+    const cleanCode = codeParam.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+    return NextResponse.redirect(new URL(`/join/${cleanCode}`, request.url));
+  }
+
   // Public routes - always accessible
-  const publicPaths = ['/', '/login', '/api/auth', '/api/stats', '/impressum', '/datenschutz'];
+  const publicPaths = ['/', '/login', '/join', '/api/auth', '/api/stats', '/impressum', '/datenschutz'];
   if (publicPaths.some((p) => pathname === p || pathname.startsWith(p + '/'))) {
     return NextResponse.next();
   }

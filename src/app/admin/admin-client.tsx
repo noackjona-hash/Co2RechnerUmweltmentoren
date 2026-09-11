@@ -121,7 +121,7 @@ interface StatsData {
   transportDistribution: TransportDistribution[];
 }
 
-type Tab = 'stats' | 'schools' | 'questions' | 'admins' | 'system';
+type Tab = 'stats' | 'schools' | 'questions' | 'admins' | 'system' | 'simulation';
 
 const CATEGORY_COLORS: Record<string, string> = {
   mobility: '#10b981', // emerald
@@ -143,6 +143,19 @@ export default function AdminClient() {
   const [activeTab, setActiveTab] = useState<Tab>('stats');
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  // Simulation state
+  const [simulations, setSimulations] = useState<any[]>([]);
+  const [loadingSimulation, setLoadingSimulation] = useState(false);
+  const [generatingSimulation, setGeneratingSimulation] = useState(false);
+  const [simulationPreset, setSimulationPreset] = useState<'standard' | 'large' | 'small' | 'custom'>('standard');
+  const [customSimData, setCustomSimData] = useState({
+    schoolName: '',
+    classesCount: 4,
+    studentsPerClass: 25,
+    quizMode: 60,
+    completionRate: 85,
+  });
 
   // System state
   const [systemStats, setSystemStats] = useState<any>(null);
@@ -478,9 +491,75 @@ export default function AdminClient() {
     }
   };
 
+  const fetchSimulations = async () => {
+    try {
+      setLoadingSimulation(true);
+      const res = await fetch('/api/admin/simulation');
+      if (res.ok) {
+        const data = await res.json();
+        setSimulations(data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoadingSimulation(false);
+    }
+  };
+
+  const handleGenerateSimulation = async () => {
+    setGeneratingSimulation(true);
+    setError('');
+    setSuccess('');
+    try {
+      const res = await fetch('/api/admin/simulation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          preset: simulationPreset,
+          ...customSimData,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setSuccess(data.message || 'Schule und Datensätze erfolgreich simuliert.');
+        await fetchSimulations();
+        await fetchLicenses();
+        await fetchStats();
+      } else {
+        setError(data.error || 'Fehler bei der Simulation.');
+      }
+    } catch {
+      setError('Verbindungsfehler.');
+    } finally {
+      setGeneratingSimulation(false);
+    }
+  };
+
+  const handleDeleteSimulation = async (licenseId?: string, all?: boolean) => {
+    if (!confirm(all ? 'Wirklich alle simulierten Testschulen und deren Schülerdaten löschen?' : 'Diese simulierte Schule löschen?')) return;
+    try {
+      const url = all ? '/api/admin/simulation?all=true' : `/api/admin/simulation?licenseId=${licenseId}`;
+      const res = await fetch(url, { method: 'DELETE' });
+      const data = await res.json();
+      if (res.ok) {
+        setSuccess(data.message);
+        await fetchSimulations();
+        await fetchLicenses();
+        await fetchStats();
+      } else {
+        setError(data.error || 'Fehler beim Löschen.');
+      }
+    } catch {
+      setError('Verbindungsfehler.');
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'system' && session?.adminRole === 'super-admin') {
       fetchSystemStats();
+    }
+    if (activeTab === 'simulation' && session?.adminRole === 'super-admin') {
+      fetchSimulations();
     }
   }, [activeTab, session]);
 
@@ -545,14 +624,10 @@ export default function AdminClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen relative flex items-center justify-center">
-        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-emerald-50 via-teal-50/30 to-cyan-50 dark:from-gray-950 dark:via-emerald-950/20 dark:to-gray-950" />
-        <div className="text-center space-y-4">
-          <div className="w-12 h-12 rounded-2xl gradient-primary flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/20 animate-glow-pulse">
-            <Leaf className="w-6 h-6 text-white" />
-          </div>
-          <p className="text-sm font-medium text-muted-foreground animate-pulse">Dashboard wird geladen...</p>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+        <p className="font-mono text-xs text-muted-foreground uppercase tracking-wider">
+          Admin-Bereich wird geladen...
+        </p>
       </div>
     );
   }
@@ -569,29 +644,25 @@ export default function AdminClient() {
   const canModify = isSuperAdmin || isEditor;
 
   return (
-    <div className="min-h-screen relative flex flex-col justify-between">
-      <ParticleField />
-
+    <div className="min-h-screen relative flex flex-col justify-between bg-background">
       {/* Nav Header */}
-      <nav className="sticky top-0 z-20 glass-strong border-b border-border/50">
+      <header className="sticky top-0 z-20 border-b border-border bg-background font-mono text-xs">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl gradient-primary flex items-center justify-center shadow-md shadow-emerald-500/20">
-              <Leaf className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <span className="font-bold text-base block tracking-tight">Umweltmentoren</span>
-              <span className="text-[10px] text-muted-foreground block font-medium uppercase tracking-wider -mt-1">
-                Admin Panel
-              </span>
-            </div>
+            <span className="font-serif text-sm font-semibold text-foreground">
+              Umweltmentoren
+            </span>
+            <span className="text-border">/</span>
+            <span className="text-[11px] text-muted-foreground uppercase tracking-wider">
+              Admin-Portal
+            </span>
           </div>
 
           <div className="flex items-center gap-3">
             {session && (
-              <div className="hidden md:flex flex-col items-end border-r border-border/60 pr-3">
-                <span className="text-xs font-semibold">{session.email}</span>
-                <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">
+              <div className="hidden md:flex flex-col items-end border-r border-border pr-3 font-mono">
+                <span className="text-xs font-semibold text-foreground">{session.email}</span>
+                <span className="text-[10px] text-muted-foreground uppercase">
                   {roleLabels[session.adminRole] || session.adminRole}
                 </span>
               </div>
@@ -599,14 +670,15 @@ export default function AdminClient() {
             <ThemeToggle />
             <button
               onClick={handleLogout}
-              className="p-2 rounded-xl hover:bg-muted transition-all text-muted-foreground hover:text-foreground"
+              className="paper-btn-secondary text-xs"
               title="Abmelden"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Abmelden</span>
             </button>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
@@ -682,6 +754,17 @@ export default function AdminClient() {
               >
                 <Server className="w-4 h-4" />
                 System-Status
+              </button>
+              <button
+                onClick={() => { setActiveTab('simulation'); setError(''); setSuccess(''); }}
+                className={`flex items-center gap-2 pb-3 text-sm font-semibold border-b-2 transition-all shrink-0 ${
+                  activeTab === 'simulation'
+                    ? 'border-emerald-500 text-emerald-600 dark:text-emerald-400'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <Activity className="w-4 h-4" />
+                Simulation & Testdaten
               </button>
             </>
           )}
@@ -1580,6 +1663,171 @@ export default function AdminClient() {
                 Systemdaten werden geladen...
               </div>
             )}
+          </div>
+        )}
+
+        {/* Simulation Tab */}
+        {activeTab === 'simulation' && isSuperAdmin && (
+          <div className="space-y-6">
+            <article className="paper-sheet p-6 space-y-4">
+              <div className="border-b border-border pb-3 flex items-center justify-between">
+                <div>
+                  <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground block">
+                    Superadmin-Werkzeuge
+                  </span>
+                  <h2 className="text-xl font-serif font-normal text-foreground">
+                    Schul- und Datensatz-Simulation
+                  </h2>
+                </div>
+                <span className="paper-stamp">Test-Umgebung</span>
+              </div>
+              <p className="text-xs text-muted-foreground font-sans leading-relaxed">
+                Erstelle realitätsnahe Testschulen mit Klassen, Schülern und detailliert berechneten Fragebogen-Antworten. 
+                Perfekt zum Testen von Auswertungen, didaktischen Vergleichen und zur Demonstration für Lehrkräfte.
+              </p>
+
+              {/* Preset Selector */}
+              <div className="space-y-3 pt-2">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
+                  Simulations-Vorlage wählen:
+                </span>
+                <div className="grid sm:grid-cols-4 gap-2.5 font-mono text-xs">
+                  {[
+                    { id: 'standard', title: 'Standard-Schule', desc: '4 Klassen · 100 Schüler:innen' },
+                    { id: 'large', title: 'Große Gesamtschule', desc: '8 Klassen · 224 Schüler:innen' },
+                    { id: 'small', title: 'Kleine Realschule', desc: '2 Klassen · 40 Schüler:innen' },
+                    { id: 'custom', title: 'Individuell', desc: 'Eigene Parameter festlegen' },
+                  ].map((p) => (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setSimulationPreset(p.id as any)}
+                      className={`p-3 border text-left rounded-sm transition-all cursor-pointer ${
+                        simulationPreset === p.id
+                          ? 'border-foreground bg-muted/40 text-foreground font-bold'
+                          : 'border-border bg-card hover:bg-muted/20 text-muted-foreground'
+                      }`}
+                    >
+                      <span className="block text-foreground">{p.title}</span>
+                      <span className="text-[10px] text-muted-foreground font-normal">{p.desc}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Inputs if custom */}
+              {simulationPreset === 'custom' && (
+                <div className="grid sm:grid-cols-3 gap-3 p-4 border border-border bg-muted/20 text-xs font-mono">
+                  <div>
+                    <label className="block text-muted-foreground uppercase text-[10px] mb-1">Schulname</label>
+                    <input
+                      type="text"
+                      placeholder="z.B. Schiller-Gymnasium"
+                      value={customSimData.schoolName}
+                      onChange={(e) => setCustomSimData({ ...customSimData, schoolName: e.target.value })}
+                      className="w-full px-2.5 py-1.5 border border-border bg-card text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-muted-foreground uppercase text-[10px] mb-1">Anzahl Klassen (1-12)</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={12}
+                      value={customSimData.classesCount}
+                      onChange={(e) => setCustomSimData({ ...customSimData, classesCount: parseInt(e.target.value) || 1 })}
+                      className="w-full px-2.5 py-1.5 border border-border bg-card text-foreground"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-muted-foreground uppercase text-[10px] mb-1">Schüler pro Klasse (5-35)</label>
+                    <input
+                      type="number"
+                      min={5}
+                      max={35}
+                      value={customSimData.studentsPerClass}
+                      onChange={(e) => setCustomSimData({ ...customSimData, studentsPerClass: parseInt(e.target.value) || 10 })}
+                      className="w-full px-2.5 py-1.5 border border-border bg-card text-foreground"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="pt-2 flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={handleGenerateSimulation}
+                  disabled={generatingSimulation}
+                  className="paper-btn-primary text-xs"
+                >
+                  {generatingSimulation ? 'Generiere Schule & Schülerantworten...' : 'Simulation jetzt generieren →'}
+                </button>
+
+                {simulations.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteSimulation(undefined, true)}
+                    className="paper-btn-secondary text-xs text-destructive hover:border-destructive"
+                  >
+                    Alle Simulationen löschen
+                  </button>
+                )}
+              </div>
+            </article>
+
+            {/* Existing Simulated Schools List */}
+            <article className="paper-sheet p-6 space-y-4">
+              <div className="border-b border-border pb-3 flex items-center justify-between">
+                <h3 className="font-serif text-base font-normal text-foreground">
+                  Aktive simulierte Schulen ({simulations.length})
+                </h3>
+                <button
+                  type="button"
+                  onClick={fetchSimulations}
+                  className="font-mono text-xs text-muted-foreground hover:text-foreground cursor-pointer"
+                >
+                  Aktualisieren
+                </button>
+              </div>
+
+              {loadingSimulation ? (
+                <p className="font-mono text-xs text-muted-foreground text-center py-6">Lade Simulationen...</p>
+              ) : simulations.length === 0 ? (
+                <p className="font-mono text-xs text-muted-foreground text-center py-6">
+                  Keine simulierten Schulen vorhanden. Wähle oben eine Vorlage und klicke auf "Simulation jetzt generieren".
+                </p>
+              ) : (
+                <div className="space-y-3 font-mono text-xs">
+                  {simulations.map((sim) => (
+                    <div key={sim.id} className="p-4 border border-border bg-card space-y-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-2">
+                        <div>
+                          <span className="font-bold text-foreground font-serif text-sm block">
+                            {sim.schoolName}
+                          </span>
+                          <span className="text-muted-foreground text-[11px]">
+                            Lizenzschlüssel: <strong className="text-foreground">{sim.licenseKey}</strong> · PW: schule123
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteSimulation(sim.id)}
+                          className="text-destructive hover:underline text-[11px] self-start sm:self-auto cursor-pointer"
+                        >
+                          Löschen
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-3 gap-2 text-[11px] text-muted-foreground pt-1">
+                        <div>Klassen: <strong className="text-foreground">{sim.classesCount}</strong></div>
+                        <div>Schüler:innen: <strong className="text-foreground">{sim.totalStudents}</strong></div>
+                        <div>Abgeschlossen: <strong className="text-foreground">{sim.totalCompleted} ({sim.completionRate}%)</strong></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </article>
           </div>
         )}
       </div>

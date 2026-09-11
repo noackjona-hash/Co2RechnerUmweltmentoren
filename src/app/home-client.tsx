@@ -12,6 +12,28 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const [guestLoading, setGuestLoading] = useState(false);
+
+  const handleGuestLogin = async () => {
+    setGuestLoading(true);
+    setError('');
+    try {
+      const res = await fetch('/api/auth/guest-login', {
+        method: 'POST',
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Fehler beim Starten der Gast-Sitzung.');
+        setGuestLoading(false);
+        return;
+      }
+      router.push('/quiz');
+    } catch {
+      setError('Verbindungsfehler.');
+      setGuestLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!accessKey.trim()) return;
@@ -135,6 +157,21 @@ export default function HomePage() {
           <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] font-mono text-muted-foreground">
             <Lock className="w-3 h-3" />
             <span>Den 8-stelligen Code erhältst du von deiner Lehrkraft.</span>
+          </div>
+
+          {/* Guest Access Callout */}
+          <div className="mt-5 pt-4 border-t border-border flex flex-col items-center gap-2">
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">
+              Kein Code vorhanden?
+            </span>
+            <button
+              type="button"
+              onClick={handleGuestLogin}
+              disabled={guestLoading}
+              className="paper-btn-secondary text-xs w-full sm:w-auto"
+            >
+              {guestLoading ? 'Bereite Gast-Sitzung vor...' : 'Ohne Code als Gast ausprobieren →'}
+            </button>
           </div>
 
           {/* Subtle Perforation Divider */}

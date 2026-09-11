@@ -186,6 +186,31 @@ export default function LoginClient() {
               >
                 {loading ? 'Prüfe...' : 'Weiter zum Fragebogen'}
               </button>
+
+              <div className="pt-3 border-t border-border text-center">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    setLoading(true);
+                    try {
+                      const res = await fetch('/api/auth/guest-login', { method: 'POST' });
+                      const data = await res.json();
+                      if (res.ok) {
+                        router.push('/quiz');
+                      } else {
+                        setError(data.error || 'Fehler beim Starten der Gast-Sitzung.');
+                        setLoading(false);
+                      }
+                    } catch {
+                      setError('Verbindungsfehler.');
+                      setLoading(false);
+                    }
+                  }}
+                  className="text-[11px] font-mono text-muted-foreground hover:text-foreground cursor-pointer uppercase tracking-wider"
+                >
+                  Oder ohne Code als Gast starten →
+                </button>
+              </div>
             </form>
           )}
 

@@ -156,6 +156,8 @@ export async function GET() {
       classCategoryAverages,
       schoolAverage,
       schoolLeaderboard,
+      isGuest: session.accessKey?.startsWith('GAST-') || false,
+      accessKey: session.accessKey,
       classBadges: calculateClassBadges(
         classes.find((c) => c.id === student.classId)?.students || [],
         classAverage

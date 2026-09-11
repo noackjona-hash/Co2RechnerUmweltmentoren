@@ -38,6 +38,8 @@ export async function GET() {
     questions,
     responses,
     studentId: session.id,
+    accessKey: session.accessKey,
+    isGuest: session.accessKey?.startsWith('GAST-') || false,
     isCompleted: student?.isCompleted || false,
   });
 }

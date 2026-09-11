@@ -15,6 +15,7 @@ import {
   ChevronDown,
   ChevronUp,
   Printer,
+  Link2,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
@@ -114,6 +115,14 @@ export default function SchoolDashboardClient() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
+  const copyDirectLink = (key: string) => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const link = `${origin}/join/${key}`;
+    navigator.clipboard.writeText(link);
+    setCopiedKey(`link-${key}`);
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
+
   const copyAllKeys = (students: ClassData['students']) => {
     const keys = students.map((s) => s.accessKey).join('\n');
     navigator.clipboard.writeText(keys);
@@ -121,9 +130,18 @@ export default function SchoolDashboardClient() {
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
+  const copyAllDirectLinks = (students: ClassData['students']) => {
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
+    const links = students.map((s, idx) => `Schüler ${idx + 1}: ${origin}/join/${s.accessKey}`).join('\n');
+    navigator.clipboard.writeText(links);
+    setCopiedKey('all-links');
+    setTimeout(() => setCopiedKey(null), 2000);
+  };
+
   const printKeys = (cls: ClassData) => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
     printWindow.document.write(`
       <html><head><title>Zugangscodes – ${cls.className}</title>
       <style>
@@ -133,6 +151,7 @@ export default function SchoolDashboardClient() {
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .key { border: 1px solid #1c1917; padding: 12px; text-align: center; }
         .key-code { font-size: 16px; font-weight: bold; letter-spacing: 2px; }
+        .key-link { font-size: 9px; color: #333; margin-top: 4px; word-break: break-all; }
         .key-label { font-size: 9px; text-transform: uppercase; color: #666; margin-top: 4px; }
       </style></head><body>
       <h1>CO₂-Rechner – Zugangscodes · Umweltmentoren</h1>
@@ -141,6 +160,7 @@ export default function SchoolDashboardClient() {
         ${cls.students.map((s) => `
           <div class="key">
             <div class="key-code">${s.accessKey}</div>
+            <div class="key-link">${origin}/join/${s.accessKey}</div>
             <div class="key-label">${s.isCompleted ? 'Abgeschlossen' : 'Offen'}</div>
           </div>
         `).join('')}
@@ -379,23 +399,38 @@ export default function SchoolDashboardClient() {
                         </button>
 
                         {cls.students.length > 0 && (
-                          <button
-                            onClick={() => copyAllKeys(cls.students)}
-                            className="paper-btn-secondary text-xs ml-auto"
-                          >
-                            {copiedKey === 'all' ? (
-                              <Check className="w-3 h-3 inline mr-1 text-foreground" />
-                            ) : (
-                              <Copy className="w-3 h-3 inline mr-1" />
-                            )}
-                            Alle kopieren
-                          </button>
+                          <div className="flex items-center gap-2 ml-auto">
+                            <button
+                              onClick={() => copyAllKeys(cls.students)}
+                              className="paper-btn-secondary text-xs"
+                              title="Alle Codes als Textliste kopieren"
+                            >
+                              {copiedKey === 'all' ? (
+                                <Check className="w-3 h-3 inline mr-1 text-foreground" />
+                              ) : (
+                                <Copy className="w-3 h-3 inline mr-1" />
+                              )}
+                              Codes
+                            </button>
+                            <button
+                              onClick={() => copyAllDirectLinks(cls.students)}
+                              className="paper-btn-secondary text-xs"
+                              title="Alle Direktlinks für Schüler:innen kopieren"
+                            >
+                              {copiedKey === 'all-links' ? (
+                                <Check className="w-3 h-3 inline mr-1 text-foreground" />
+                              ) : (
+                                <Link2 className="w-3 h-3 inline mr-1" />
+                              )}
+                              Direktlinks
+                            </button>
+                          </div>
                         )}
                       </div>
 
                       {/* Keys Grid */}
                       {cls.students.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 pt-1">
                           {cls.students.map((student) => (
                             <div
                               key={student.id}
@@ -404,16 +439,30 @@ export default function SchoolDashboardClient() {
                               <span className={student.isCompleted ? 'text-foreground font-bold' : 'text-muted-foreground'}>
                                 {student.accessKey}
                               </span>
-                              <button
-                                onClick={() => copyKey(student.accessKey)}
-                                className="text-muted-foreground hover:text-foreground cursor-pointer p-0.5"
-                              >
-                                {copiedKey === student.accessKey ? (
-                                  <Check className="w-3 h-3 text-foreground" />
-                                ) : (
-                                  <Copy className="w-3 h-3" />
-                                )}
-                              </button>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => copyDirectLink(student.accessKey)}
+                                  className="text-muted-foreground hover:text-foreground cursor-pointer p-0.5"
+                                  title="Direktlink für Schüler:in kopieren"
+                                >
+                                  {copiedKey === `link-${student.accessKey}` ? (
+                                    <Check className="w-3 h-3 text-foreground" />
+                                  ) : (
+                                    <Link2 className="w-3 h-3" />
+                                  )}
+                                </button>
+                                <button
+                                  onClick={() => copyKey(student.accessKey)}
+                                  className="text-muted-foreground hover:text-foreground cursor-pointer p-0.5"
+                                  title="Code kopieren"
+                                >
+                                  {copiedKey === student.accessKey ? (
+                                    <Check className="w-3 h-3 text-foreground" />
+                                  ) : (
+                                    <Copy className="w-3 h-3" />
+                                  )}
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>

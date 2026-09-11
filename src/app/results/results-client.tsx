@@ -60,6 +60,8 @@ interface ResultsData {
     badges: any[];
   }[];
   classBadges: any[];
+  isGuest?: boolean;
+  accessKey?: string;
 }
 
 export default function ResultsClient() {
@@ -67,6 +69,7 @@ export default function ResultsClient() {
   const [loading, setLoading] = useState(true);
   const [animatedTotal, setAnimatedTotal] = useState(0);
   const [activeTab, setActiveTab] = useState<'analysis' | 'simulator' | 'challenge'>('analysis');
+  const [customSchoolName, setCustomSchoolName] = useState('');
   const [pledges, setPledges] = useState({
     vegetarian: false,
     vegan: false,
@@ -268,7 +271,7 @@ export default function ResultsClient() {
             <span className="text-muted-foreground uppercase tracking-widest">Auswertung</span>
             <span className="text-border">/</span>
             <span className="text-foreground uppercase tracking-wider font-semibold">
-              Klasse: {results.className || 'Schule'}
+              {results.isGuest ? 'Gast-Teilnahme (Freier Modus)' : `Klasse: ${results.className || 'Schule'}`}
             </span>
           </div>
 
@@ -553,35 +556,47 @@ export default function ResultsClient() {
                 </h3>
               </div>
 
-              <div className="divide-y divide-border border border-border">
-                {results.schoolLeaderboard?.map((entry, index) => {
-                  const isOwn = entry.className === results.className;
-                  return (
-                    <div
-                      key={entry.classId}
-                      className={`p-3.5 flex items-center justify-between text-xs font-mono ${
-                        isOwn ? 'bg-muted/40 font-bold' : 'bg-card'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="w-5 text-muted-foreground">{index + 1}.</span>
-                        <div>
-                          <span className="text-foreground block">
-                            {entry.className} {isOwn && '(Deine Klasse)'}
-                          </span>
-                          <span className="text-[11px] text-muted-foreground font-sans block">
-                            {entry.completedCount} / {entry.totalCount} abgeschlossen
-                          </span>
+              {results.isGuest ? (
+                <div className="p-4 border border-border bg-muted/20 space-y-1.5 font-sans text-xs">
+                  <span className="font-mono text-[11px] font-semibold text-foreground uppercase tracking-wider block">
+                    Gast-Teilnahme · Keine Schulklasse zugeordnet
+                  </span>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Da du diesen Rechner im freien Gast-Modus nutzt, nimmst du an keinem internen Klassenwettbewerb teil.
+                    Im Reiter <strong>01 Analyse & Details</strong> siehst du den direkten Vergleich deiner Werte mit dem Bundesdurchschnitt (10,8 t) und dem Pariser Klimaziel (unter 2 t).
+                  </p>
+                </div>
+              ) : (
+                <div className="divide-y divide-border border border-border">
+                  {results.schoolLeaderboard?.map((entry, index) => {
+                    const isOwn = entry.className === results.className;
+                    return (
+                      <div
+                        key={entry.classId}
+                        className={`p-3.5 flex items-center justify-between text-xs font-mono ${
+                          isOwn ? 'bg-muted/40 font-bold' : 'bg-card'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="w-5 text-muted-foreground">{index + 1}.</span>
+                          <div>
+                            <span className="text-foreground block">
+                              {entry.className} {isOwn && '(Deine Klasse)'}
+                            </span>
+                            <span className="text-[11px] text-muted-foreground font-sans block">
+                              {entry.completedCount} / {entry.totalCount} abgeschlossen
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="text-right font-semibold text-foreground">
+                          {entry.completedCount > 0 ? formatCO2(entry.averageCo2) : '---'}
                         </div>
                       </div>
-
-                      <div className="text-right font-semibold text-foreground">
-                        {entry.completedCount > 0 ? formatCO2(entry.averageCo2) : '---'}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              )}
             </article>
           </div>
         )}
@@ -598,24 +613,33 @@ export default function ResultsClient() {
               <X className="w-4 h-4" />
             </button>
 
-            <div className="mb-6 space-y-2 print:hidden font-mono text-xs">
+            <div className="mb-6 space-y-3 print:hidden font-mono text-xs">
               <h3 className="uppercase tracking-wider text-muted-foreground">
-                Name für Urkunde eintragen:
+                Angaben für Urkunde:
               </h3>
-              <div className="flex gap-2">
+              <div className="grid sm:grid-cols-2 gap-2">
                 <input
                   type="text"
                   placeholder="Vor- und Nachname"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  className="flex-1 px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
+                  className="px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
                 />
+                <input
+                  type="text"
+                  placeholder={results.isGuest ? 'Schule / Wohnort (optional)' : results.className || 'Klasse'}
+                  value={customSchoolName}
+                  onChange={(e) => setCustomSchoolName(e.target.value)}
+                  className="px-3 py-2 text-xs border border-border bg-muted/30 text-foreground focus:outline-none focus:border-foreground"
+                />
+              </div>
+              <div className="flex justify-end pt-1">
                 <button
                   onClick={() => window.print()}
                   className="paper-btn-primary text-xs flex items-center gap-1.5"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  Drucken / PDF
+                  Drucken / Als PDF speichern
                 </button>
               </div>
             </div>
@@ -643,7 +667,11 @@ export default function ResultsClient() {
                 </span>
               </div>
               <p className="text-xs text-stone-600 mb-6 font-sans">
-                Klasse: <strong>{results.className || 'Schule'}</strong>
+                {customSchoolName.trim()
+                  ? customSchoolName.trim()
+                  : results.isGuest
+                  ? 'Freie Gast-Teilnahme'
+                  : `Klasse: ${results.className || 'Schule'}`}
               </p>
 
               <p className="text-xs leading-relaxed max-w-md mx-auto mb-6">

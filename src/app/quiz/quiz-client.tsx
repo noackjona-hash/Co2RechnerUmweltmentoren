@@ -46,6 +46,7 @@ export default function QuizPage() {
   const [showHelp, setShowHelp] = useState(false);
   const [showCategoryIntro, setShowCategoryIntro] = useState(true);
   const [studentId, setStudentId] = useState<string | null>(null);
+  const [isGuest, setIsGuest] = useState(false);
   const router = useRouter();
 
   const currentQuestion = questions[currentIndex];
@@ -68,6 +69,7 @@ export default function QuizPage() {
 
         setQuestions(data.questions || []);
         setStudentId(data.studentId);
+        setIsGuest(data.isGuest || false);
 
         const storageKey = `co2rechner_quiz_progress_${data.studentId}`;
         const saved = localStorage.getItem(storageKey);
@@ -346,6 +348,11 @@ export default function QuizPage() {
       <header className="w-full border-b border-border bg-background sticky top-0 z-20">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between text-xs font-mono">
           <div className="flex items-center gap-2">
+            {isGuest && (
+              <span className="paper-stamp text-[10px] text-foreground border-foreground mr-1">
+                Gast-Modus
+              </span>
+            )}
             <span className="text-muted-foreground uppercase tracking-wider">Thema:</span>
             <span className="font-semibold text-foreground uppercase tracking-wider">
               {catInfo.label}
