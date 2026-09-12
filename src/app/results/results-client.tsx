@@ -263,10 +263,87 @@ export default function ResultsClient() {
     ],
   };
 
+  const renderCertificateMarkup = () => (
+    <div className="border-4 border-double border-stone-800 p-8 sm:p-12 text-center bg-white text-stone-900 font-serif">
+      <span className="text-[11px] font-mono tracking-widest uppercase text-stone-600 block mb-2">
+        Umweltmentoren Baden-Württemberg
+      </span>
+      <h2 className="text-2xl sm:text-3xl font-bold tracking-wider text-stone-900 mb-1">
+        KLIMASCHUTZ-URKUNDE
+      </h2>
+      <div className="w-16 h-0.5 bg-stone-900 mx-auto my-4" />
+
+      <p className="text-xs italic text-stone-700 mb-4">
+        Hiermit wird bescheinigt, dass
+      </p>
+
+      <div className="border-b-2 border-stone-400 max-w-xs mx-auto pb-1 mb-2">
+        <span className="text-xl font-bold text-stone-900 font-sans tracking-wide">
+          {studentName.trim() || '_______________________'}
+        </span>
+      </div>
+      <p className="text-xs text-stone-600 mb-6 font-sans">
+        {customSchoolName.trim()
+          ? customSchoolName.trim()
+          : results.isGuest
+          ? 'Freie Gast-Teilnahme'
+          : results.className ? `Klasse: ${results.className}` : 'Schulgemeinschaft'}
+      </p>
+
+      <p className="text-xs leading-relaxed max-w-md mx-auto mb-6 text-stone-800">
+        den persönlichen CO₂-Fußabdruck analysiert und ein Jahresergebnis von{' '}
+        <strong className="font-sans text-stone-900 font-bold">{formatCO2(totalCo2)}</strong> ermittelt hat.
+      </p>
+
+      {/* Pledges box */}
+      {Object.values(pledges).some(Boolean) ? (
+        <div className="border border-stone-400 p-4 max-w-md mx-auto text-left mb-6 text-xs font-sans bg-stone-50/50">
+          <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
+            Persönliches Klima-Versprechen:
+          </span>
+          <ul className="list-disc list-inside space-y-1 text-stone-800 text-[11px]">
+            {pledges.vegetarian && <li>Vegetarische Ernährung</li>}
+            {pledges.vegan && <li>Vegane Ernährung</li>}
+            {pledges.bioRegional && <li>Regionale & saisonale Lebensmittel</li>}
+            {pledges.activeTransit && <li>Schulweg zu Fuß oder mit dem Fahrrad</li>}
+            {pledges.noFlights && <li>Verzicht auf Flugreisen</li>}
+            {pledges.greenPower && <li>Einsatz für 100% Ökostrom</li>}
+            {pledges.lowerHeating && <li>Heizung um 1–2 Grad senken</li>}
+            {pledges.secondHand && <li>Second-Hand bevorzugen</li>}
+            {pledges.digitalReduction && <li>Bewusster Umgang mit Streaming & Geräten</li>}
+          </ul>
+          {co2Saved > 0 && (
+            <p className="text-xs text-stone-700 mt-3 pt-2 border-t border-stone-300 font-medium">
+              Prognostizierte Einsparung:{' '}
+              <strong className="font-bold text-stone-900">-{formatCO2(co2Saved)} CO₂/Jahr</strong>{' '}
+              (ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}).
+            </p>
+          )}
+        </div>
+      ) : (
+        <div className="border border-stone-400 p-4 max-w-md mx-auto text-center mb-6 text-xs font-sans bg-stone-50/50">
+          <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
+            Auszeichnung für Engagement
+          </span>
+          <p className="text-[11px] text-stone-700 leading-relaxed">
+            Ausgezeichnet für die erfolgreiche Reflexion des Alltagsverbrauchs und den aktiven Beitrag zum Klimabewusstsein an der Schule.
+          </p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-8 pt-6 max-w-sm mx-auto text-[10px] font-mono text-stone-600">
+        <div className="border-t border-stone-400 pt-1">
+          Datum: {new Date().toLocaleDateString('de-DE')}
+        </div>
+        <div className="border-t border-stone-400 pt-1">Unterschrift Lehrkraft / Mentor:in</div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen flex flex-col justify-between pb-12 bg-background">
       {/* Minimal Header */}
-      <header className="w-full border-b border-border bg-background sticky top-0 z-30">
+      <header className="w-full border-b border-border bg-background sticky top-0 z-30 print:hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 min-w-0">
             <span className="font-semibold text-sm tracking-tight text-foreground truncate">
@@ -684,25 +761,30 @@ export default function ResultsClient() {
         )}
       </main>
 
-      {/* Printable Certificate Modal */}
+      {/* Dedicated Print-Only Document - Always in DOM for Ctrl+P and print dialogs */}
+      <div id="print-certificate-document" className="hidden print:block">
+        {renderCertificateMarkup()}
+      </div>
+
+      {/* On-Screen Interactive Certificate Modal */}
       {showCertificate && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto print:p-0 print:bg-white print:static"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto print:hidden"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowCertificate(false);
           }}
         >
-          <div className="w-full max-w-xl bg-card p-6 sm:p-8 border border-border relative print:border-none print:p-0">
+          <div className="w-full max-w-xl bg-card p-5 sm:p-8 border border-border rounded-2xl relative shadow-2xl my-auto">
             <button
               onClick={() => setShowCertificate(false)}
-              className="absolute right-4 top-4 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer print:hidden transition-colors"
+              className="absolute right-4 top-4 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
               title="Schließen"
             >
               <X className="w-4 h-4" />
             </button>
 
-            {/* Customization controls on top */}
-            <div className="mb-6 space-y-3.5 print:hidden text-xs">
+            {/* Customization controls */}
+            <div className="mb-5 space-y-3.5 text-xs">
               <div className="flex items-center justify-between border-b border-border pb-2.5">
                 <div className="flex items-center gap-2">
                   <Award className="w-4 h-4 text-foreground" />
@@ -723,7 +805,7 @@ export default function ResultsClient() {
                     placeholder="Vor- und Nachname"
                     value={studentName}
                     onChange={(e) => setStudentName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground"
+                    className="w-full h-10 px-3 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
                 <div>
@@ -735,7 +817,7 @@ export default function ResultsClient() {
                     placeholder={results.isGuest ? 'Schule / Wohnort' : results.className || 'Klasse'}
                     value={customSchoolName}
                     onChange={(e) => setCustomSchoolName(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground"
+                    className="w-full h-10 px-3 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
               </div>
@@ -751,7 +833,7 @@ export default function ResultsClient() {
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="paper-btn-primary text-xs flex items-center gap-1.5 cursor-pointer"
+                  className="paper-btn-primary text-xs flex items-center gap-2 cursor-pointer font-medium"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   <span>Jetzt drucken / Als PDF speichern</span>
@@ -759,89 +841,17 @@ export default function ResultsClient() {
               </div>
             </div>
 
-            {/* Authentic Printable Certificate */}
-            <div
-              id="print-certificate"
-              className="border-4 border-double border-stone-800 p-8 sm:p-12 text-center bg-white text-stone-900 font-serif"
-            >
-              <span className="text-[11px] font-mono tracking-widest uppercase text-stone-600 block mb-2">
-                Umweltmentoren Baden-Württemberg
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-wider text-stone-900 mb-1">
-                KLIMASCHUTZ-URKUNDE
-              </h2>
-              <div className="w-16 h-0.5 bg-stone-900 mx-auto my-4" />
-
-              <p className="text-xs italic text-stone-700 mb-4">
-                Hiermit wird bescheinigt, dass
-              </p>
-
-              <div className="border-b-2 border-stone-400 max-w-xs mx-auto pb-1 mb-2">
-                <span className="text-xl font-bold text-stone-900 font-sans tracking-wide">
-                  {studentName.trim() || '_______________________'}
-                </span>
-              </div>
-              <p className="text-xs text-stone-600 mb-6 font-sans">
-                {customSchoolName.trim()
-                  ? customSchoolName.trim()
-                  : results.isGuest
-                  ? 'Freie Gast-Teilnahme'
-                  : `Klasse: ${results.className || 'Schule'}`}
-              </p>
-
-              <p className="text-xs leading-relaxed max-w-md mx-auto mb-6 text-stone-800">
-                den persönlichen CO₂-Fußabdruck analysiert und ein Jahresergebnis von{' '}
-                <strong className="font-sans text-stone-900 font-bold">{formatCO2(totalCo2)}</strong> ermittelt hat.
-              </p>
-
-              {/* Pledges box */}
-              {Object.values(pledges).some(Boolean) ? (
-                <div className="border border-stone-400 p-4 max-w-md mx-auto text-left mb-6 text-xs font-sans bg-stone-50/50">
-                  <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
-                    Persönliches Klima-Versprechen:
-                  </span>
-                  <ul className="list-disc list-inside space-y-1 text-stone-800 text-[11px]">
-                    {pledges.vegetarian && <li>Vegetarische Ernährung</li>}
-                    {pledges.vegan && <li>Vegane Ernährung</li>}
-                    {pledges.bioRegional && <li>Regionale & saisonale Lebensmittel</li>}
-                    {pledges.activeTransit && <li>Schulweg zu Fuß oder mit dem Fahrrad</li>}
-                    {pledges.noFlights && <li>Verzicht auf Flugreisen</li>}
-                    {pledges.greenPower && <li>Einsatz für 100% Ökostrom</li>}
-                    {pledges.lowerHeating && <li>Heizung um 1–2 Grad senken</li>}
-                    {pledges.secondHand && <li>Second-Hand bevorzugen</li>}
-                    {pledges.digitalReduction && <li>Bewusster Umgang mit Streaming & Geräten</li>}
-                  </ul>
-                  {co2Saved > 0 && (
-                    <p className="text-xs text-stone-700 mt-3 pt-2 border-t border-stone-300 font-medium">
-                      Prognostizierte Einsparung:{' '}
-                      <strong className="font-bold text-stone-900">-{formatCO2(co2Saved)} CO₂/Jahr</strong>{' '}
-                      (ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}).
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div className="border border-stone-400 p-4 max-w-md mx-auto text-center mb-6 text-xs font-sans bg-stone-50/50">
-                  <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
-                    Auszeichnung für Engagement
-                  </span>
-                  <p className="text-[11px] text-stone-700 leading-relaxed">
-                    Ausgezeichnet für die erfolgreiche Reflexion des Alltagsverbrauchs und den aktiven Beitrag zum Klimabewusstsein an der Schule.
-                  </p>
-                </div>
-              )}
-
-              <div className="grid grid-cols-2 gap-8 pt-6 max-w-sm mx-auto text-[10px] font-mono text-stone-600">
-                <div className="border-t border-stone-400 pt-1">
-                  Datum: {new Date().toLocaleDateString('de-DE')}
-                </div>
-                <div className="border-t border-stone-400 pt-1">Unterschrift Lehrkraft / Mentor:in</div>
-              </div>
+            {/* Live Interactive Preview */}
+            <div className="overflow-x-auto rounded-xl border border-border">
+              {renderCertificateMarkup()}
             </div>
           </div>
         </div>
       )}
 
-      <LegalFooter />
+      <div className="print:hidden">
+        <LegalFooter />
+      </div>
     </div>
   );
 }

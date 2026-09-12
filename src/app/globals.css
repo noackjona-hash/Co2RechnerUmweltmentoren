@@ -242,6 +242,11 @@
     margin: 1cm;
   }
 
+  *, *::before, *::after {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
   html, body {
     background: #ffffff !important;
     color: #1c1917 !important;
@@ -254,39 +259,38 @@
     print-color-adjust: exact !important;
   }
 
-  /* Hide everything on page by default */
-  body * {
-    visibility: hidden !important;
+  /* Hide normal screen elements when printing */
+  .print\:hidden,
+  .no-print,
+  header,
+  footer,
+  nav,
+  main,
+  button,
+  .modal-overlay {
+    display: none !important;
   }
 
-  /* Show ONLY the certificate and its descendants */
-  #print-certificate,
-  #print-certificate * {
+  /* Show ONLY the printable certificate document */
+  #print-certificate-document {
+    display: block !important;
     visibility: visible !important;
-  }
-
-  #print-certificate {
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     padding: 2.5rem !important;
     border: 4px double #1c1917 !important;
     background: #ffffff !important;
     color: #1c1917 !important;
     box-sizing: border-box !important;
-    display: block !important;
-    z-index: 9999999 !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
-  .print\:hidden,
-  .no-print,
-  button,
-  nav,
-  header,
-  footer {
-    display: none !important;
+  #print-certificate-document * {
+    visibility: visible !important;
+    color: #1c1917 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 }
