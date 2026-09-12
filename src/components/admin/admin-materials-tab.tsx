@@ -12,6 +12,7 @@ import {
   Check,
   Sparkles,
 } from 'lucide-react';
+import SpeechFlipcards from '@/components/admin/speech-flipcards';
 
 export default function AdminMaterialsTab() {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
@@ -371,75 +372,7 @@ export default function AdminMaterialsTab() {
           3. BÜHNENTEXT & MODERATIONSKARTEN (15-MINUTEN VORTRAG)
       ══════════════════════════════════════════════════════════════════════════ */}
       <section className="space-y-4 print:hidden">
-        <div className="flex items-center justify-between border-b border-border pb-2.5">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-bold text-foreground bg-muted px-2 py-0.5 rounded">
-              03
-            </span>
-            <h3 className="text-sm font-semibold text-foreground">
-              Bühnentext & Moderationskarten (Jona & Paul)
-            </h3>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <a
-              href="/materials/06_Moderationskarten_Buehnenkarten_DIN_A6.pdf"
-              download="06_Moderationskarten_Buehnenkarten_DIN_A6.pdf"
-              className="paper-btn-secondary !min-h-[32px] !text-xs !py-1 !px-3 flex items-center gap-1.5 font-medium"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Karten PDF (DIN A6)</span>
-            </a>
-            <a
-              href="/materials/07_Buehnen_Sprechtext_Wort_fuer_Wort_DIN_A4.pdf"
-              download="07_Buehnen_Sprechtext_Wort_fuer_Wort_DIN_A4.pdf"
-              className="paper-btn-secondary !min-h-[32px] !text-xs !py-1 !px-3 flex items-center gap-1.5 font-medium"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Sprechtext PDF (DIN A4)</span>
-            </a>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-2xl border border-border bg-card space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded">
-                Paul Kaiser
-              </span>
-              <span className="text-[11px] font-mono text-muted-foreground">Bühnen-Fokus</span>
-            </div>
-            <h4 className="font-serif font-bold text-base text-foreground">
-              Begrüßung, Live-Test & Übergabe
-            </h4>
-            <ul className="text-xs text-muted-foreground space-y-1.5 list-disc list-inside">
-              <li>Offizielle Begrüßung von Staatssekretär Deuschle & Plenum</li>
-              <li>Anmoderation des Saal-Live-Tests per QR-Code (Folie 3)</li>
-              <li>Wissenschaftliche Basis (UBA & GEMIS)</li>
-              <li>Handabdruck & Simulator (Maßnahmen statt Schuldgefühle)</li>
-              <li>Überleitung & Übergabe an Staatssekretär Andreas Deuschle</li>
-            </ul>
-          </div>
-
-          <div className="p-5 rounded-2xl border border-border bg-card space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded">
-                Jona Noack
-              </span>
-              <span className="text-[11px] font-mono text-muted-foreground">Bühnen-Fokus</span>
-            </div>
-            <h4 className="font-serif font-bold text-base text-foreground">
-              Problem, Didaktik & Datenschutz
-            </h4>
-            <ul className="text-xs text-muted-foreground space-y-1.5 list-disc list-inside">
-              <li>Problem im Unterricht (Heizöl/kWh Überforderung bei Schülern)</li>
-              <li>Live-Begleitung während das Publikum am Smartphone tippt</li>
-              <li>3 didaktische Modi (10Q Einstieg, 30Q Fachstunde, 60Q Projekttag)</li>
-              <li>Lehrer-Dashboard mit 1-Klick-Code & Beamer-Klassenauswertung</li>
-              <li>100% DSGVO: Keine Schüler-Accounts, Urkunden lokal im Browser</li>
-            </ul>
-          </div>
-        </div>
+        <SpeechFlipcards />
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════════════

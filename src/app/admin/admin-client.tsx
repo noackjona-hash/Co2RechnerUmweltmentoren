@@ -42,6 +42,7 @@ import {
   Layers,
   GraduationCap,
   Calendar,
+  Mic,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LegalFooter } from '@/components/legal-footer';
@@ -137,9 +138,10 @@ interface StatsData {
   transportDistribution: TransportDistribution[];
 }
 
-type Tab = 'stats' | 'schools' | 'questions' | 'materials' | 'admins' | 'system' | 'simulation';
+type Tab = 'stats' | 'schools' | 'questions' | 'materials' | 'speech' | 'admins' | 'system' | 'simulation';
 
 import AdminMaterialsTab from '@/components/admin/admin-materials-tab';
+import SpeechFlipcards from '@/components/admin/speech-flipcards';
 
 const CATEGORY_COLORS: Record<string, string> = {
   mobility: '#10b981', // emerald
@@ -825,6 +827,19 @@ export default function AdminClient() {
           >
             <Layers className="w-3.5 h-3.5" />
             <span>Stellwand & Materialien</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('speech'); setError(''); setSuccess(''); }}
+            className={`px-3.5 py-2 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'speech'
+                ? 'bg-foreground text-background shadow-sm'
+                : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+            }`}
+          >
+            <Mic className="w-3.5 h-3.5" />
+            <span>Rede-Flipcards</span>
+            <span className="text-[10px] font-mono opacity-80 ml-0.5">(8)</span>
           </button>
 
           {isSuperAdmin && (
@@ -1785,6 +1800,11 @@ export default function AdminClient() {
             TAB: STELLWAND & MATERIALIEN (EXKLUSIV IM ADMIN-PORTAL)
         ══════════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'materials' && <AdminMaterialsTab />}
+
+        {/* ══════════════════════════════════════════════════════════════════════════
+            TAB: REDE-FLIPCARDS (BÜHNENKARTEN JONA & PAUL)
+        ══════════════════════════════════════════════════════════════════════════ */}
+        {activeTab === 'speech' && <SpeechFlipcards />}
 
         {/* ══════════════════════════════════════════════════════════════════════════
             TAB 4: ADMIN ACCOUNTS (SUPERADMIN)
