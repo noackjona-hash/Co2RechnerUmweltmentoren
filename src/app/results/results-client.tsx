@@ -6,6 +6,8 @@ import {
   CATEGORIES,
   NATIONAL_AVERAGE_CO2,
   CLIMATE_TARGET_CO2,
+  CO2_BASE_PAUSCHALEN,
+  TOTAL_BASE_PAUSCHALE,
   formatCO2,
   type Category,
 } from '@/lib/utils';
@@ -155,42 +157,39 @@ export default function ResultsClient() {
 
   const { totalCo2, categoryTotals } = results;
 
-  const simulatedCategoryTotals = {
-    mobility: categoryTotals.mobility || 0,
-    food: categoryTotals.food || 0,
-    energy: categoryTotals.energy || 0,
-    consumption: categoryTotals.consumption || 0,
+  const simulatedCategoryTotals: Record<string, number> = {
+    mobility: categoryTotals.mobility || CO2_BASE_PAUSCHALEN.mobility,
+    food: categoryTotals.food || CO2_BASE_PAUSCHALEN.food,
+    energy: categoryTotals.energy || CO2_BASE_PAUSCHALEN.energy,
+    consumption: categoryTotals.consumption || CO2_BASE_PAUSCHALEN.consumption,
+    public: categoryTotals.public || CO2_BASE_PAUSCHALEN.public,
   };
 
-  if (pledges.vegan) {
-    simulatedCategoryTotals.food = Math.max(0, simulatedCategoryTotals.food - (categoryTotals.food || 0) * 0.45);
-  } else if (pledges.vegetarian) {
-    simulatedCategoryTotals.food = Math.max(0, simulatedCategoryTotals.food - (categoryTotals.food || 0) * 0.33);
-  }
-  if (pledges.bioRegional) {
-    simulatedCategoryTotals.food = Math.max(0, simulatedCategoryTotals.food - (categoryTotals.food || 0) * 0.1);
-  }
+  const variableFood = Math.max(0, (categoryTotals.food || 0) - CO2_BASE_PAUSCHALEN.food);
+  const variableMobility = Math.max(0, (categoryTotals.mobility || 0) - CO2_BASE_PAUSCHALEN.mobility);
+  const variableEnergy = Math.max(0, (categoryTotals.energy || 0) - CO2_BASE_PAUSCHALEN.energy);
+  const variableConsumption = Math.max(0, (categoryTotals.consumption || 0) - CO2_BASE_PAUSCHALEN.consumption);
 
-  if (pledges.activeTransit) {
-    simulatedCategoryTotals.mobility = Math.max(0, simulatedCategoryTotals.mobility - (categoryTotals.mobility || 0) * 0.3);
-  }
-  if (pledges.noFlights) {
-    simulatedCategoryTotals.mobility = Math.max(0, simulatedCategoryTotals.mobility - (categoryTotals.mobility || 0) * 0.5);
-  }
+  let foodReduction = 0;
+  if (pledges.vegan) foodReduction = Math.max(350, variableFood * 0.55);
+  else if (pledges.vegetarian) foodReduction = Math.max(250, variableFood * 0.38);
+  if (pledges.bioRegional) foodReduction += Math.max(80, variableFood * 0.12);
+  simulatedCategoryTotals.food = Math.max(CO2_BASE_PAUSCHALEN.food, (categoryTotals.food || 0) - foodReduction);
 
-  if (pledges.greenPower) {
-    simulatedCategoryTotals.energy = Math.max(0, simulatedCategoryTotals.energy - 300);
-  }
-  if (pledges.lowerHeating) {
-    simulatedCategoryTotals.energy = Math.max(0, simulatedCategoryTotals.energy - (categoryTotals.energy || 0) * 0.12);
-  }
+  let mobilityReduction = 0;
+  if (pledges.activeTransit) mobilityReduction += Math.max(140, variableMobility * 0.35);
+  if (pledges.noFlights) mobilityReduction += Math.max(400, variableMobility * 0.6);
+  simulatedCategoryTotals.mobility = Math.max(CO2_BASE_PAUSCHALEN.mobility, (categoryTotals.mobility || 0) - mobilityReduction);
 
-  if (pledges.secondHand) {
-    simulatedCategoryTotals.consumption = Math.max(0, simulatedCategoryTotals.consumption - (categoryTotals.consumption || 0) * 0.4);
-  }
-  if (pledges.digitalReduction) {
-    simulatedCategoryTotals.consumption = Math.max(0, simulatedCategoryTotals.consumption - (categoryTotals.consumption || 0) * 0.2);
-  }
+  let energyReduction = 0;
+  if (pledges.greenPower) energyReduction += Math.max(280, variableEnergy * 0.3);
+  if (pledges.lowerHeating) energyReduction += Math.max(120, variableEnergy * 0.15);
+  simulatedCategoryTotals.energy = Math.max(CO2_BASE_PAUSCHALEN.energy, (categoryTotals.energy || 0) - energyReduction);
+
+  let consumptionReduction = 0;
+  if (pledges.secondHand) consumptionReduction += Math.max(180, variableConsumption * 0.35);
+  if (pledges.digitalReduction) consumptionReduction += Math.max(80, variableConsumption * 0.18);
+  simulatedCategoryTotals.consumption = Math.max(CO2_BASE_PAUSCHALEN.consumption, (categoryTotals.consumption || 0) - consumptionReduction);
 
   const simulatedTotalCo2 = Object.values(simulatedCategoryTotals).reduce((sum, v) => sum + v, 0);
   const co2Saved = Math.max(0, totalCo2 - simulatedTotalCo2);
@@ -200,11 +199,11 @@ export default function ResultsClient() {
     if (totalCo2 <= CLIMATE_TARGET_CO2) {
       return { label: 'Klimaziel erreicht', desc: 'Vorbildlich · Unter 2.000 kg CO₂ pro Jahr' };
     }
-    if (totalCo2 <= NATIONAL_AVERAGE_CO2 * 0.7) {
+    if (totalCo2 <= 6500) {
       return { label: 'Sehr sparsam', desc: 'Deutlich unter dem Bundesdurchschnitt' };
     }
     if (totalCo2 <= NATIONAL_AVERAGE_CO2) {
-      return { label: 'Unter Bundesdurchschnitt', desc: 'Unter den durchschnittlichen 10.800 kg' };
+      return { label: 'Unter Bundesdurchschnitt', desc: `Unter den durchschnittlichen ${formatCO2(NATIONAL_AVERAGE_CO2)}` };
     }
     return { label: 'Einsparpotenzial vorhanden', desc: 'Mit gezielten Alltagsänderungen viel bewegen' };
   };
@@ -260,6 +259,11 @@ export default function ResultsClient() {
       'Kleidung Second-Hand kaufen oder im Freundeskreis tauschen.',
       'Smartphones und Elektronik länger nutzen.',
       'Müll sorgfältig trennen (Papier, Glas, Wertstoff).',
+    ],
+    public: [
+      'Gemeinsame Klimaschutz-Aktionen an der Schule planen.',
+      'Fahrradfreundliche Schulwege bei der Gemeinde anregen.',
+      'Kommunale Nachhaltigkeitsprojekte und Energiewende unterstützen.',
     ],
   };
 
@@ -489,6 +493,21 @@ export default function ResultsClient() {
         {/* TAB 1: ANALYSE */}
         {activeTab === 'analysis' && (
           <div className="space-y-4 sm:space-y-6">
+            {/* UBA Pauschale Explanatory Banner */}
+            <div className="p-3 sm:p-4 rounded-xl border border-border bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted-foreground">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <span className="font-mono text-[10px] font-bold text-foreground bg-background border border-border px-2 py-0.5 rounded shrink-0 uppercase tracking-wide">
+                  UBA-Standard
+                </span>
+                <span className="text-[11px] sm:text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+                  Dein Gesamtergebnis enthält eine <strong>wissenschaftliche Grundpauschale (4,4 t)</strong>: 1.200 kg für öffentliche Infrastruktur (Straßen, Schulen, Krankenhäuser) sowie Sockelbeträge für Grundbedarfe in Wohnen, Ernährung und Konsum.
+                </span>
+              </div>
+              <span className="font-mono text-xs text-foreground font-semibold shrink-0 bg-background/80 px-2 py-1 rounded border border-border">
+                +4.400 kg Pauschale
+              </span>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
               <div className="paper-sheet p-3.5 sm:p-5 space-y-2.5 sm:space-y-3">
                 <div className="flex items-center justify-between border-b border-border pb-2">
@@ -511,8 +530,8 @@ export default function ResultsClient() {
               </div>
             </div>
 
-            {/* 4 Category Cards with Clean Progress Bars */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            {/* 5 Category Cards with Clean Progress Bars */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
               {Object.entries(categoryTotals).map(([key, value]) => {
                 const cat = CATEGORIES[key as Category];
                 if (!cat) return null;

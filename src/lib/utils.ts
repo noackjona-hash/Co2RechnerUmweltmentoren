@@ -57,11 +57,25 @@ export const CATEGORIES = {
     color: '#a855f7',
     gradient: 'from-purple-500 to-pink-500',
   },
+  public: {
+    label: 'Öffentliche Hand',
+    icon: '🏛️',
+    color: '#64748b',
+    gradient: 'from-slate-500 to-zinc-500',
+  },
 } as const;
 
 export type Category = keyof typeof CATEGORIES;
 
-// German national average: ~9.1 tonnes CO2e per capita per year
-export const NATIONAL_AVERAGE_CO2 = 9100; // kg
-// Climate target: ~2 tonnes
+export {
+  CO2_BASE_PAUSCHALEN,
+  TOTAL_BASE_PAUSCHALE,
+  calculateStudentCategoryTotals,
+  calculateStudentTotalCo2,
+} from './co2-calculator';
+
+// German national average: ~10.5 tonnes CO2e per capita per year (Umweltbundesamt)
+export const NATIONAL_AVERAGE_CO2 = 10500; // kg
+// Climate target 2050: ~2 tonnes (Paris 1.5°C)
 export const CLIMATE_TARGET_CO2 = 2000; // kg
+

@@ -24,8 +24,9 @@ export async function GET() {
         student: { isCompleted: true },
       },
     });
-    const totalCo2 = co2SumResult._sum.calculatedCo2 || 0;
-    const avgCo2PerStudent = totalCompleted > 0 ? totalCo2 / totalCompleted : 0;
+    const variableCo2Total = co2SumResult._sum.calculatedCo2 || 0;
+    const totalCo2 = Math.round(variableCo2Total + (totalCompleted * 4400));
+    const avgCo2PerStudent = totalCompleted > 0 ? Math.round(totalCo2 / totalCompleted) : 0;
 
     // 3. Category aggregates
     const categoryAggregates = await prisma.quizResponse.groupBy({
@@ -36,21 +37,28 @@ export async function GET() {
       },
     });
 
-    const categoryStats = categoryAggregates.map((agg) => {
-      const sum = agg._sum.calculatedCo2 || 0;
-      return {
-        category: agg.category,
-        totalCo2: Math.round(sum),
-        avgCo2: totalCompleted > 0 ? parseFloat((sum / totalCompleted).toFixed(2)) : 0,
-      };
+    const categoryStatsMap = new Map<string, number>();
+    categoryAggregates.forEach((agg) => {
+      categoryStatsMap.set(agg.category.toLowerCase(), agg._sum.calculatedCo2 || 0);
     });
 
-    // Ensure all standard categories exist (mobility, food, heating, electricity, consumption)
-    const standardCategories = ['mobility', 'food', 'heating', 'electricity', 'consumption'];
-    const formattedCategoryStats = standardCategories.map((cat) => {
-      const existing = categoryStats.find((s) => s.category.toLowerCase() === cat.toLowerCase());
-      if (existing) return existing;
-      return { category: cat, totalCo2: 0, avgCo2: 0 };
+    const standardCategories: { key: string; pauschale: number }[] = [
+      { key: 'mobility', pauschale: 400 },
+      { key: 'food', pauschale: 600 },
+      { key: 'energy', pauschale: 800 },
+      { key: 'consumption', pauschale: 1400 },
+      { key: 'public', pauschale: 1200 },
+    ];
+
+    const formattedCategoryStats = standardCategories.map(({ key, pauschale }) => {
+      const rawSum = categoryStatsMap.get(key) || 0;
+      const totalWithPauschale = Math.round(rawSum + (totalCompleted * pauschale));
+      const avg = totalCompleted > 0 ? parseFloat((totalWithPauschale / totalCompleted).toFixed(2)) : pauschale;
+      return {
+        category: key,
+        totalCo2: totalWithPauschale,
+        avgCo2: avg,
+      };
     });
 
     // 4. Completions over time (last 30 days)

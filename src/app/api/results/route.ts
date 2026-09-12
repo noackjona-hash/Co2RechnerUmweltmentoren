@@ -2,6 +2,11 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { calculateClassBadges } from '@/lib/badges';
+import {
+  calculateStudentCategoryTotals,
+  calculateStudentTotalCo2,
+  TOTAL_BASE_PAUSCHALE,
+} from '@/lib/co2-calculator';
 
 // GET student results
 export async function GET() {
@@ -19,17 +24,9 @@ export async function GET() {
       },
     });
 
-    // Calculate totals per category
-    const categoryTotals: Record<string, number> = {};
-    responses.forEach((r) => {
-      categoryTotals[r.category] =
-        (categoryTotals[r.category] || 0) + r.calculatedCo2;
-    });
-
-    const totalCo2 = Object.values(categoryTotals).reduce(
-      (sum, v) => sum + v,
-      0
-    );
+    // Calculate totals per category including scientific UBA base pauschalen
+    const categoryTotals = calculateStudentCategoryTotals(responses);
+    const totalCo2 = calculateStudentTotalCo2(responses);
 
     // Fetch current student details to find class and license
     const student = await prisma.student.findUnique({
@@ -90,7 +87,7 @@ export async function GET() {
       const totalStudents = cls._count.students;
 
       const studentCo2s = completedStudents.map((s) => {
-        const studentSum = s.responses.reduce((sum, r) => sum + r.calculatedCo2, 0);
+        const studentSum = calculateStudentTotalCo2(s.responses);
         allSchoolCompletedCo2s.push(studentSum);
         return studentSum;
       });
@@ -116,10 +113,7 @@ export async function GET() {
 
         const categoryTotalsMap: Record<string, number[]> = {};
         completedStudents.forEach((s) => {
-          const studentCatTotals: Record<string, number> = {};
-          s.responses.forEach((r) => {
-            studentCatTotals[r.category] = (studentCatTotals[r.category] || 0) + r.calculatedCo2;
-          });
+          const studentCatTotals = calculateStudentCategoryTotals(s.responses);
           Object.entries(studentCatTotals).forEach(([cat, sum]) => {
             if (!categoryTotalsMap[cat]) categoryTotalsMap[cat] = [];
             categoryTotalsMap[cat].push(sum);

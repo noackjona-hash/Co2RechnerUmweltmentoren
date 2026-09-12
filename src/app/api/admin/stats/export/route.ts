@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
+import {
+  calculateStudentCategoryTotals,
+  calculateStudentTotalCo2,
+} from '@/lib/co2-calculator';
 
 export async function GET() {
   try {
@@ -31,31 +35,15 @@ export async function GET() {
       'Abgeschlossen',
       'Mobilitaet_kg_CO2',
       'Ernaehrung_kg_CO2',
-      'Heizung_kg_CO2',
-      'Strom_kg_CO2',
+      'Energie_kg_CO2',
       'Konsum_kg_CO2',
+      'Oeffentliche_Hand_kg_CO2',
       'Gesamt_kg_CO2'
     ].join(';'));
 
     for (const student of students) {
-      const catTotals: Record<string, number> = {
-        mobility: 0,
-        food: 0,
-        heating: 0,
-        electricity: 0,
-        consumption: 0,
-      };
-
-      let totalCo2 = 0;
-      student.responses.forEach(r => {
-        const cat = r.category.toLowerCase();
-        if (catTotals[cat] !== undefined) {
-          catTotals[cat] += r.calculatedCo2;
-        } else {
-          catTotals[cat] = (catTotals[cat] || 0) + r.calculatedCo2;
-        }
-        totalCo2 += r.calculatedCo2;
-      });
+      const catTotals = calculateStudentCategoryTotals(student.responses);
+      const totalCo2 = calculateStudentTotalCo2(student.responses);
 
       const row = [
         student.id,
@@ -63,11 +51,11 @@ export async function GET() {
         student.class.className,
         student.createdAt.toISOString().split('T')[0],
         student.isCompleted ? 'Ja' : 'Nein',
-        catTotals.mobility.toFixed(2),
-        catTotals.food.toFixed(2),
-        catTotals.heating.toFixed(2),
-        catTotals.electricity.toFixed(2),
-        catTotals.consumption.toFixed(2),
+        (catTotals.mobility || 0).toFixed(2),
+        (catTotals.food || 0).toFixed(2),
+        (catTotals.energy || 0).toFixed(2),
+        (catTotals.consumption || 0).toFixed(2),
+        (catTotals.public || 0).toFixed(2),
         totalCo2.toFixed(2)
       ];
 

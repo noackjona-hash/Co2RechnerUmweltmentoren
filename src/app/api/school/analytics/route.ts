@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { calculateClassBadges } from '@/lib/badges';
+import {
+  calculateStudentCategoryTotals,
+  calculateStudentTotalCo2,
+} from '@/lib/co2-calculator';
 
 // GET aggregated analytics for the school
 export async function GET() {
@@ -35,6 +39,9 @@ export async function GET() {
       select: {
         id: true,
         className: true,
+        _count: {
+          select: { students: true },
+        },
         students: {
           where: { isCompleted: true },
           select: {
@@ -53,10 +60,8 @@ export async function GET() {
             },
           },
         },
-        _count: {
-          select: { students: true },
-        },
       },
+      orderBy: { className: 'asc' },
     });
 
     // Calculate aggregated stats
@@ -68,14 +73,10 @@ export async function GET() {
           ? Math.round((completedStudents.length / totalStudents) * 100)
           : 0;
 
-      // Category totals
+      // Category totals including base pauschalen
       const categoryTotals: Record<string, number[]> = {};
       completedStudents.forEach((student) => {
-        const studentCategoryTotals: Record<string, number> = {};
-        student.responses.forEach((r) => {
-          studentCategoryTotals[r.category] =
-            (studentCategoryTotals[r.category] || 0) + r.calculatedCo2;
-        });
+        const studentCategoryTotals = calculateStudentCategoryTotals(student.responses);
         Object.entries(studentCategoryTotals).forEach(([cat, total]) => {
           if (!categoryTotals[cat]) categoryTotals[cat] = [];
           categoryTotals[cat].push(total);
@@ -91,7 +92,7 @@ export async function GET() {
       });
 
       const totalCo2Values = completedStudents.map((s) =>
-        s.responses.reduce((sum, r) => sum + r.calculatedCo2, 0)
+        calculateStudentTotalCo2(s.responses)
       );
       const averageCo2 =
         totalCo2Values.length > 0
@@ -118,7 +119,7 @@ export async function GET() {
     // School-wide stats
     const allCompletedStudents = classes.flatMap((c) => c.students);
     const allCo2Values = allCompletedStudents.map((s) =>
-      s.responses.reduce((sum, r) => sum + r.calculatedCo2, 0)
+      calculateStudentTotalCo2(s.responses)
     );
 
     const schoolAverage =
@@ -137,11 +138,7 @@ export async function GET() {
     // School-wide category averages
     const schoolCategoryTotals: Record<string, number[]> = {};
     allCompletedStudents.forEach((student) => {
-      const studentCats: Record<string, number> = {};
-      student.responses.forEach((r) => {
-        studentCats[r.category] =
-          (studentCats[r.category] || 0) + r.calculatedCo2;
-      });
+      const studentCats = calculateStudentCategoryTotals(student.responses);
       Object.entries(studentCats).forEach(([cat, total]) => {
         if (!schoolCategoryTotals[cat]) schoolCategoryTotals[cat] = [];
         schoolCategoryTotals[cat].push(total);

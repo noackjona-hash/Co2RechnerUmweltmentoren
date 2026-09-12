@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Moderationskarten - Jona Noack & Paul Kaiser</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      color: #09090b;
+      background: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .page {
+      width: 190mm;
+      height: 277mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+      position: relative;
+    }
+    .page:last-child {
+      page-break-after: avoid;
+    }
+    .cut-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      border-top: 1px dashed #a1a1aa;
+    }
+    .cut-label {
+      position: absolute;
+      top: calc(50% - 3mm);
+      right: 2mm;
+      font-family: monospace;
+      font-size: 7pt;
+      color: #a1a1aa;
+      background: #fff;
+      padding: 0 2mm;
+    }
+    .card {
+      width: 190mm;
+      height: 133mm;
+      border: 1.5px solid #18181b;
+      border-radius: 4mm;
+      padding: 8mm 9mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: #fafafa;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid #09090b;
+      padding-bottom: 2.5mm;
+      margin-bottom: 3.5mm;
+    }
+    .card-num {
+      font-family: "Courier New", monospace;
+      font-size: 9pt;
+      font-weight: 800;
+      background: #09090b;
+      color: #ffffff;
+      padding: 1.5mm 3mm;
+      border-radius: 2mm;
+    }
+    .card-title {
+      font-size: 13pt;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .card-meta {
+      font-family: monospace;
+      font-size: 8pt;
+      color: #71717a;
+    }
+    .card-body {
+      flex: 1;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+    }
+    .bullet-point {
+      display: flex;
+      gap: 2.5mm;
+      align-items: flex-start;
+    }
+    .speaker-badge {
+      font-size: 7.5pt;
+      font-family: monospace;
+      font-weight: 700;
+      padding: 0.8mm 2mm;
+      border-radius: 1.5mm;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .speaker-paul {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+    .speaker-jona {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .speaker-beamer {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+    .bullet-text {
+      flex: 1;
+    }
+    .bullet-text strong {
+      color: #09090b;
+    }
+    .card-footer {
+      border-top: 1px solid #e4e4e7;
+      padding-top: 2.5mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: monospace;
+      font-size: 7.5pt;
+      color: #71717a;
+    }
+    .action-tip {
+      font-weight: 600;
+      color: #059669;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SEITE 1: KARTEN 1 & 2 -->
+  <div class="page">
+    <div class="cut-line"></div>
+    <div class="cut-label">✂ HIER SCHNEIDEN (DIN A6 KARTEN)</div>
+
+    <!-- KARTE 1 -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">KARTE 1 / 6</span>
+          <span class="card-title">Begrüßung & Einstieg</span>
+        </div>
+        <span class="card-meta">00:00 – 02:00 min</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">BEAMER</span>
+          <div class="bullet-text"><strong>Folie 1 anzeigen:</strong> Titel „CO₂-Rechner für Schulen“, Namen Jona Noack & Paul Kaiser.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Begrüßung:</strong> Herr Staatssekretär Deuschle, Ministeriumsvertreter, Jugendstiftung, Mentoren, Lehrkräfte! „Wir freuen uns riesig, heute hier im Innenministerium zu stehen...“</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Vorstellung & Motivation:</strong> „Mein Name ist Jona Noack, zusammen sind wir Umweltmentoren 2025/2026. Unser Ziel: Kein Projekt für die Schublade, sondern ein dauerhaft nutzbares Werkzeug für ganz Baden-Württemberg.“</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: Freundlicher Blick ins Plenum, Deuschle direkt anblicken, ruhiges Tempo.</span>
+        <span>Folientaste: LEERTASTE</span>
+      </div>
+    </div>
+
+    <!-- KARTE 2 -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">KARTE 2 / 6</span>
+          <span class="card-title">Das Problem im Unterricht</span>
+        </div>
+        <span class="card-meta">02:00 – 04:30 min</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">BEAMER</span>
+          <div class="bullet-text"><strong>Folie 2 weiterklicken:</strong> 3 Problemfelder (Zu komplex · Datenschutz · Kein Klassenverbund).</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Aus Schülersicht erzählen:</strong> Lehrer sagt: „Wir berechnen unseren Fußabdruck.“ Nach 3 Minuten Frust: 1. Rechner für Erwachsene (Liter Heizöl, kWh Strom). 2. Datenschutz-Verstöße (E-Mails, Cookies). 3. Jeder Schüler sitzt isoliert, keine Klassenauswertung.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Die Vision:</strong> Alltagsnah, 100% DSGVO, passend für 45 Minuten. „Und weil wir Umweltmentoren sind, zeigen wir keine Tabellen – wir probieren das jetzt alle live aus!“</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: Bei „Heizöl“ schmunzeln – das kennen alle Lehrkräfte im Saal!</span>
+        <span>Folientaste: LEERTASTE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEITE 2: KARTEN 3 & 4 -->
+  <div class="page">
+    <div class="cut-line"></div>
+    <div class="cut-label">✂ HIER SCHNEIDEN (DIN A6 KARTEN)</div>
+
+    <!-- KARTE 3 -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">KARTE 3 / 6</span>
+          <span class="card-title">Live-Mitmachrunde im Saal 🔥</span>
+        </div>
+        <span class="card-meta">04:30 – 08:30 min</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">BEAMER</span>
+          <div class="bullet-text"><strong>Folie 3 weiterklicken:</strong> Großer QR-Code & Schritt-für-Schritt-Anleitung.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Saal auffordern:</strong> Smartphone hochhalten: „Bitte alle Smartphone zücken, Kamera auf den QR-Code richten! Kein Download, keine Registrierung – einfach ‚Als Gast testen‘ antippen.“</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Anleitung während des Tippens:</strong> „10 Alltagsfragen (Anreise heute, Ernährung, Streaming). Dauert unter 2 Minuten. Sofortiges Jahresergebnis in kg CO₂ + Urkunde.“</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Saalabfrage (nach 90 Sek.):</strong> „Wer hat sein Ergebnis schon? Einmal Hand heben!“ Reagieren: „Super, fast der ganze Saal!“</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: 90 Sekunden Ruhe aushalten, während der Saal tippt. Lächeln, Blickkontakt halten.</span>
+        <span>Folientaste: LEERTASTE</span>
+      </div>
+    </div>
+
+    <!-- KARTE 4 -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">KARTE 4 / 6</span>
+          <span class="card-title">Didaktik & 3 Unterrichtsmodi</span>
+        </div>
+        <span class="card-meta">08:30 – 11:00 min</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">BEAMER</span>
+          <div class="bullet-text"><strong>Folie 4 weiterklicken:</strong> 4 Säulen (Mobilität, Ernährung, Energie, Konsum) + 3 Modi.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Wissenschaftliche Basis:</strong> Faktoren stammen direkt vom Umweltbundesamt (UBA) und GEMIS. 4 Lebensbereiche decken 100% des Alltags ab.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Die 3 Modi für den Schulalltag:</strong><br>
+          • <strong>10 Fragen (Quick-Check, 2 Min):</strong> Knackiger Stundeneinstieg.<br>
+          • <strong>30 Fragen (Standard, 8–10 Min):</strong> Perfekt für 45-Min-Fachstunde Geo/Bio.<br>
+          • <strong>60 Fragen (Detail, 25 Min):</strong> Projekttage, AGs, Schulaudits.</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: Klar betonen: Es passt exakt in eine 45-Minuten-Schulstunde!</span>
+        <span>Folientaste: LEERTASTE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEITE 3: KARTEN 5 & 6 -->
+  <div class="page">
+    <div class="cut-line"></div>
+    <div class="cut-label">✂ HIER SCHNEIDEN (DIN A6 KARTEN)</div>
+
+    <!-- KARTE 5 -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">KARTE 5 / 6</span>
+          <span class="card-title">Lehrer-Dashboard & DSGVO</span>
+        </div>
+        <span class="card-meta">11:00 – 13:00 min</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">BEAMER</span>
+          <div class="bullet-text"><strong>Folie 5 weiterklicken:</strong> Lehrer-Dashboard, Klassencode, Live-Balken, Urkunde.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Klassenverbund & Datenschutz:</strong> Lehrer generiert 1-Klick-Code (z.B. KL-8B). Sofortige Klassenauswertung am Beamer. <strong>100% DSGVO:</strong> Keine Schülerdaten auf Servern, Schülernamen für Urkunden werden nur lokal im Browser verarbeitet!</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Handabdruck & Simulator:</strong> „Keine Schuldgefühle!“ Schüler simulieren Maßnahmen (z.B. 2 Tage Veggie = -400kg CO₂). Gedruckte Urkunde mit offiziellem Siegel.</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: Wortlaut „DSGVO-konform ohne Schüler-Accounts“ begeistert Schulleiter & Ministerium!</span>
+        <span>Folientaste: LEERTASTE</span>
+      </div>
+    </div>
+
+    <!-- KARTE 6 -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">KARTE 6 / 6</span>
+          <span class="card-title">Fazit & Übergabe an Deuschle</span>
+        </div>
+        <span class="card-meta">13:00 – 15:00 min</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">BEAMER</span>
+          <div class="bullet-text"><strong>Folie 6 weiterklicken:</strong> Abschlussfolie, Stellwand-Hinweis, Logos.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Fazit:</strong> Klimaschutz scheitert nicht am Willen, sondern an praxistauglichen Werkzeugen. Die Plattform steht ab heute allen Schulen in BW kostenlos zur Verfügung.</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Einladung & Übergabe:</strong> „Besuchen Sie uns gleich an unserer Stellwand im Projekte-Markt für Handouts und Schulcodes. Herzlichen Dank – und nun freuen wir uns auf Staatssekretär Andreas Deuschle!“</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: Verbeugen, Blick zu Deuschle, Lächeln und Applaus abwarten.</span>
+        <span>Ende des Vortrags</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEITE 4: Q&A DEFENSE & NOTFALLKARTEN -->
+  <div class="page">
+    <div class="cut-line"></div>
+    <div class="cut-label">✂ HIER SCHNEIDEN (DIN A6 KARTEN)</div>
+
+    <!-- KARTE 7: Q&A -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">EXTRA 1</span>
+          <span class="card-title">Q&A Defense (Fragen abfangen)</span>
+        </div>
+        <span class="card-meta">Nach dem Vortrag</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Frage: Wie sicher ist der Datenschutz an Schulen?</strong><br>
+          „Zu 100%. Keine E-Mail, kein Benutzername für Schüler. Anonymer Klassencode. Urkundennamen werden ausschließlich lokal im RAM des Browsers eingesetzt.“</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">PAUL</span>
+          <div class="bullet-text"><strong>Frage: Was kostet die Plattform für Schulen?</strong><br>
+          „0,00 Euro. Als Umweltmentoren haben wir die Plattform als Open-Source-Gemeinwohlprojekt gebaut. Dauerhaft kostenlos, keine Werbung.“</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-jona">JONA</span>
+          <div class="bullet-text"><strong>Frage: Passt das in den Bildungsplan BW?</strong><br>
+          „Ja, Leitperspektive BNE. Fächer Geographie (Kl. 7-10), Biologie/BNT und Gemeinschaftskunde.“</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Tipp: Ruhig, präzise und selbstbewusst antworten.</span>
+        <span>Stichwort: BNE & DSGVO</span>
+      </div>
+    </div>
+
+    <!-- KARTE 8: NOTFALL-BACKUP -->
+    <div class="card">
+      <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 3mm;">
+          <span class="card-num">EXTRA 2</span>
+          <span class="card-title">Technik & Notfall-Plan</span>
+        </div>
+        <span class="card-meta">Quick-Fixes</span>
+      </div>
+      <div class="card-body">
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-beamer">TASTEN</span>
+          <div class="bullet-text"><strong>Tastatur-Kürzel auf dem Präsentations-Laptop:</strong><br>
+          • <strong>F</strong> = Vollbild an/aus<br>
+          • <strong>Leertaste / Pfeil rechts</strong> = Folie vorwärts<br>
+          • <strong>Pfeil links</strong> = Folie zurück<br>
+          • <strong>Zahlen 1 bis 6</strong> = Direkt zu Folie 1 bis 6 springen</div>
+        </div>
+        <div class="bullet-point">
+          <span class="speaker-badge speaker-paul">NOTFALL</span>
+          <div class="bullet-text"><strong>Falls Saal-WLAN schwach ist:</strong><br>
+          Paul sagt locker: „Wer kein Netz hat, schaut einfach kurz beim Nachbarn aufs Display oder testet nachher an unserer Stellwand im Projekte-Markt!“</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="action-tip">👉 Wichtig: Niemals aus der Ruhe bringen lassen. Ihr seid die Experten!</span>
+        <span>Umweltmentoren 2025/2026</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
