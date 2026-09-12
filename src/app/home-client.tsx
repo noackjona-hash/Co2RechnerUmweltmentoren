@@ -186,12 +186,24 @@ export default function HomePage() {
         </div>
 
         {/* Small School Teacher Note */}
-        <div className="text-center text-xs text-muted-foreground px-2">
-          Für Lehrkräfte: Im{' '}
-          <Link href="/login" className="text-foreground underline underline-offset-4 hover:text-muted-foreground">
-            Schulportal
-          </Link>{' '}
-          kannst du Klassen anlegen, Lehrkräfte zuweisen und Codes exportieren.
+        <div className="text-center text-xs text-muted-foreground px-2 space-y-1">
+          <p>
+            Für Lehrkräfte: Im{' '}
+            <Link href="/login" className="text-foreground underline underline-offset-4 hover:text-muted-foreground font-medium">
+              Schulportal
+            </Link>{' '}
+            kannst du Klassen anlegen, Lehrkräfte zuweisen und Codes exportieren.
+          </p>
+          <p className="text-[11px] text-muted-foreground/80">
+            Der CO₂-Rechner steht auf Anfrage bereit – Schulzugänge richten wir kostenlos nur auf Anfrage per E-Mail an{' '}
+            <a
+              href="mailto:jona.noack@outlook.de"
+              className="text-foreground font-medium underline underline-offset-2 hover:opacity-80"
+            >
+              jona.noack@outlook.de
+            </a>{' '}
+            ein.
+          </p>
         </div>
       </main>
 

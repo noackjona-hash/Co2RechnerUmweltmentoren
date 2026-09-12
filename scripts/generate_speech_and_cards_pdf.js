@@ -527,14 +527,14 @@ const cueCardsHtml = `<!DOCTYPE html>
           </div>
           <ul class="bullet-list">
             <li>Er scheiterte bisher an komplizierten Werkzeugen.</li>
-            <li>Unser CO₂-Rechner steht ab heute <strong>kostenlos für alle Schulen in BW</strong> bereit.</li>
+            <li>Unser CO₂-Rechner steht ab heute <strong>auf Anfrage kostenlos für Schulen in BW</strong> bereit.</li>
           </ul>
         </div>
 
         <div class="section-block block-paul">
-          <div class="speaker-tag tag-paul">🎤 PAUL (Dank & Feierliche Übergabe)</div>
+          <div class="speaker-tag tag-paul">🎤 PAUL (Dank, Schulzugang & Feierliche Übergabe)</div>
           <div class="first-sentence">
-            „Besuchen Sie uns gleich an unserer Stellwand im Projekte-Markt – wir richten Ihnen gerne einen Schulzugang ein!“
+            „Schulzugänge richten wir nur auf Anfrage per E-Mail (jona.noack@outlook.de) oder gleich an unserer Stellwand ein!“
           </div>
           <ul class="bullet-list">
             <li>Dank an Jugendstiftung, Ministerium & Umweltmentoren-Kurs.</li>
@@ -588,9 +588,9 @@ const cueCardsHtml = `<!DOCTYPE html>
         </div>
 
         <div class="section-block block-paul">
-          <div class="speaker-tag tag-paul">❓ FRAGE 3: Was kostet das Tool für Schulen?</div>
+          <div class="speaker-tag tag-paul">❓ FRAGE 3: Was kostet das Tool & wie läuft der Zugang?</div>
           <ul class="bullet-list">
-            <li><strong>Paul:</strong> „0,00 Euro. Gemeinwohl- und Open-Source-Projekt von uns Umweltmentoren. Dauerhaft kostenlos und werbefrei.“</li>
+            <li><strong>Paul:</strong> „Exakt 0,00 Euro. Gemeinwohl- und Schülerprojekt von uns Umweltmentoren. Der Rechner ist dauerhaft kostenlos – Schulzugänge und Lehrer-Accounts richten wir allerdings ausschließlich auf Anfrage per E-Mail ein (jona.noack@outlook.de)!“</li>
           </ul>
         </div>
 
@@ -969,7 +969,7 @@ const scriptHtml = `<!DOCTYPE html>
     <div class="quote">
       „Unsere Botschaft heute ist ganz einfach:<br>
       Klimaschutz an Schulen scheitert nicht am Willen der Jugendlichen und auch nicht am Engagement der Lehrkräfte. Er scheiterte bisher oft an komplizierten, unzugänglichen Werkzeugen.<br>
-      Mit unserem CO₂-Rechner steht ab heute ein kostenloses, modernes und datenschutzkonformes Tool für alle Schulen in Baden-Württemberg bereit.“
+      Mit unserem CO₂-Rechner steht ab heute ein kostenloses, modernes und datenschutzkonformes Tool auf Anfrage für Schulen in Baden-Württemberg bereit.“
     </div>
   </div>
 
@@ -977,7 +977,8 @@ const scriptHtml = `<!DOCTYPE html>
     <span class="speaker speaker-p">PAUL KAISER:</span>
     <span class="stage-direction">(Schaut zu Staatssekretär Andreas Deuschle und ins Publikum)</span>
     <div class="quote">
-      „Wenn Sie Lehrkraft oder Mentor sind: Besuchen Sie uns gleich im Anschluss an unserer Stellwand im Projekte-Markt. Wir haben fertige Verlaufspläne und Handouts für Sie vorbereitet, und wir richten Ihnen gerne direkt einen Schulzugang ein.<br>
+      „Wichtig für alle Lehrkräfte: Der CO₂-Rechner steht auf Anfrage bereit – Schulzugänge und Klassenlizenzen richten wir nur auf Anfrage per E-Mail (jona.noack@outlook.de) oder direkt an unserer Stellwand im Projekte-Markt ein.<br>
+      Besuchen Sie uns gleich im Anschluss! Wir haben fertige Verlaufspläne und Handouts für Sie vorbereitet.<br>
       Wir danken der Jugendstiftung Baden-Württemberg, dem Ministerium und unserem gesamten Mentorenkurs für die Unterstützung im vergangenen Jahr.<br>
       <strong>Und nun freuen wir uns ganz besonders auf den Impuls und das Gespräch mit Staatssekretär Andreas Deuschle!</strong><br>
       Vielen Dank!“<br>

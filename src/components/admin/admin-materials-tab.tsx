@@ -64,7 +64,7 @@ export default function AdminMaterialsTab() {
             Ausstellungsplakat & Präsentation
           </h2>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-2xl">
-            Das offizielle minimalistische Ausstellungsplakat für die Stellwand sowie die Beamer-Präsentation für den 15-Minuten-Vortrag.
+            Das offizielle minimalistische Ausstellungsplakat für die Stellwand sowie die Beamer-Präsentation für den 15-Minuten-Vortrag. Der CO₂-Rechner steht auf Anfrage bereit – Schulzugänge richten wir nur auf Anfrage per E-Mail ein.
           </p>
         </div>
 
@@ -263,7 +263,7 @@ export default function AdminMaterialsTab() {
 
           {/* Footer */}
           <div className="border-t border-zinc-200 pt-4 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-zinc-500 gap-2">
-            <div>Kostenloses Bildungstool für Schulen in Baden-Württemberg</div>
+            <div>Kostenloses Bildungstool für Schulen · Schulzugänge nur auf Anfrage per E-Mail: <strong className="text-zinc-950">jona.noack@outlook.de</strong></div>
             <div>
               Projektteam: <strong className="text-zinc-950">Jona Noack & Paul Kaiser</strong> · Umweltmentoren
             </div>
@@ -449,7 +449,7 @@ export default function AdminMaterialsTab() {
           </div>
 
           <div className="border-t border-zinc-200 pt-4 flex justify-between text-xs font-mono text-zinc-500">
-            <div>Kostenloses Bildungstool für Schulen in Baden-Württemberg</div>
+            <div>Kostenloses Bildungstool für Schulen · Schulzugänge nur auf Anfrage per E-Mail: jona.noack@outlook.de</div>
             <div>Jona Noack & Paul Kaiser · Umweltmentoren</div>
           </div>
         </article>

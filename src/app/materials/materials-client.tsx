@@ -737,10 +737,11 @@ export default function MaterialsClient() {
                       <li>• Umwelt-AGs & Projekttage</li>
                     </ul>
 
-                    <h4 className="font-serif font-bold text-xs text-zinc-900 mt-3 mb-1">Kontakt & Fragen:</h4>
+                    <h4 className="font-serif font-bold text-xs text-zinc-900 mt-3 mb-1">Kontakt & Schulzugang:</h4>
                     <p className="text-[11px] text-zinc-600">
                       Jona Noack & Paul Kaiser<br />
                       Schülermentoren Baden-Württemberg<br />
+                      Schulzugang nur auf Anfrage: <strong className="font-mono text-zinc-900">jona.noack@outlook.de</strong><br />
                       Web: <span className="font-mono text-zinc-900">{guestLink || 'co2-rechner'}</span>
                     </p>
                   </div>
@@ -1027,10 +1028,11 @@ export default function MaterialsClient() {
                   <li>• Umwelt-AGs & Projekttage</li>
                 </ul>
 
-                <h4 className="font-serif font-bold text-xs text-zinc-950 mt-3 mb-1">Entwickler & Kontakt:</h4>
+                <h4 className="font-serif font-bold text-xs text-zinc-950 mt-3 mb-1">Entwickler & Schulzugang:</h4>
                 <p className="text-[11px] text-zinc-700">
                   Jona Noack & Paul Kaiser<br />
                   Umweltmentorenprogramm Baden-Württemberg<br />
+                  Schulzugang nur auf Anfrage: <strong className="font-mono text-zinc-950">jona.noack@outlook.de</strong><br />
                   Web-App: <span className="font-mono text-zinc-950 font-medium">{guestLink}</span>
                 </p>
               </div>

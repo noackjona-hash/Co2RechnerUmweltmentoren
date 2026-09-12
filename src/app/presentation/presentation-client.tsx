@@ -450,7 +450,7 @@ export default function PresentationClient() {
                 Gemeinsam CO₂ senken – an jeder Schule!
               </h2>
               <p className="text-base sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto font-light">
-                Der CO₂-Rechner steht allen Umweltmentorinnen und -mentoren sowie interessierten Schulen ab sofort kostenfrei zur Verfügung.
+                Der CO₂-Rechner steht ab sofort kostenfrei auf Anfrage bereit. Schulzugänge und Lehrkräfte-Lizenzen richten wir persönlich auf Anfrage per E-Mail ein.
               </p>
             </div>
 
@@ -461,17 +461,17 @@ export default function PresentationClient() {
                   Projekte-Markt Stellwand
                 </strong>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Ausstellungsplakat, gedruckte Handouts für Lehrkräfte & Erfahrungsaustausch vor Ort.
+                  Ausstellungsplakat, gedruckte Handouts für Lehrkräfte & direkte Anfrage vor Ort.
                 </p>
               </div>
 
               <div className="paper-sheet p-6 space-y-2 shadow-sm border-2">
-                <span className="text-xs font-mono text-muted-foreground">Kontakt & Projekt</span>
+                <span className="text-xs font-mono text-muted-foreground">Schulzugang per E-Mail</span>
                 <strong className="text-base font-serif font-bold text-foreground block">
-                  Jona Noack & Paul Kaiser
+                  jona.noack@outlook.de
                 </strong>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Umweltmentorenprogramm Baden-Württemberg · Kurs 2025/2026
+                  Jona Noack & Paul Kaiser · Umweltmentoren BW 2025/2026
                 </p>
               </div>
             </div>

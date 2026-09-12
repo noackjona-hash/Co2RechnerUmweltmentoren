@@ -420,16 +420,16 @@ export const TV_CUE_CARDS: TvCueCard[] = [
           speaker: 'jona',
           speakerName: 'JONA NOACK',
           quote:
-            '„Unsere Botschaft heute ist ganz einfach: Klimaschutz an Schulen scheitert nicht am Willen der Jugendlichen und auch nicht am Engagement der Lehrkräfte. Er scheiterte bisher oft an komplizierten Werkzeugen. Mit unserem CO₂-Rechner steht ab heute ein kostenloses Tool für alle Schulen in Baden-Württemberg bereit!“',
-          highlights: ['scheitert nicht am Willen', 'kostenloses Tool für alle Schulen in Baden-Württemberg'],
+            '„Unsere Botschaft heute ist ganz einfach: Klimaschutz an Schulen scheitert nicht am Willen der Jugendlichen und auch nicht am Engagement der Lehrkräfte. Er scheiterte bisher oft an komplizierten Werkzeugen. Mit unserem CO₂-Rechner steht ab heute ein kostenloses Tool auf Anfrage für Schulen in Baden-Württemberg bereit!“',
+          highlights: ['scheitert nicht am Willen', 'kostenloses Tool auf Anfrage für Schulen'],
           stageAction: 'Blickkontakt durch das gesamte Auditorium, spricht klar und getragen.',
         },
         {
           speaker: 'paul',
           speakerName: 'PAUL KAISER',
           quote:
-            '„Wenn Sie Lehrkraft oder Mentor sind: Besuchen Sie uns gleich an unserer Stellwand im Projekte-Markt – wir richten Ihnen gerne direkt einen Schulzugang ein! Wir danken der Jugendstiftung, dem Ministerium und unserem Mentorenkurs.“',
-          highlights: ['Besuchen Sie uns an unserer Stellwand', 'Schulzugang einrichten', 'Vielen Dank'],
+            '„Wichtig für alle Lehrkräfte und Schulleitungen: Der Rechner steht auf Anfrage bereit – Schulzugänge richten wir ausschließlich auf Anfrage per E-Mail ein! Schreiben Sie uns an jona.noack@outlook.de oder besuchen Sie uns gleich an der Stellwand. Wir danken der Jugendstiftung, dem Ministerium und unserem Mentorenkurs.“',
+          highlights: ['nur auf Anfrage bereit', 'Schulzugänge nur auf Anfrage per E-Mail', 'Vielen Dank'],
         },
         {
           speaker: 'paul',
@@ -442,12 +442,13 @@ export const TV_CUE_CARDS: TvCueCard[] = [
       ],
       bulletPoints: [
         {
-          label: 'Schlüsselfertig für BW',
-          text: 'Kostenloses Angebot an alle Schulen im Land zur sofortigen Nutzung.',
+          label: 'Schulzugänge nur auf Anfrage per E-Mail',
+          text: 'Der Rechner steht auf Anfrage bereit. Schulzugänge & Lizenzen richten wir kostenlos nur auf Anfrage per E-Mail ein (jona.noack@outlook.de).',
+          highlight: true,
         },
         {
           label: 'Einladung Stellwand',
-          text: 'Handouts, Verlaufspläne und direkte Lehrer-Accounts am Stand im Markt der Möglichkeiten.',
+          text: 'Handouts, Verlaufspläne und direkte Vor-Ort-Anfragen am Stand im Markt der Möglichkeiten.',
         },
         {
           label: '🏆 Punktlandung um 13:30',
@@ -463,8 +464,8 @@ export const TV_CUE_CARDS: TvCueCard[] = [
       venue: 'Innenministerium Baden-Württemberg · Stuttgart',
       date: 'Freitag, 25. September 2026',
       hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
-      tagline: 'GEMEINSAM CO₂ SENKEN AN JEDER SCHULE',
-      badgeText: 'ÜBERGABE DEUSCHLE 🏆',
+      tagline: 'SCHULZUGÄNGE NUR AUF ANFRAGE PER E-MAIL',
+      badgeText: 'SCHULZUGANG PER E-MAIL ✉️',
     },
   },
   {
@@ -479,7 +480,7 @@ export const TV_CUE_CARDS: TvCueCard[] = [
     moderator: {
       segmentBadge: 'JOKER-KARTE · Q&A DEFENSE',
       beamerTrigger: 'Folie 5/6 als Standbild im Hintergrund',
-      regieInstruction: 'Souverän, gelassen, faktenstark. Nie defensiv wirken – wir sind didaktisch und technisch perfekt vorbereitet!',
+      regieInstruction: 'Souverän, gelassen, faktenstark. Betonen: Tool ist kostenlos, aber Schulzugänge gibt es nur auf Anfrage per E-Mail!',
       speechLines: [
         {
           speaker: 'jona',
@@ -499,8 +500,8 @@ export const TV_CUE_CARDS: TvCueCard[] = [
           speaker: 'paul',
           speakerName: 'PAUL KAISER',
           quote:
-            '„Frage 3 (Kosten für Schulen?): Exakt 0,00 Euro. Gemeinwohl- und Schülerprojekt von uns Umweltmentoren. Dauerhaft kostenlos, werbefrei und ohne Lizenzgebühren für Schulen in BW.“',
-          highlights: ['Exakt 0,00 Euro', 'Dauerhaft kostenlos, werbefrei'],
+            '„Frage 3 (Kosten & Schulzugang?): Exakt 0,00 Euro. Gemeinwohl- und Schülerprojekt von uns Umweltmentoren. Der Rechner steht dauerhaft kostenlos bereit – Schulzugänge richten wir allerdings nur auf Anfrage per E-Mail ein (jona.noack@outlook.de), um die Schulen persönlich zu betreuen!“',
+          highlights: ['Exakt 0,00 Euro', 'nur auf Anfrage per E-Mail', 'Schulzugänge persönlich einrichten'],
         },
         {
           speaker: 'jona',
@@ -512,6 +513,11 @@ export const TV_CUE_CARDS: TvCueCard[] = [
       ],
       bulletPoints: [
         {
+          label: 'Zugang nur auf Anfrage',
+          text: 'Schulen fordern ihren Zugang formlos per E-Mail an. Wir erstellen Schullizenz und Klassen-Accounts.',
+          highlight: true,
+        },
+        {
           label: 'DSGVO Argument',
           text: 'Vollständig konform mit dem Landesdatenschutzgesetz Baden-Württemberg.',
         },
@@ -521,7 +527,7 @@ export const TV_CUE_CARDS: TvCueCard[] = [
         },
         {
           label: 'Kosten Argument',
-          text: 'Freie Bildungsressource (OER) für alle staatlichen und freien Schulen.',
+          text: 'Freie Bildungsressource (OER) für alle staatlichen und freien Schulen – dauerhaft kostenlos auf Anfrage.',
         },
       ],
       partnerCue: '👉 Je nach Frage antwortet Jona (Didaktik/DSGVO) oder Paul (UBA/Kosten).',
@@ -1031,7 +1037,7 @@ export default function SpeechFlipcards() {
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4 text-foreground shrink-0" />
           <span>
-            Offizieller Leitfaden Umweltmentoren BW: Die Karten sind exakt auf den 15-Minuten-Slot von 13:15 bis 13:30 Uhr abgestimmt.
+            Wichtig: Der CO₂-Rechner steht nur auf Anfrage bereit – Schulzugänge richten wir ausschließlich auf Anfrage per E-Mail an <strong className="text-foreground underline">jona.noack@outlook.de</strong> ein.
           </span>
         </div>
         <div className="text-left sm:text-right shrink-0">

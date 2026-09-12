@@ -294,6 +294,16 @@ export default function LoginClient() {
                 <p>
                   Das Passwort für deine Klasse wird von deiner Schulleitung im Schulportal unter der Klassenverwaltung eingerichtet.
                 </p>
+                <p className="text-[11px] text-muted-foreground/90">
+                  Noch kein Schulzugang? Schulzugänge und Lizenzen richten wir kostenlos <strong>nur auf Anfrage per E-Mail</strong> an{' '}
+                  <a
+                    href="mailto:jona.noack@outlook.de"
+                    className="font-mono text-foreground font-semibold underline underline-offset-2 hover:opacity-80"
+                  >
+                    jona.noack@outlook.de
+                  </a>{' '}
+                  ein.
+                </p>
                 <button
                   type="button"
                   onClick={() => setActiveTab('school')}
@@ -352,6 +362,22 @@ export default function LoginClient() {
               >
                 {loading ? 'Wird geprüft...' : 'Schulportal öffnen →'}
               </button>
+
+              <div className="p-3.5 rounded-md border border-border bg-muted/20 text-xs text-muted-foreground space-y-1 leading-relaxed">
+                <span className="font-semibold text-foreground block text-xs">
+                  Schulzugang anfordern:
+                </span>
+                <p>
+                  Schulzugänge und Lizenzen richten wir kostenlos <strong>nur auf Anfrage per E-Mail</strong> an{' '}
+                  <a
+                    href="mailto:jona.noack@outlook.de"
+                    className="font-mono text-foreground font-semibold underline underline-offset-2 hover:opacity-80"
+                  >
+                    jona.noack@outlook.de
+                  </a>{' '}
+                  ein.
+                </p>
+              </div>
             </form>
           )}
 
