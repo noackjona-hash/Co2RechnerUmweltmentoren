@@ -72,6 +72,51 @@ export default function AdminMaterialsTab() {
     }, 150);
   };
 
+  const pdfList = [
+    {
+      title: '01. Wissenschaftliches Ausstellungsplakat (DIN A2 / A1)',
+      desc: '3-Spalten-Infografik: Problem, Datenbasis (UBA), Live-Mitmachstation, Dashboard & Datenschutz.',
+      file: '01_Ausstellungsplakat_Wissenschaftlich_DIN_A2.pdf',
+      size: '224 KB',
+      format: 'DIN A2 Landscape',
+      key: 'masterpiece'
+    },
+    {
+      title: '02. XXL-Mitmachplakat mit Riesen-QR-Code (DIN A3 / A2)',
+      desc: 'Messe-Eyecatcher für Besucher & Mentor*innen zum sofortigen Testen mit dem Smartphone.',
+      file: '02_XXL_Mitmachplakat_QR_Code_DIN_A3.pdf',
+      size: '283 KB',
+      format: 'DIN A3 Portrait',
+      key: 'mitmach'
+    },
+    {
+      title: '03. Stellwand-Kopfblende / Header-Banner (120 × 25 cm)',
+      desc: 'Breiter Banner für die obere Kante der Stellwand im Projekte-Markt.',
+      file: '03_Stellwand_Kopfblende_Banner_120x25cm.pdf',
+      size: '101 KB',
+      format: '1200 × 250 mm Banner',
+      key: 'banner'
+    },
+    {
+      title: '04. Didaktisches Lehrkräfte-Handout (DIN A4)',
+      desc: '45-Minuten-Unterrichtsplanung, Phasierung, didaktischer Leitfaden & Kurzanleitung für Schulen.',
+      file: '04_Lehrkraefte_Handout_Unterrichtsverlauf_DIN_A4.pdf',
+      size: '137 KB',
+      format: 'DIN A4 Portrait',
+      key: 'handout'
+    },
+    {
+      title: '05. Offizielle Klimaschutz-Urkunde (DIN A4)',
+      desc: 'Elegante Druckvorlage mit Siegel, persönlichem Klimaversprechen & Baum-Entlastungszähler.',
+      file: '05_Klimaschutz_Urkunde_DIN_A4.pdf',
+      size: '127 KB',
+      format: 'DIN A4 Portrait',
+      key: 'certificate'
+    },
+  ];
+
+  const currentPdf = pdfList.find(p => p.key === activeMaterial);
+
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
@@ -112,6 +157,56 @@ export default function AdminMaterialsTab() {
         </div>
       </div>
 
+      {/* Direct PDF Downloads Card */}
+      <div className="bg-card border border-border rounded-2xl p-4 sm:p-5 space-y-3 print:hidden">
+        <div className="flex items-center justify-between border-b border-border pb-2.5">
+          <div className="flex items-center gap-2">
+            <Download className="w-4 h-4 text-foreground" />
+            <h3 className="text-xs sm:text-sm font-semibold text-foreground">
+              Druckfertige PDF-Dateien zum Herunterladen & Ausdrucken
+            </h3>
+          </div>
+          <span className="text-[11px] font-mono text-muted-foreground">300 DPI Vektorgrafik</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          {pdfList.map((item) => (
+            <div
+              key={item.file}
+              className="p-3 rounded-xl border border-border bg-background hover:bg-muted/30 transition-all flex flex-col justify-between gap-2"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-1 mb-1">
+                  <span className="font-mono text-[10px] text-muted-foreground uppercase">{item.format}</span>
+                  <span className="font-mono text-[10px] text-muted-foreground font-semibold">{item.size}</span>
+                </div>
+                <h4 className="text-xs font-semibold text-foreground leading-snug">{item.title}</h4>
+                <p className="text-[11px] text-muted-foreground mt-0.5 leading-tight">{item.desc}</p>
+              </div>
+
+              <div className="flex items-center gap-2 pt-1 border-t border-border/60">
+                <a
+                  href={`/materials/${item.file}`}
+                  download={item.file}
+                  className="paper-btn-primary !min-h-[32px] !text-[11px] !py-1 !px-2.5 flex-1 justify-center flex items-center gap-1.5"
+                >
+                  <Download className="w-3 h-3" />
+                  <span>PDF herunterladen</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={() => handlePrintSingle(item.key)}
+                  className="paper-btn-secondary !min-h-[32px] !text-[11px] !py-1 !px-2.5 shrink-0"
+                  title="Direkt im Browser drucken"
+                >
+                  <Printer className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Sub-Tabs for Materials */}
       <div className="flex flex-wrap gap-2 border-b border-border pb-3 text-xs print:hidden">
         <button
@@ -147,7 +242,7 @@ export default function AdminMaterialsTab() {
           }`}
         >
           <FileText className="w-3.5 h-3.5" />
-          <span>🏷️ Header-Banner (120 cm)</span>
+          <span>🏷️ Stellwand-Kopfblende (120 cm)</span>
         </button>
 
         <button
@@ -176,18 +271,30 @@ export default function AdminMaterialsTab() {
       </div>
 
       {/* Action Bar for currently viewed material */}
-      <div className="flex items-center justify-between bg-card border border-border rounded-xl p-3.5 print:hidden">
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-card border border-border rounded-xl p-3.5 print:hidden">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Info className="w-4 h-4 text-foreground/70 shrink-0" />
           <span>Druckoptimiert für DIN A4 / DIN A3 / Großformat mit gestochen scharfen Vektoren.</span>
         </div>
-        <button
-          onClick={() => handlePrintSingle(activeMaterial)}
-          className="paper-btn-primary !min-h-[36px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5"
-        >
-          <Printer className="w-3.5 h-3.5" />
-          <span>Dieses Plakat drucken</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {currentPdf && (
+            <a
+              href={`/materials/${currentPdf.file}`}
+              download={currentPdf.file}
+              className="paper-btn-secondary !min-h-[36px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5 cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>PDF herunterladen</span>
+            </a>
+          )}
+          <button
+            onClick={() => handlePrintSingle(activeMaterial)}
+            className="paper-btn-primary !min-h-[36px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            <span>Dieses Plakat drucken</span>
+          </button>
+        </div>
       </div>
 
       {/* ══════════════════════════════════════════════════════════════════════════
