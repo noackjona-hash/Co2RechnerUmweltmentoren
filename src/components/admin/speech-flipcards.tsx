@@ -6,7 +6,6 @@ import {
   RotateCw,
   Presentation,
   Download,
-  ExternalLink,
   ChevronLeft,
   ChevronRight,
   Sparkles,
@@ -14,601 +13,596 @@ import {
   Copy,
   Clock,
   Mic,
-  Maximize2,
   Grid,
-  Square,
+  Layers,
   Play,
   Pause,
   RotateCcw,
   ShieldCheck,
-  AlertTriangle,
-  Flame,
-  Info,
+  Tv,
+  ArrowRight,
+  Eye,
+  FileText,
+  Volume2,
 } from 'lucide-react';
 
-export interface SpeechCardItem {
+export interface TvCueCard {
   id: number;
   slideNumber: number;
   slideTitle: string;
   timeSlot: string;
+  duration: string;
   title: string;
   speakers: ('paul' | 'jona')[];
   category: 'slide' | 'defense' | 'tech';
-  front: {
-    stageFocus: string;
-    beamerKey: string;
-    openings: {
+  
+  // Moderatorseite (Was der Sprecher auf der Karte liest)
+  moderator: {
+    segmentBadge: string;
+    beamerTrigger: string;
+    regieInstruction: string;
+    speechLines: {
       speaker: 'paul' | 'jona';
       speakerName: string;
       quote: string;
-      note?: string;
+      highlights: string[];
+      stageAction?: string;
     }[];
-    cues: string[];
-    partnerHandover?: string;
-  };
-  back: {
     bulletPoints: {
-      speaker?: 'paul' | 'jona';
-      label?: string;
+      label: string;
       text: string;
       highlight?: boolean;
     }[];
-    regieNotes: string[];
-    ubaNote?: string;
-    handoverSentence: string;
-    beamerAction: string;
+    partnerCue: string;
+  };
+
+  // Kamerarückseite (Was das Publikum und die Kameras sehen, wenn die Karte vor der Brust gehalten wird)
+  cameraBack: {
+    showTitle: string;
+    subTitle: string;
+    venue: string;
+    date: string;
+    hosts: string;
+    tagline: string;
+    badgeText: string;
   };
 }
 
-export const SPEECH_CARDS: SpeechCardItem[] = [
+export const TV_CUE_CARDS: TvCueCard[] = [
   {
     id: 1,
     slideNumber: 1,
-    slideTitle: 'Folie 1: Titel & Team',
+    slideTitle: 'FOLIE 1: TITEL & TEAM',
     timeSlot: '00:00 – 02:00',
+    duration: '2 Min',
     title: 'Begrüßung & Der Einstieg',
     speakers: ['paul', 'jona'],
     category: 'slide',
-    front: {
-      stageFocus: 'Große Begrüßung im Innenministerium & Vorstellung',
-      beamerKey: 'LEERTASTE ➔ Folie 2',
-      openings: [
+    moderator: {
+      segmentBadge: 'SEGMENT 01 · OPENING & MISSION',
+      beamerTrigger: '⌨️ [BEAMER: LEERTASTE ➔ FOLIE 2]',
+      regieInstruction: 'Feste Stimme, offenes Lächeln, direkter Blickkontakt zu Staatssekretär Andreas Deuschle & Plenum!',
+      speechLines: [
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
+          speakerName: 'PAUL KAISER',
           quote:
-            '„Sehr geehrter Herr Staatssekretär Deuschle, liebe Vertreterinnen und Vertreter des Kultusministeriums und der Jugendstiftung, liebe Mentorinnen und Mentoren, liebe Lehrkräfte!“',
-          note: 'Mit fester Stimme, Blick ins Plenum, freundliches Lächeln.',
+            '„Sehr geehrter Herr Staatssekretär Deuschle, liebe Vertreterinnen und Vertreter des Ministeriums und der Jugendstiftung, liebe Mentorinnen und Mentoren, liebe Lehrkräfte!“',
+          highlights: ['Sehr geehrter Herr Staatssekretär Deuschle', 'liebe Lehrkräfte'],
+          stageAction: 'Aufrechte Haltung, offene Hände, freundlicher Blick ins Plenum.',
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„Wir freuen uns riesig, heute hier im Innenministerium zu stehen. Mein Name ist Paul Kaiser...“',
+          highlights: ['Mein Name ist Paul Kaiser'],
         },
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„... und mein Name ist Jona Noack. Wir beide sind Schüler und Umweltmentoren des Kurses 2025/2026.“',
-          note: 'Übernimmt nahtlos, betont den Praxisanspruch.',
+            '„... und mein Name ist Jona Noack. Wir beide sind Schüler und Umweltmentoren des Kurses 2025/2026. Als wir gestartet sind, hatten wir ein klares Ziel: Kein Projekt für die Schublade – sondern ein echtes Werkzeug für ganz Baden-Württemberg im Unterricht!“',
+          highlights: ['Jona Noack', 'Kein Projekt für die Schublade', 'ganz Baden-Württemberg'],
+          stageAction: 'Tritt einen Schritt vor, spricht engagiert und selbstbewusst.',
         },
       ],
-      cues: [
-        'Paul: Freude über den Auftritt im Innenministerium Stuttgart.',
-        'Paul Vorstellung: „Mein Name ist Paul Kaiser...“',
-        'Jona Mission: Kein theoretisches Projekt für die Schublade!',
-        'Jona Vision: Ein dauerhaftes Werkzeug für ganz Baden-Württemberg im echten Unterricht.',
-      ],
-      partnerHandover: 'Jona schließt ab ➔ leitet über zur Folie 2 (Problemstellung).',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'paul',
-          label: 'Begrüßung',
-          text: 'Förmliche und herzliche Begrüßung von Staatssekretär Andreas Deuschle, Ministerium & Jugendstiftung.',
+          label: 'Herzliche Begrüßung',
+          text: 'Förmliche Würdigung von Staatssekretär Deuschle, Ministerium & Jugendstiftung.',
         },
         {
-          speaker: 'jona',
-          label: 'Kernbotschaft',
-          text: 'Als wir vor knapp einem Jahr starteten, wollten wir kein verstaubendes Projekt, sondern ein praxisnahes Werkzeug für echte Schulklassen.',
+          label: 'Der Mentorinnen-Auftrag',
+          text: 'Entwickelt von Schülern für Schüler im Rahmen der Ausbildung 2025/26.',
         },
         {
-          speaker: 'jona',
-          label: 'Landesweiter Einsatz',
-          text: 'Zielgruppe: Gymnasien, Realschulen, Gemeinschaftsschulen in ganz BW ab Klasse 7.',
+          label: 'Dauerhafter Nutzen',
+          text: 'Keine Eintagsfliege: Digitale Plattform für den echten Schulbetrieb in BW.',
+          highlight: true,
         },
       ],
-      regieNotes: [
-        '👁️ Blickkontakt zu Staatssekretär Deuschle und ins gesamte Plenum.',
-        '🧘 Aufrechte Haltung, offene Gestik, ruhiges Anfangstempo (nicht hetzen!).',
-        '⏳ Zeitlimit: Exakt 2:00 Minuten nicht überschreiten.',
-      ],
-      handoverSentence:
-        '„Jona erklärt, warum bisherige Online-Rechner an Schulen regelmäßig scheitern.“',
-      beamerAction: 'LEERTASTE oder PFEIL RECHTS ➔ Folie 2 einblenden.',
+      partnerCue: '👉 JONA leitet über zur Problemstellung ➔ Paul drückt Beamer-Taste.',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'JUGEND-KLIMABILANZ & UNTERRICHT',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'KLIMASCHUTZ GREIFBAR MACHEN',
+      badgeText: 'LIVE-VORTRAG 13:15 UHR',
     },
   },
   {
     id: 2,
     slideNumber: 2,
-    slideTitle: 'Folie 2: Warum Rechner scheitern',
+    slideTitle: 'FOLIE 2: DAS PROBLEM',
     timeSlot: '02:00 – 04:30',
-    title: 'Das Problem aus Schülersicht & Unsere Vision',
+    duration: '2,5 Min',
+    title: 'Das Dilemma bisheriger Rechner im Unterricht',
     speakers: ['jona', 'paul'],
     category: 'slide',
-    front: {
-      stageFocus: '3 Hürden im Unterricht & Der Lösungsansatz',
-      beamerKey: 'LEERTASTE ➔ Folie 3 (QR-Code)',
-      openings: [
+    moderator: {
+      segmentBadge: 'SEGMENT 02 · DAS PROBLEM & DIE LÖSUNG',
+      beamerTrigger: '⌨️ [BEAMER: LEERTASTE ➔ FOLIE 3 (QR-CODE)]',
+      regieInstruction: 'Authentische Schüler-Perspektive einnehmen. Bei „Heizöl“ schmunzeln – Lehrkräfte nicken garantiert!',
+      speechLines: [
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„Lehrkraft sagt: ‚Heute berechnen wir unseren Fußabdruck!‘ – und nach genau drei Minuten bricht das Chaos aus.“',
-          note: 'Schritt nach vorn, authentische Schülerperspektive.',
+            '„Lehrkraft sagt: ‚Heute berechnen wir alle unseren Fußabdruck!‘ – und nach genau drei Minuten bricht das Chaos aus!“',
+          highlights: ['Heute berechnen wir alle unseren Fußabdruck', 'nach drei Minuten bricht das Chaos aus'],
+          stageAction: 'Schritt nach vorn, lebendige Schilderung einer typischen Unterrichtsstunde.',
+        },
+        {
+          speaker: 'jona',
+          speakerName: 'JONA NOACK',
+          quote:
+            '„1. Für Erwachsene gebaut: Wer kennt als 14-Jähriger die Heizöl-Liter oder Kilowattstunden der Eltern?\n2. Datenschutz: Accounts, Passwörter, Tracking – an Schulen in BW ein absolutes No-Go!\n3. Kein Klassenverbund: Jeder sitzt isoliert vor 8,4 Tonnen, ohne gemeinsame Auswertung.“',
+          highlights: ['Für Erwachsene gebaut', 'Datenschutz', 'absolutes No-Go', 'Kein Klassenverbund'],
         },
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
-          quote: '„Deshalb haben wir uns gesagt: Das muss doch besser gehen!“',
-          note: 'Zustimmendes Nicken, übernimmt dynamisch.',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„Deshalb haben wir gesagt: Das muss doch besser gehen! Alltagsnah, 100% datenschutzkonform und perfekt für eine normale 45-Minuten-Stunde! Wir zeigen Ihnen keine Tabellen – wir probieren das jetzt alle gemeinsam live aus!“',
+          highlights: ['Das muss doch besser gehen', '100% datenschutzkonform', '45-Minuten-Stunde', 'live ausprobieren'],
+          stageAction: 'Übernimmt dynamisch, hebt das eigene Smartphone in die Hand.',
         },
       ],
-      cues: [
-        '1. Rechner für Erwachsene: Wer kennt als 14-Jähriger die Heizöl-Liter oder kWh der Eltern?',
-        '2. Datenschutz: Accounts, E-Mails, Tracking – No-Go an Schulen in BW!',
-        '3. Fehlender Klassenbezug: Schüler sitzen isoliert vor einer Zahl wie „8,4 t“ – keine gemeinsame Auswertung.',
-        'Paul: Unsere Lösung: Alltagsnah, 100% anonym, passend für die 45-Minuten-Stunde!',
-      ],
-      partnerHandover: 'Paul: „Wir zeigen keine Tabellen – wir probieren das jetzt alle gemeinsam live aus!“',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'jona',
-          label: 'Hürde 1',
-          text: 'Komplexe Erwachsenen-Fragen überfordern Jugendliche (Heizkostenabrechnung, Gastherme, Stromzähler).',
+          label: 'Hürde 1: Überforderung',
+          text: 'Erwachsenen-Rechner fragen nach Nebenkostenabrechnungen – Schüler wissen das nicht.',
         },
         {
-          speaker: 'jona',
-          label: 'Hürde 2',
-          text: 'Strenge Datenschutzvorgaben in Baden-Württemberg verbieten kommerzielle Rechner mit Account-Zwang oder Werbe-Cookies.',
+          label: 'Hürde 2: DSGVO-Sperre',
+          text: 'Login-Zwang, E-Mails & Tracking verhindern den legalen Schuleinsatz in BW.',
+          highlight: true,
         },
         {
-          speaker: 'jona',
-          label: 'Hürde 3',
-          text: 'Keine pädagogische Klassenführung: Lehrkraft hat keinen Überblick über die Verteilung der Klasse.',
-        },
-        {
-          speaker: 'paul',
-          label: 'Unsere Antwort',
-          text: 'Alltagsfragen (Fahrrad, Streaming, Kantinenessen) + anonyme Teilnahme + Live-Beamer-Dashboard.',
+          label: 'Hürde 3: Isolierte Daten',
+          text: 'Keine Klassen-Aggregation für Lehrkräfte am Beamer.',
         },
       ],
-      regieNotes: [
-        '🎭 Bei „Heizöl-Liter“ leicht schmunzeln – das Publikum und die Lehrkräfte werden nicken!',
-        '🔥 Paul übernimmt das Wort mit Energie und Vorfreude auf das Experiment.',
-      ],
-      handoverSentence:
-        '„Paul bittet das gesamte Plenum, das Smartphone zu zücken.“',
-      beamerAction: 'LEERTASTE ➔ Folie 3 (Riesiger QR-Code für den Saal).',
+      partnerCue: '👉 PAUL zückt das Smartphone ➔ Beamer schaltet auf Folie 3 (Riesen-QR-Code).',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'WARUM BISHERIGE RECHNER SCHEITERN',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'VOM PROBLEM ZUR LÖSUNG',
+      badgeText: 'PROBLEM & DIDAKTIK',
     },
   },
   {
     id: 3,
     slideNumber: 3,
-    slideTitle: 'Folie 3: Live-Mitmachrunde',
+    slideTitle: 'FOLIE 3: QR-CODE & SAALTEST',
     timeSlot: '04:30 – 08:30',
+    duration: '4 Min',
     title: 'Die Live-Mitmachrunde im Saal 🔥',
     speakers: ['paul', 'jona'],
     category: 'slide',
-    front: {
-      stageFocus: 'Highlight: Der ganze Saal rechnet live mit',
-      beamerKey: 'LEERTASTE ➔ Folie 4 (Didaktik)',
-      openings: [
+    moderator: {
+      segmentBadge: 'SEGMENT 03 · INTERAKTIVER SAAL-TEST',
+      beamerTrigger: '⌨️ [BEAMER: LEERTASTE ➔ FOLIE 4]',
+      regieInstruction: 'Smartphone hochhalten! 60–90 Sekunden Stille bewusst aushalten – der ganze Saal scannt und tippt!',
+      speechLines: [
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
+          speakerName: 'PAUL KAISER',
           quote:
-            '„Wir bitten jetzt alle im Saal – von den Mentorinnen und Mentoren über die Lehrkräfte bis hin zu Herrn Staatssekretär Deuschle: Bitte nehmen Sie Ihr Smartphone zur Hand!“',
-          note: 'Smartphone hochhalten, animierende Geste ins Publikum.',
+            '„Wir bitten jetzt alle im Saal – von den Mentorinnen über die Lehrkräfte bis zu Herrn Staatssekretär Deuschle: Bitte nehmen Sie Ihr Smartphone zur Hand und öffnen Sie die Kamera!“',
+          highlights: ['Smartphone zur Hand', 'öffnen Sie die Kamera', 'Staatssekretär Deuschle'],
+          stageAction: 'Hält eigenes Smartphone hoch, zeigt auf den Riesen-QR-Code auf der Leinwand.',
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„Scannen Sie den QR-Code hier auf der Leinwand. Keine App, kein Passwort! Tippen Sie einfach auf ‚Als Gast testen‘.“',
+          highlights: ['Keine App, kein Passwort', 'Als Gast testen'],
         },
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„Sie sehen jetzt unseren 10-Fragen-Quick-Check. Keine Fragen nach Heizöl, sondern nach Ihrem Alltag – in unter 2 Minuten!“',
-          note: 'Begleitet locker, während der Saal tippt.',
+            '„Sie sehen jetzt unseren 10-Fragen-Quick-Check. Keine Fragen nach Heizöl, sondern nach Ihrem Alltag: Anreise, Ernährung, Streaming. In unter zwei Minuten haben Sie Ihr Jahresergebnis in Kilo CO₂ und Ihre Urkunde!“',
+          highlights: ['10-Fragen-Quick-Check', 'unter zwei Minuten', 'Urkunde'],
+          stageAction: 'Kommentiert locker und beruhigend, während im Saal getippt wird.',
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„Wer hat sein Ergebnis schon auf dem Display? Einmal kurz die Hand heben! ... Fantastisch, fast der halbe Saal! Sie sehen direkt: Bäume zur Bindung und Autokilometer-Vergleiche.“',
+          highlights: ['kurz die Hand heben', 'Fast der halbe Saal', 'Bäume zur Bindung'],
+          stageAction: 'Blickt lächelnd durch die Reihen, zählt Handzeichen, nickt anerkennend.',
         },
       ],
-      cues: [
-        'Paul: QR-Code auf Beamer scannen. Keine App, kein Passwort!',
-        'Auf Button „Als Gast testen“ tippen.',
-        'Jona moderiert: 10 Fragen zu Anreise heute, Fleischkonsum, Streaming.',
-        'Paul (nach 90s): Handzeichen-Check! „Wer hat sein Ergebnis schon?“',
-        'Auswertung: Konkrete Äquivalente statt nackter Zahlen (Bäume & Autokilometer).',
-      ],
-      partnerHandover: 'Paul bittet um Handzeichen ➔ leitet über zu den wissenschaftlichen Grundlagen.',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'paul',
-          label: 'Aufforderung',
-          text: 'Alle im Saal scannen die Großleinwand. Wichtig: „Keine Installation, kein Account nötig!“',
+          label: 'Publikums-Aktivierung',
+          text: 'Alle 150 Teilnehmer scannen gleichzeitig den Beamer – sofortige Aha-Erlebnisse.',
         },
         {
-          speaker: 'jona',
-          label: 'Live-Moderation',
-          text: 'Während alle tippen: Erklären, wie unkompliziert die Fragen gestaltet sind (10 Fragen Quick-Check).',
-        },
-        {
-          speaker: 'paul',
-          label: 'Handzeichen-Interaktion',
-          text: '„Wer hat sein Ergebnis schon auf dem Display? Einmal kurz die Hand heben!“ ➔ „Fantastisch, fast der halbe Saal!“',
+          label: 'Barrierefreiheit',
+          text: 'Webbasiert ohne Download, sofort einsatzbereit auf iOS und Android.',
           highlight: true,
         },
         {
-          speaker: 'paul',
-          label: 'Ergebnis-Visualisierung',
-          text: 'Ergebnisse werden sofort in greifbare Bilder übersetzt: z. B. 45 gepflanzte Buchen oder 3.200 km Zugfahrt.',
+          label: 'Echte Vergleiche',
+          text: 'CO₂-Werte werden greifbar in Bäume, Bus- und Flugkilometer übersetzt.',
         },
       ],
-      regieNotes: [
-        '⏱️ Die 60 bis 90 Sekunden Stille beim Tippen bewusst aushalten – das Publikum ist voll engagiert!',
-        '😊 Blickkontakt halten, lächeln, zwei Schritte zur Seite treten, um nicht im Projektor-Licht zu stehen.',
-      ],
-      handoverSentence:
-        '„Paul erläutert die fundierten Umweltbundesamt-Daten und die 4,4-Tonnen-Basispauschale.“',
-      beamerAction: 'LEERTASTE ➔ Folie 4 (Didaktischer Aufbau & UBA-Pauschale).',
+      partnerCue: '👉 PAUL fragt nach Handzeichen ➔ leitet über zu Umweltbundesamt-Zahlen.',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'LIVE-MITMACHRUNDE IM SAAL',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: '100% SMARTPHONE-INTERAKTION',
+      badgeText: 'LIVE-EXPERIMENT 🔥',
     },
   },
   {
     id: 4,
     slideNumber: 4,
-    slideTitle: 'Folie 4: Didaktik & 3 Spielmodi',
+    slideTitle: 'FOLIE 4: DIDAKTIK & 3 MODI',
     timeSlot: '08:30 – 11:00',
+    duration: '2,5 Min',
     title: 'Wissenschaft, 4,4 t UBA-Pauschale & 3 Spielmodi ⭐',
     speakers: ['paul', 'jona'],
     category: 'slide',
-    front: {
-      stageFocus: 'UBA-Validierung, 4,4 t Pauschale & modulare Modi',
-      beamerKey: 'LEERTASTE ➔ Folie 5 (Dashboard)',
-      openings: [
+    moderator: {
+      segmentBadge: 'SEGMENT 04 · WISSENSCHAFT & MODI',
+      beamerTrigger: '⌨️ [BEAMER: LEERTASTE ➔ FOLIE 5]',
+      regieInstruction: 'Wissenschaftliche Seriosität betonen. Die 1.200 kg öffentliche Infrastruktur direkt an Deuschle adressieren!',
+      speechLines: [
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
+          speakerName: 'PAUL KAISER',
           quote:
-            '„Was Sie gerade erlebt haben, basiert auf echter Umweltforschung: Alle Faktoren stammen aus den Datenbanken des Umweltbundesamts (UBA) und GEMIS.“',
-          note: 'Wissenschaftliche Seriosität betonen.',
+            '„Was Sie gerade erlebt haben, basiert auf fundierter Umweltforschung: Alle Umrechnungsfaktoren stammen aus validierten Datenbanken des Umweltbundesamts (UBA) und GEMIS.“',
+          highlights: ['Umweltbundesamt (UBA)', 'GEMIS', 'fundierter Umweltforschung'],
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„⭐ DER DURCHBRUCH: Die 4,4-Tonnen-Basispauschale! Viele Rechner rechnen sich schön (1,5 t = Unsinn!). Bei uns trägt jeder 1.200 kg unvermeidbare öffentliche Infrastruktur – Straßen, Schulen, Krankenhäuser. Klimaschutz ist Bürger- UND Staatsaufgabe!“',
+          highlights: ['4,4-Tonnen-Basispauschale', '1.200 kg öffentliche Infrastruktur', 'Bürger- UND Staatsaufgabe'],
+          stageAction: 'Blickkontakt zu Andreas Deuschle, betont die gemeinsame Verantwortung.',
         },
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„Weil jeder Schultag anders ist, haben wir die App modular in drei Spielmodi aufgeteilt: 10, 30 oder 60 Fragen.“',
-          note: 'Didaktische Flexibilität für Lehrkräfte aufzeigen.',
+            '„Weil jeder Schultag anders ist, haben wir 3 flexible Spielmodi gebaut:\n• 10 Fragen (Quick-Check, 2 Min): Für den schnellen Stundeneinstieg.\n• 30 Fragen (Standard, 8-10 Min): Für reguläre Geo- oder Biostunden.\n• 60 Fragen (Detail, 25 Min): Für Projekttage, Umwelt-AGs und Schulaudits.“',
+          highlights: ['10 Fragen (Quick-Check)', '30 Fragen (Standard)', '60 Fragen (Detail)'],
+          stageAction: 'Erläutert die didaktische Flexibilität für Lehrerinnen und Lehrer.',
         },
       ],
-      cues: [
-        'Paul: 4 Sektoren: Mobilität, Ernährung, Energie, Konsum.',
-        '⭐ DER DURCHBRUCH: Die 4,4-Tonnen-UBA-Basispauschale!',
-        '1.200 kg feste öffentliche Infrastruktur (Straßen, Schulen, Spitäler). Verhindert Schönrechnerei (1,7 t = Unsinn!).',
-        'Jona: Modus 1 (10Q Quick, 2 Min) ➔ Modus 2 (30Q Standard, 8 Min) ➔ Modus 3 (60Q Detail, 25 Min).',
-      ],
-      partnerHandover: 'Jona schließt die Modi ab ➔ leitet zum Lehrer-Dashboard und DSGVO über.',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'paul',
-          label: '⭐ UBA-Basispauschale (4.400 kg)',
-          text: 'Herkömmliche Rechner addieren oft nur Teilfragen und zeigen unrealistische 1,5 bis 2 Tonnen. Unser Rechner integriert die offizielle UBA-Grundpauschale von 4,4 t pro Kopf.',
+          label: '⭐ 4.400 kg UBA-Pauschale',
+          text: '1.200 kg Öffentliche Hand + 1.400 kg Konsum + 800 kg Wohnen + 600 kg Essen + 400 kg Mobilität.',
           highlight: true,
         },
         {
-          speaker: 'paul',
-          label: 'Öffentliche Infrastruktur (1.200 kg)',
-          text: 'Jeder Bundesbürger trägt anteilig 1.200 kg für Straßennetz, Schulen, Krankenhäuser und Verwaltung. Wichtiges Signal an die Politik!',
+          label: 'Keine Schönrechnerei',
+          text: 'Realistische Gesamtergebnisse zwischen 6 und 11 Tonnen CO₂ pro Kopf.',
         },
         {
-          speaker: 'jona',
-          label: 'Modus 1 (10 Fragen)',
-          text: 'Quick-Check in 2–3 Min. Perfekt als Einstieg in die Schulstunde ohne Vorbereitung.',
-        },
-        {
-          speaker: 'jona',
-          label: 'Modus 2 (30 Fragen)',
-          text: 'Standard-Check in 8–10 Min für reguläre Fachstunden (Geographie, Biologie, BNT).',
-        },
-        {
-          speaker: 'jona',
-          label: 'Modus 3 (60 Fragen)',
-          text: 'Detail-Audit in 25 Min für Projekttage, Umwelt-AGs und Schulentwicklung.',
+          label: 'Pädagogische Stufen',
+          text: 'Vom schnellen Einstieg bis zur vertieften Projektarbeit modular wählbar.',
         },
       ],
-      regieNotes: [
-        '💡 Die 1.200 kg öffentliche Infrastruktur direkt an Staatssekretär Deuschle adressieren: Klimaschutz ist Bürger- UND Staatsaufgabe!',
-        '📊 Klare Differenzierung der 3 Modi – Lehrkräfte lieben Unterrichts-Flexibilität.',
-      ],
-      ubaNote:
-        'UBA-Faktoren: 1.200 kg Öffentl. Infrastruktur + 1.400 kg Konsum-Basis + 800 kg Wohn-Sockel + 600 kg Ernährungs-Basis + 400 kg Mobilitäts-Sockel = 4.400 kg Basis.',
-      handoverSentence:
-        '„Jona zeigt das Lehrkräfte-Dashboard und die 100% DSGVO-Sicherheit.“',
-      beamerAction: 'LEERTASTE ➔ Folie 5 (Dashboard & Urkunden).',
+      partnerCue: '👉 JONA stellt die 3 Modi vor ➔ schaltet weiter zum Lehrer-Dashboard.',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'WISSENSCHAFT & DIDAKTIK',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'UBA-STANDARD & 3 SPIELMODI',
+      badgeText: 'FORSCHUNG & DATEN ⭐',
     },
   },
   {
     id: 5,
     slideNumber: 5,
-    slideTitle: 'Folie 5: Dashboard & Urkunden',
+    slideTitle: 'FOLIE 5: DASHBOARD & DSGVO',
     timeSlot: '11:00 – 13:00',
-    title: 'Lehrer-Dashboard, 100% DSGVO & Handabdruck',
+    duration: '2 Min',
+    title: 'Lehrer-Dashboard, 100% DSGVO & Handabdruck 🔒',
     speakers: ['jona', 'paul'],
     category: 'slide',
-    front: {
-      stageFocus: 'Klassen-Analytics, Datenschutz & Simulator',
-      beamerKey: 'LEERTASTE ➔ Folie 6 (Abschluss)',
-      openings: [
+    moderator: {
+      segmentBadge: 'SEGMENT 05 · DASHBOARD & DATENSCHUTZ',
+      beamerTrigger: '⌨️ [BEAMER: LEERTASTE ➔ FOLIE 6]',
+      regieInstruction: 'Wortlaut „100% DSGVO-konform ohne Schüler-Accounts“ ist Musik in den Ohren von Ministerium und Schulleitern!',
+      speechLines: [
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„Der eigentliche pädagogische Hebel entsteht durch unser Lehrkräfte-Dashboard: Mit einem einzigen Klick generiert die Lehrkraft einen anonymen Klassencode.“',
-          note: 'Wichtigstes Argument für Ministerium & Lehrkräfte.',
+            '„Der eigentliche pädagogische Hebel entsteht durch unser Lehrkräfte-Dashboard: Die Lehrkraft generiert mit einem Klick einen anonymen Klassencode – zum Beispiel KL-8B-KLIMA. Schüler tippen ihn ein – und der Beamer zeigt live den Klassendurchschnitt!“',
+          highlights: ['Lehrkräfte-Dashboard', 'anonymen Klassencode', 'Beamer zeigt live den Klassendurchschnitt'],
+          stageAction: 'Zeigt auf das Dashboard-Visual auf der Beamerleinwand.',
+        },
+        {
+          speaker: 'jona',
+          speakerName: 'JONA NOACK',
+          quote:
+            '„Und jetzt das Entscheidende für Baden-Württemberg: Die App ist zu 100% DSGVO-konform! Keine Schüler-Accounts, keine E-Mails, keine Passwörter. Schülernamen für Urkunden existieren ausschließlich lokal im Browser-RAM – null Server-Speicherung!“',
+          highlights: ['100% DSGVO-konform', 'Keine Schüler-Accounts', 'lokal im Browser-RAM', 'null Server-Speicherung'],
         },
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
+          speakerName: 'PAUL KAISER',
           quote:
-            '„Ganz wichtig: Keine Schuldgefühle erzeugen, sondern Handeln anstoßen! Unser Simulator macht aus dem Fußabdruck einen echten Handabdruck.“',
-          note: 'Positive Psychologie und Motivation.',
+            '„Ganz wichtig: Keine Schuldgefühle erzeugen, sondern Handeln anstoßen! Unser Simulator fragt: ‚Was passiert bei 2 Tagen Veggie oder Radfahren?‘ Der Rechner zeigt: 350 kg CO₂ Ersparnis! Dieses Ziel wird auf die Urkunde gedruckt – so wird aus dem Fußabdruck ein Handabdruck!“',
+          highlights: ['Keine Schuldgefühle erzeugen', 'Handeln anstoßen', 'Handabdruck', 'Urkunde'],
+          stageAction: 'Zeigt motiviert auf das Versprechen & die Urkunde.',
         },
       ],
-      cues: [
-        'Jona: Klassencode (z. B. „KL-8B-KLIMA“) an die Tafel schreiben.',
-        'Beamer zeigt in Echtzeit den Klassendurchschnitt & Hebel.',
-        '🔒 100% DSGVO: Keine Schüler-Accounts. Namen auf Urkunden nur lokal im Browser-RAM!',
-        'Paul: Interaktiver Simulator: „Was spart 2x Veggie oder Radfahren?“ (-350 kg CO₂ / 28 Bäume).',
-        'Klimaschutz-Versprechen wird auf die druckbare Urkunde übernommen.',
-      ],
-      partnerHandover: 'Paul: „So wird aus dem Fußabdruck ein wirksamer Handabdruck!“ ➔ Folie 6.',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'jona',
-          label: 'Echtzeit-Klassenauswertung',
-          text: 'Lehrer sehen aggregierte Sektoren-Balken: Wo schneidet die Klasse gut ab, wo gibt es noch Sparpotential?',
+          label: 'Live-Klassenstatistik',
+          text: 'Balkendiagramme nach Sektoren zeigen auf einen Blick die Stärken und Hebel der Klasse.',
         },
         {
-          speaker: 'jona',
-          label: '100% DSGVO-Garantie',
-          text: 'Keine Registrierung, keine Mailadresse, keine Passwörter für Schüler. Vollständig konform mit den Schulvorgaben Baden-Württembergs.',
+          label: '🔒 100% DSGVO-Sicherheit',
+          text: 'Keine Speicherung von Schülernamen auf Datenbanken – vollständiger Schutz persönlicher Daten.',
           highlight: true,
         },
         {
-          speaker: 'paul',
-          label: 'Maßnahmen-Simulator',
-          text: 'Gamification statt Frust: Schüler simulieren konkrete Verhaltensänderungen und sehen den CO₂-Rückgang live.',
-        },
-        {
-          speaker: 'paul',
-          label: 'Offizielle Schüler-Urkunde',
-          text: 'Schüler drucken am Ende eine personalisierte Urkunde mit ihrem persönlichen Klimaversprechen aus.',
+          label: 'Handabdruck-Urkunde',
+          text: 'Motivierender Ausdruck mit persönlichem Klimaversprechen für das Klassenzimmer.',
         },
       ],
-      regieNotes: [
-        '🔒 Betonung „Keine Speicherung von Schülernamen auf Servern“ begeistert Schulleiter und Datenschutzbeauftragte!',
-        '📜 Urkunde als physischer Erfolgsnachweis im Klassenzimmer hervorheben.',
-      ],
-      handoverSentence:
-        '„Jona fasst zusammen und Paul übergibt an Staatssekretär Andreas Deuschle.“',
-      beamerAction: 'LEERTASTE ➔ Folie 6 (Rollout, Dank & Übergabe).',
+      partnerCue: '👉 PAUL schließt den Handabdruck ab ➔ leitet über zum großen Finale.',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'LEHRER-DASHBOARD & 100% DSGVO',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'SICHER · ANONYM · WIRKSAM',
+      badgeText: 'LEHRER-PORTAL 🔒',
     },
   },
   {
     id: 6,
     slideNumber: 6,
-    slideTitle: 'Folie 6: Rollout & Dank',
+    slideTitle: 'FOLIE 6: FINALE & DEUSCHLE',
     timeSlot: '13:00 – 15:00',
-    title: 'Fazit, Einladung an Stellwand & Übergabe an Deuschle 🏆',
+    duration: '2 Min',
+    title: 'Fazit, Einladung & Feierliche Übergabe an Deuschle 🏆',
     speakers: ['jona', 'paul'],
     category: 'slide',
-    front: {
-      stageFocus: 'Großes Finale, Danksagung & Wortübergabe',
-      beamerKey: 'Präsentation stoppt auf Abschlussfolie',
-      openings: [
+    moderator: {
+      segmentBadge: 'SEGMENT 06 · FINALE & WORTÜBERGABE',
+      beamerTrigger: 'Beamer bleibt auf Abschlussfolie stehen (Präsentation beendet)',
+      regieInstruction: 'Feierliches Finale: Aufrechte Haltung, synchron mit Jona und Paul verbeugen, Handgeste zu Andreas Deuschle, Applaus abwarten!',
+      speechLines: [
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„Unsere Botschaft heute ist ganz einfach: Klimaschutz an Schulen scheitert nicht am Willen der Jugendlichen und auch nicht am Engagement der Lehrkräfte.“',
-          note: 'Blickkontakt ins gesamte Auditorium.',
+            '„Unsere Botschaft heute ist ganz einfach: Klimaschutz an Schulen scheitert nicht am Willen der Jugendlichen und auch nicht am Engagement der Lehrkräfte. Er scheiterte bisher oft an komplizierten Werkzeugen. Mit unserem CO₂-Rechner steht ab heute ein kostenloses Tool für alle Schulen in Baden-Württemberg bereit!“',
+          highlights: ['scheitert nicht am Willen', 'kostenloses Tool für alle Schulen in Baden-Württemberg'],
+          stageAction: 'Blickkontakt durch das gesamte Auditorium, spricht klar und getragen.',
         },
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
+          speakerName: 'PAUL KAISER',
           quote:
-            '„Besuchen Sie uns gleich an unserer Stellwand im Projekte-Markt – wir richten Ihnen gerne direkt einen Schulzugang ein!“',
-          note: 'Einladung zum Mitmachen, Blick zu Deuschle.',
+            '„Wenn Sie Lehrkraft oder Mentor sind: Besuchen Sie uns gleich an unserer Stellwand im Projekte-Markt – wir richten Ihnen gerne direkt einen Schulzugang ein! Wir danken der Jugendstiftung, dem Ministerium und unserem Mentorenkurs.“',
+          highlights: ['Besuchen Sie uns an unserer Stellwand', 'Schulzugang einrichten', 'Vielen Dank'],
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„Und nun freuen wir uns ganz besonders auf den Impuls und das Gespräch mit Herrn Staatssekretär Andreas Deuschle! Vielen Dank!“',
+          highlights: ['Herrn Staatssekretär Andreas Deuschle', 'Vielen Dank!'],
+          stageAction: 'Offene Handgeste zu Staatssekretär Andreas Deuschle. Beide lächeln, verbeugen sich synchron, warten auf den Applaus.',
         },
       ],
-      cues: [
-        'Jona: Rechner steht ab heute kostenlos für alle Schulen in BW bereit.',
-        'Paul: Einladung zur Stellwand im Markt der Möglichkeiten (Handouts liegen bereit).',
-        'Paul: Dank an Jugendstiftung, Ministerium & Mentorenkurs.',
-        '🎤 DIE FEIERLICHE ÜBERGABE AN STAATSSEKRETÄR ANDREAS DEUSCHLE!',
-      ],
-      partnerHandover: 'Übergabesatz wörtlich sprechen ➔ Verbeugung ➔ Applaus abwarten.',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'jona',
-          label: 'Kernbotschaft zum Abschluss',
-          text: 'Klimaschutz scheiterte oft an unzugänglichen Tools. Unser Rechner bietet eine schlüsselfertige, didaktische Lösung.',
+          label: 'Schlüsselfertig für BW',
+          text: 'Kostenloses Angebot an alle Schulen im Land zur sofortigen Nutzung.',
         },
         {
-          speaker: 'paul',
-          label: 'Einladung Projekte-Markt',
-          text: 'Stellwand mit Live-Demo, QR-Plakaten, Unterrichts-Verlaufsplänen und direkter Lizenz-Einrichtung für Schulen.',
+          label: 'Einladung Stellwand',
+          text: 'Handouts, Verlaufspläne und direkte Lehrer-Accounts am Stand im Markt der Möglichkeiten.',
         },
         {
-          speaker: 'paul',
-          label: 'Danksagung',
-          text: 'Dank an die Jugendstiftung Baden-Württemberg, das Kultusministerium und den Mentorenkurs 2025/2026.',
-        },
-        {
-          speaker: 'paul',
-          label: 'Wörtlicher Übergabesatz',
-          text: '„Und nun freuen wir uns ganz besonders auf den Impuls und das Gespräch mit Herrn Staatssekretär Andreas Deuschle! Vielen Dank!“',
+          label: '🏆 Punktlandung um 13:30',
+          text: 'Exakte Einhaltung des Zeitplans für den nachfolgenden Programmpunkt mit Herrn Deuschle.',
           highlight: true,
         },
       ],
-      regieNotes: [
-        '👏 Verbeugung gemeinsam synchron mit Jona und Paul.',
-        '🤝 Offene Handgeste zu Staatssekretär Andreas Deuschle richten.',
-        '😊 Lächeln und den Applaus des Saals wirken lassen.',
-      ],
-      handoverSentence:
-        '„Überleitung zum nächsten Programmpunkt: Rede & Talk mit Staatssekretär Deuschle.“',
-      beamerAction: 'Beamer bleibt auf Folie 6 stehen (keine Taste drücken).',
+      partnerCue: '👉 SYNCHRONE VERBEUGUNG ➔ Handgeste zu Deuschle ➔ Applaus abwarten!',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'FEIERLICHE ABSCHLUSSPRÄSENTATION',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'GEMEINSAM CO₂ SENKEN AN JEDER SCHULE',
+      badgeText: 'ÜBERGABE DEUSCHLE 🏆',
     },
   },
   {
     id: 7,
     slideNumber: 0,
-    slideTitle: 'Q&A Defense (Fragen abfangen)',
-    timeSlot: 'Nach dem Vortrag / Nachfragen',
-    title: 'Q&A Defense: Schlagfertige Antworten auf Publikumsfragen',
+    slideTitle: 'EXTRA: Q&A DEFENSE',
+    timeSlot: 'Nach dem Vortrag',
+    duration: 'Joker',
+    title: 'Q&A Defense: Schlagfertige Antworten auf Publikumsfragen ❓',
     speakers: ['jona', 'paul'],
     category: 'defense',
-    front: {
-      stageFocus: 'Souveräne Antworten auf die 4 häufigsten Fragen',
-      beamerKey: 'Optional Beamer auf Folie 5/6 belassen',
-      openings: [
+    moderator: {
+      segmentBadge: 'JOKER-KARTE · Q&A DEFENSE',
+      beamerTrigger: 'Folie 5/6 als Standbild im Hintergrund',
+      regieInstruction: 'Souverän, gelassen, faktenstark. Nie defensiv wirken – wir sind didaktisch und technisch perfekt vorbereitet!',
+      speechLines: [
         {
           speaker: 'jona',
-          speakerName: 'Jona Noack',
+          speakerName: 'JONA NOACK',
           quote:
-            '„Datenschutz und Bildungsplan BW sind unsere stärksten didaktischen Argumente.“',
-          note: 'Ruhig und faktenbasiert antworten.',
+            '„Frage 1 (Datenschutz an Schulen): Zu 100% DSGVO-konform. Schüler geben weder Namen noch E-Mail an. Teilnahme über anonymen Einmal-Code. Urkundennamen werden ausschließlich lokal im Browser-RAM eingesetzt – null Server-Speicherung!“',
+          highlights: ['100% DSGVO-konform', 'weder Namen noch E-Mail', 'anonymer Einmal-Code', 'null Server-Speicherung'],
         },
         {
           speaker: 'paul',
-          speakerName: 'Paul Kaiser',
+          speakerName: 'PAUL KAISER',
           quote:
-            '„Kostenlos für alle Schulen und 100% transparent nach UBA-Standards.“',
-          note: 'Gemeinwohl- und Schüleranspruch unterstreichen.',
+            '„Frage 2 (Warum 7–9 Tonnen Gesamtergebnis?): Wissenschaftlicher UBA-Standard: Jeder Bürger hat 1.200 kg unvermeidbare öffentliche Infrastruktur (Straßen, Schulen, Krankenhäuser) + 3.200 kg Grundbedarf. Das verhindert Schönrechnerei!“',
+          highlights: ['Wissenschaftlicher UBA-Standard', '1.200 kg unvermeidbare öffentliche Infrastruktur', 'verhindert Schönrechnerei'],
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER',
+          quote:
+            '„Frage 3 (Kosten für Schulen?): Exakt 0,00 Euro. Gemeinwohl- und Schülerprojekt von uns Umweltmentoren. Dauerhaft kostenlos, werbefrei und ohne Lizenzgebühren für Schulen in BW.“',
+          highlights: ['Exakt 0,00 Euro', 'Dauerhaft kostenlos, werbefrei'],
+        },
+        {
+          speaker: 'jona',
+          speakerName: 'JONA NOACK',
+          quote:
+            '„Frage 4 (Bildungsplan BW?): Passt ideal in die Leitperspektive BNE (Bildung für nachhaltige Entwicklung), Geographie (Kl. 7-10), Biologie/BNT und Gemeinschaftskunde.“',
+          highlights: ['Leitperspektive BNE', 'Geographie', 'Biologie', 'Gemeinschaftskunde'],
         },
       ],
-      cues: [
-        '❓ Frage 1: Wie ist der Datenschutz an Schulen geregelt? 👉 Jona antwortet (100% DSGVO).',
-        '❓ Frage 2: Warum liegt der CO₂-Wert bei 7 bis 9 Tonnen? 👉 Paul antwortet (4,4t UBA Pauschale).',
-        '❓ Frage 3: Was kostet das Tool für Schulen? 👉 Paul antwortet (Dauerhaft 0,00 Euro).',
-        '❓ Frage 4: Passt das in den Bildungsplan BW? 👉 Jona antwortet (BNE Leitperspektive, Geo/Bio/GK).',
-      ],
-      partnerHandover: 'Je nach Frage übernimmt Jona (Didaktik/DSGVO) oder Paul (Wissenschaft/Kosten).',
-    },
-    back: {
       bulletPoints: [
         {
-          speaker: 'jona',
-          label: 'Antwort Datenschutz (DSGVO)',
-          text: '„Zu 100% DSGVO-konform. Schüler geben weder Namen noch E-Mail an. Die Teilnahme erfolgt über einen anonymen Einmal-Code. Urkundennamen werden ausschließlich lokal im Browser-RAM eingesetzt – null Server-Speicherung!“',
-          highlight: true,
+          label: 'DSGVO Argument',
+          text: 'Vollständig konform mit dem Landesdatenschutzgesetz Baden-Württemberg.',
         },
         {
-          speaker: 'paul',
-          label: 'Antwort 7–9 Tonnen (UBA-Basis)',
-          text: '„Wissenschaftlicher UBA-Standard: Jeder Bürger hat 1.200 kg unvermeidbare öffentliche Infrastruktur (Straßen, Schulen, Krankenhäuser) + 3.200 kg Grundbedarfe. Das verhindert Schönfärberei und zeigt die Realität!“',
-          highlight: true,
+          label: 'UBA Argument',
+          text: 'Wissenschaftliche Validierung beugt methodischer Kritik vor.',
         },
         {
-          speaker: 'paul',
-          label: 'Antwort Kosten & Trägerschaft',
-          text: '„Exakt 0,00 Euro. Gemeinwohl- und Schülerprojekt von uns Umweltmentoren. Dauerhaft kostenlos, werbefrei und ohne Lizenzgebühren für Schulen in BW.“',
-        },
-        {
-          speaker: 'jona',
-          label: 'Antwort Bildungsplan Baden-Württemberg',
-          text: '„Passt perfekt in die Leitperspektive BNE (Bildung für nachhaltige Entwicklung), Geographie (Kl. 7–10), Biologie/BNT und Gemeinschaftskunde.“',
+          label: 'Kosten Argument',
+          text: 'Freie Bildungsressource (OER) für alle staatlichen und freien Schulen.',
         },
       ],
-      regieNotes: [
-        '🎓 Nie defensiv oder unsicher wirken. Wir haben alle Fakten wissenschaftlich und juristisch wasserdicht vorbereitet.',
-      ],
-      handoverSentence:
-        '„Bei tiefergehenden Schulfragen: Gerne an die Stellwand im Projekte-Markt verweisen!“',
-      beamerAction: 'Keine Folienänderung notwendig.',
+      partnerCue: '👉 Je nach Frage antwortet Jona (Didaktik/DSGVO) oder Paul (UBA/Kosten).',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'Q&A DEFENSE & FRAGENKATALOG',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'FAKTENBASIERT · SICHER · SOUVERÄN',
+      badgeText: 'Q&A JOKER ❓',
     },
   },
   {
     id: 8,
     slideNumber: 0,
-    slideTitle: 'Hotkeys & Saal-Notfallplan',
-    timeSlot: 'Technik-Backup für die Bühne',
-    title: 'Tastatur-Hotkeys & Saal-Notfallplan ⌨️',
+    slideTitle: 'EXTRA: HOTKEYS & NOTFALL',
+    timeSlot: 'Backstage / Notfall',
+    duration: 'Technik',
+    title: 'Laptop-Hotkeys & Saal-Notfallplan ⌨️',
     speakers: ['jona', 'paul'],
     category: 'tech',
-    front: {
-      stageFocus: 'Schnelle Tastatur-Shortcuts & Notfall-Szenarien',
-      beamerKey: 'F, LEERTASTE, ⬅️, ➡️, 1-6',
-      openings: [
+    moderator: {
+      segmentBadge: 'TECHNIK-KARTE · HOTKEYS & NOTFALL',
+      beamerTrigger: 'F, LEERTASTE, ⬅️, ➡️, 1-6',
+      regieInstruction: 'Laptop steht am Rednerpult im Blickfeld. Vor Beginn Taste F drücken (Browser-Vollbild)!',
+      speechLines: [
         {
           speaker: 'paul',
-          speakerName: 'Paul & Jona',
+          speakerName: 'PAUL & JONA',
           quote:
-            '„Laptop steht griffbereit am Rednerpult: Leertaste schaltet zuverlässig weiter.“',
-          note: 'Vor Beginn Vollbild mit Taste F aktivieren.',
+            '„Tasten-Steuerung:\n• F = Vollbildmodus aktivieren / beenden\n• LEERTASTE oder ➡️ = Nächste Folie\n• ⬅️ = Vorherige Folie\n• Tasten 1 bis 6 = Direkt zu Folie 1 bis 6 springen.“',
+          highlights: ['F = Vollbildmodus', 'LEERTASTE = Nächste Folie', '1 bis 6 = Direkt springen'],
+        },
+        {
+          speaker: 'paul',
+          speakerName: 'PAUL KAISER (WLAN-NOTFALL)',
+          quote:
+            '„Notfallspruch bei schlechtem Handynetz im Saal: ‚Wer gerade kein Netz hat, schaut einfach bei der Nachbarin aufs Display oder probiert es nachher an unserer Stellwand aus!‘“',
+          highlights: ['schaut einfach bei der Nachbarin aufs Display', 'nachher an unserer Stellwand'],
         },
       ],
-      cues: [
-        '⌨️ LEERTASTE oder ➡️: Nächste Folie',
-        '⌨️ ⬅️ (Pfeil links): Vorherige Folie',
-        '⌨️ F: Vollbildmodus aktivieren / beenden',
-        '⌨️ Tasten 1 bis 6: Direkt zur jeweiligen Folie springen',
-        '📶 Notfall WLAN: Paul moderiert locker („einfach beim Nachbarn mitschauen“).',
-      ],
-      partnerHandover: 'Laptop während des Vortrags unauffällig im Blick behalten.',
-    },
-    back: {
       bulletPoints: [
         {
-          label: 'Notfall 1: Schlechter WLAN-Empfang im Saal',
-          text: 'Paul sagt locker ins Mikrofon: „Wer gerade kein Handynetz hat, schaut einfach bei der Nachbarin mit aufs Display oder probiert es nachher an unserer Stellwand aus!“',
+          label: 'Timing-Checkpoints',
+          text: '02:00 Begrüßung ➔ 04:30 Problem ➔ 08:30 Saaltest ➔ 11:00 Didaktik ➔ 13:00 Dashboard ➔ 15:00 Punktlandung Deuschle!',
           highlight: true,
         },
         {
-          label: 'Notfall 2: Beamer hängt oder zeigt falsche Folie',
-          text: 'Einfach die Zifferntaste drücken (z. B. Taste „3“ für den QR-Code oder Taste „1“ für Start) – die Folie springt sofort an die richtige Stelle.',
-        },
-        {
-          label: 'Timing-Checkpoints für 15 Minuten',
-          text: '02:00 Begrüßung fertig ➔ 04:30 Problem erklärt ➔ 08:30 Saaltest fertig ➔ 11:00 Didaktik & UBA ➔ 13:00 Dashboard & Urkunde ➔ 15:00 Punktlandung Deuschle!',
-          highlight: true,
+          label: 'Beamer-Hänger',
+          text: 'Einfach die Zifferntaste der Folie drücken (z. B. Taste 3 für den QR-Code) – springt sofort dorthin.',
         },
       ],
-      regieNotes: [
-        '⏱️ Die 15 Minuten sind strikt getaktet: Um 13:30 Uhr MUSS die Übergabe an Andreas Deuschle erfolgen.',
-      ],
-      handoverSentence:
-        '„Ruhe bewahren – souveränes Auftreten begeistert das Innenministerium!“',
-      beamerAction: 'Notfalls Taste F drücken, um Browser-Fullscreen zu erzwingen.',
+      partnerCue: '👉 Laptop unauffällig bedienen ➔ keine Hektik aufkommen lassen.',
+    },
+    cameraBack: {
+      showTitle: 'CO₂-RECHNER FÜR SCHULEN',
+      subTitle: 'LAPTOP-HOTKEYS & NOTFALLPLAN',
+      venue: 'Innenministerium Baden-Württemberg · Stuttgart',
+      date: 'Freitag, 25. September 2026',
+      hosts: 'Jona Noack & Paul Kaiser · Umweltmentoren',
+      tagline: 'TECHNISCHE SICHERHEIT AM PULP',
+      badgeText: 'HOTKEYS ⌨️',
     },
   },
 ];
 
 export default function SpeechFlipcards() {
-  // Flip states for each card
+  // Flip states: true = camera back, false = moderator front
   const [flippedCards, setFlippedCards] = useState<{ [cardId: number]: boolean }>({});
-  // Mode: 'grid' or 'focus' (single card stage mode)
-  const [viewMode, setViewMode] = useState<'grid' | 'focus'>('grid');
-  // Current card index in focus mode
-  const [currentFocusIndex, setCurrentFocusIndex] = useState<number>(0);
-  // Filter by speaker/topic
+  // View mode: 'hand' (deck in hand) or 'desk' (all cards on presenter desk)
+  const [viewMode, setViewMode] = useState<'hand' | 'desk'>('hand');
+  // Current card index in hand stack mode
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  // Speaker filter
   const [speakerFilter, setSpeakerFilter] = useState<'all' | 'paul' | 'jona' | 'defense'>('all');
   // Copied state
-  const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [copiedQuote, setCopiedQuote] = useState<string | null>(null);
 
-  // Stage timer state for practicing
+  // Broadcast prompter stopwatch
   const [timerSeconds, setTimerSeconds] = useState<number>(0);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
 
@@ -630,6 +624,12 @@ export default function SpeechFlipcards() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const getTimerStatusColor = (secs: number) => {
+    if (secs < 12 * 60) return 'text-emerald-500';
+    if (secs < 14 * 60) return 'text-amber-500';
+    return 'text-destructive animate-pulse';
+  };
+
   const handleTimerReset = () => {
     setIsTimerRunning(false);
     setTimerSeconds(0);
@@ -640,43 +640,49 @@ export default function SpeechFlipcards() {
     setFlippedCards((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  // Flip all cards to front or back
+  // Flip all cards
   const flipAllCards = (toBack: boolean) => {
     const updated: { [cardId: number]: boolean } = {};
-    SPEECH_CARDS.forEach((card) => {
+    TV_CUE_CARDS.forEach((card) => {
       updated[card.id] = toBack;
     });
     setFlippedCards(updated);
   };
 
-  // Check if all filtered are currently flipped
-  const areAllFlipped = SPEECH_CARDS.every((c) => flippedCards[c.id]);
+  const areAllFlipped = TV_CUE_CARDS.every((c) => flippedCards[c.id]);
 
   // Filter cards
-  const filteredCards = SPEECH_CARDS.filter((card) => {
+  const filteredCards = TV_CUE_CARDS.filter((card) => {
     if (speakerFilter === 'paul') return card.speakers.includes('paul');
     if (speakerFilter === 'jona') return card.speakers.includes('jona');
     if (speakerFilter === 'defense') return card.category === 'defense' || card.category === 'tech';
     return true;
   });
 
-  // Handle keyboard navigation in Focus mode
+  // Ensure index is within range
+  useEffect(() => {
+    if (currentIndex >= filteredCards.length) {
+      setCurrentIndex(0);
+    }
+  }, [filteredCards.length, currentIndex]);
+
+  // Keyboard navigation
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (viewMode !== 'focus') return;
+      if (viewMode !== 'hand') return;
 
       if (e.key === 'ArrowRight' || e.key === 'PageDown') {
-        setCurrentFocusIndex((prev) => (prev < filteredCards.length - 1 ? prev + 1 : prev));
+        setCurrentIndex((prev) => (prev < filteredCards.length - 1 ? prev + 1 : 0));
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
-        setCurrentFocusIndex((prev) => (prev > 0 ? prev - 1 : prev));
+        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : filteredCards.length - 1));
       } else if (e.key === ' ' || e.key === 'Enter') {
-        const currentCard = filteredCards[currentFocusIndex];
-        if (currentCard) {
-          toggleFlip(currentCard.id);
+        const current = filteredCards[currentIndex];
+        if (current) {
+          toggleFlip(current.id);
         }
       }
     },
-    [viewMode, filteredCards, currentFocusIndex]
+    [viewMode, filteredCards, currentIndex]
   );
 
   useEffect(() => {
@@ -684,33 +690,41 @@ export default function SpeechFlipcards() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  const handleCopyQuote = (cardId: number, text: string) => {
+  const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    setCopiedId(cardId);
-    setTimeout(() => setCopiedId(null), 2000);
+    setCopiedQuote(text);
+    setTimeout(() => setCopiedQuote(null), 2000);
   };
+
+  const currentCard = filteredCards[currentIndex] || filteredCards[0];
 
   return (
     <div className="space-y-6">
-      {/* ── HEADER TOOLBAR ── */}
-      <div className="bg-card border border-border rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
+      {/* ── BROADCAST HEADER TOOLBAR ── */}
+      <div className="bg-card border-2 border-border rounded-3xl p-5 sm:p-6 shadow-md space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className="bg-destructive text-destructive-foreground px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase tracking-widest flex items-center gap-1.5 animate-pulse">
+                <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+                ON AIR · 13:15 UHR
+              </span>
               <span className="paper-stamp text-[10px] font-mono uppercase bg-muted">
-                25.09.2026 · 13:15 – 13:30 Uhr
+                Innenministerium Stuttgart · 25.09.2026
               </span>
               <span className="text-xs text-muted-foreground font-mono">
-                Bühnenauftritt & Moderation
+                Bühnenmoderation vor Staatssekretär Deuschle
               </span>
             </div>
-            <h2 className="font-serif text-xl sm:text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
-              <Mic className="w-5 h-5 text-foreground" />
-              <span>Bühnen-Flipcards: Jona & Paul</span>
+
+            <h2 className="font-serif text-2xl sm:text-3xl font-black tracking-tight text-foreground flex items-center gap-2.5">
+              <Tv className="w-6 h-6 text-foreground" />
+              <span>Fernseh-Moderationskarten: Jona & Paul</span>
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-2xl">
-              Interaktive 3D-Spickzettel für den 15-Minuten-Bühnenvortrag vor Staatssekretär Andreas Deuschle.
-              Karten zum Üben im Fokus-Modus oder zum Umdrehen im Raster.
+              Echte, kartonierte TV-Moderationskarten wie in Nachrichtensendungen und Talkshows.
+              Mit <strong>Moderator-Vorderseite</strong> (extragroße Teleprompter-Schrift, Textmarker, Regie-Cues) und 
+              der offiziellen <strong>Kamera-Rückseite</strong> (das elegante Umweltmentoren-Logo, das der Saal sieht, wenn du die Karte hältst).
             </p>
           </div>
 
@@ -719,17 +733,17 @@ export default function SpeechFlipcards() {
             <Link
               href="/presentation"
               target="_blank"
-              className="paper-btn-primary !min-h-[38px] !text-xs !py-1.5 !px-3.5 flex items-center gap-1.5 font-semibold"
+              className="paper-btn-primary !min-h-[40px] !text-xs !py-1.5 !px-3.5 flex items-center gap-1.5 font-bold shadow-sm"
             >
-              <Presentation className="w-3.5 h-3.5" />
-              <span>Präsentation testen ↗</span>
+              <Presentation className="w-4 h-4" />
+              <span>Beamer-Präsentation ↗</span>
             </Link>
 
             <a
               href="/materials/06_Moderationskarten_Buehnenkarten_DIN_A6.pdf"
               download="06_Moderationskarten_Buehnenkarten_DIN_A6.pdf"
-              className="paper-btn-secondary !min-h-[38px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5 font-medium"
-              title="Druckbares DIN A6 PDF"
+              className="paper-btn-secondary !min-h-[40px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5 font-semibold"
+              title="Druckbares DIN A6 Moderationskarten PDF"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Karten PDF (A6)</span>
@@ -738,61 +752,61 @@ export default function SpeechFlipcards() {
             <a
               href="/materials/07_Buehnen_Sprechtext_Wort_fuer_Wort_DIN_A4.pdf"
               download="07_Buehnen_Sprechtext_Wort_fuer_Wort_DIN_A4.pdf"
-              className="paper-btn-secondary !min-h-[38px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5 font-medium"
-              title="Kompletter Sprechtext DIN A4 PDF"
+              className="paper-btn-secondary !min-h-[40px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5 font-semibold"
+              title="Wort-für-Wort-Sprechtext PDF"
             >
-              <Download className="w-3.5 h-3.5" />
+              <FileText className="w-3.5 h-3.5" />
               <span>Sprechtext (A4)</span>
             </a>
           </div>
         </div>
 
         {/* Action Controls & Filters */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-3 border-t border-border">
           {/* Speaker Filters */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-mono text-muted-foreground mr-1">Filter:</span>
+            <span className="text-[11px] font-mono text-muted-foreground mr-1">Rollen:</span>
             <button
               type="button"
               onClick={() => setSpeakerFilter('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                 speakerFilter === 'all'
-                  ? 'bg-foreground text-background font-semibold shadow-xs'
+                  ? 'bg-foreground text-background shadow-sm'
                   : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground'
               }`}
             >
-              Alle Karten (8)
+              Alle 8 TV-Karten
             </button>
             <button
               type="button"
               onClick={() => setSpeakerFilter('paul')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                 speakerFilter === 'paul'
-                  ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                  ? 'bg-blue-600 text-white shadow-sm'
                   : 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/50'
               }`}
             >
-              <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-500 ring-2 ring-white"></span>
               <span>Nur Paul</span>
             </button>
             <button
               type="button"
               onClick={() => setSpeakerFilter('jona')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                 speakerFilter === 'jona'
-                  ? 'bg-emerald-600 text-white font-semibold shadow-xs'
+                  ? 'bg-emerald-600 text-white shadow-sm'
                   : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50'
               }`}
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white"></span>
               <span>Nur Jona</span>
             </button>
             <button
               type="button"
               onClick={() => setSpeakerFilter('defense')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
                 speakerFilter === 'defense'
-                  ? 'bg-amber-600 text-white font-semibold shadow-xs'
+                  ? 'bg-amber-600 text-white shadow-sm'
                   : 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50'
               }`}
             >
@@ -801,291 +815,422 @@ export default function SpeechFlipcards() {
             </button>
           </div>
 
-          {/* View Mode & Timer */}
-          <div className="flex items-center gap-2">
-            {/* 15-Minute Stage Practice Timer */}
-            <div className="flex items-center gap-1.5 bg-muted/60 border border-border px-2.5 py-1 rounded-xl text-xs font-mono">
-              <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-              <span className="font-bold">{formatTimer(timerSeconds)}</span>
-              <span className="text-[10px] text-muted-foreground">/ 15:00</span>
+          {/* View Mode & Studio Stopwatch */}
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {/* Studio Stopwatch */}
+            <div className="flex items-center gap-2 bg-zinc-950 text-white px-3 py-1.5 rounded-xl text-xs font-mono border border-zinc-800 shadow-inner">
+              <Clock className="w-3.5 h-3.5 text-zinc-400" />
+              <span className={`font-bold tracking-wider text-sm ${getTimerStatusColor(timerSeconds)}`}>
+                {formatTimer(timerSeconds)}
+              </span>
+              <span className="text-[10px] text-zinc-500">/ 15:00</span>
               <button
                 type="button"
                 onClick={() => setIsTimerRunning(!isTimerRunning)}
-                className="p-1 hover:bg-muted rounded text-foreground transition-colors ml-1"
-                title={isTimerRunning ? 'Timer anhalten' : 'Timer starten (15 Min Training)'}
+                className="p-1 hover:bg-zinc-800 rounded text-zinc-200 transition-colors ml-0.5"
+                title={isTimerRunning ? 'Stoppuhr anhalten' : 'Stoppuhr starten (15 Min Training)'}
               >
                 {isTimerRunning ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
               </button>
               <button
                 type="button"
                 onClick={handleTimerReset}
-                className="p-1 hover:bg-muted rounded text-muted-foreground hover:text-foreground transition-colors"
-                title="Timer zurücksetzen"
+                className="p-1 hover:bg-zinc-800 rounded text-zinc-500 hover:text-zinc-200 transition-colors"
+                title="Stoppuhr zurücksetzen"
               >
                 <RotateCcw className="w-3 h-3" />
               </button>
             </div>
 
-            {/* View Switcher: Grid vs Focus */}
-            <div className="flex items-center bg-muted/60 border border-border p-0.5 rounded-xl">
+            {/* View Switcher: In Hand vs Desk */}
+            <div className="flex items-center bg-muted/80 border border-border p-1 rounded-xl">
               <button
                 type="button"
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-lg text-xs transition-colors flex items-center gap-1 ${
-                  viewMode === 'grid'
-                    ? 'bg-card text-foreground shadow-xs font-medium'
+                onClick={() => setViewMode('hand')}
+                className={`px-2.5 py-1 rounded-lg text-xs transition-all flex items-center gap-1.5 font-bold ${
+                  viewMode === 'hand'
+                    ? 'bg-card text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
-                title="Raster-Übersicht aller Karten"
+                title="In der Hand (TV-Kartenstapel mit Weiter-Geste)"
               >
-                <Grid className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Raster</span>
+                <Layers className="w-3.5 h-3.5" />
+                <span>In der Hand (Stapel)</span>
               </button>
               <button
                 type="button"
-                onClick={() => setViewMode('focus')}
-                className={`p-1.5 rounded-lg text-xs transition-colors flex items-center gap-1 ${
-                  viewMode === 'focus'
-                    ? 'bg-card text-foreground shadow-xs font-medium'
+                onClick={() => setViewMode('desk')}
+                className={`px-2.5 py-1 rounded-lg text-xs transition-all flex items-center gap-1.5 font-bold ${
+                  viewMode === 'desk'
+                    ? 'bg-card text-foreground shadow-sm'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
-                title="Bühnen-Fokusmodus (1 Karte im Großformat)"
+                title="Auf dem Pult (Alle 8 Karten nebeneinander)"
               >
-                <Square className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Bühne</span>
+                <Grid className="w-3.5 h-3.5" />
+                <span>Auf dem Pult (Alle 8)</span>
               </button>
             </div>
 
             {/* Flip All Button */}
-            {viewMode === 'grid' && (
+            {viewMode === 'desk' && (
               <button
                 type="button"
                 onClick={() => flipAllCards(!areAllFlipped)}
-                className="paper-btn-secondary !min-h-[34px] !text-xs !py-1 !px-2.5 flex items-center gap-1"
-                title="Alle Karten gleichzeitig wenden"
+                className="paper-btn-secondary !min-h-[34px] !text-xs !py-1 !px-2.5 flex items-center gap-1 font-semibold"
+                title="Alle Karten wenden"
               >
                 <RotateCw className="w-3 h-3" />
-                <span>{areAllFlipped ? 'Alle Vorderseite' : 'Alle wenden'}</span>
+                <span>{areAllFlipped ? 'Alle zur Moderatorseite' : 'Alle zur Kameraseite'}</span>
               </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* ── BÜHNEN-FOKUSMODUS (EINZELKARTE GROSSFORMAT FÜRS REDNERPULT) ── */}
-      {viewMode === 'focus' && (
-        <div className="space-y-4">
-          {/* Stage Navigator Bar */}
-          <div className="flex items-center justify-between bg-card border border-border rounded-xl p-3 shadow-xs">
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setCurrentFocusIndex((prev) => (prev > 0 ? prev - 1 : prev))}
-                disabled={currentFocusIndex === 0}
-                className="paper-btn-secondary !min-h-[36px] !text-xs !py-1 !px-3 disabled:opacity-30"
-              >
-                <ChevronLeft className="w-4 h-4" />
-                <span>Zurück</span>
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  setCurrentFocusIndex((prev) =>
-                    prev < filteredCards.length - 1 ? prev + 1 : prev
-                  )
-                }
-                disabled={currentFocusIndex >= filteredCards.length - 1}
-                className="paper-btn-secondary !min-h-[36px] !text-xs !py-1 !px-3 disabled:opacity-30"
-              >
-                <span>Weiter</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-
+      {/* ══════════════════════════════════════════════════════════════════════════
+          MODUS 1: IN DER HAND (AUTHENTISCHER TV-KARTENSTAPEL)
+      ══════════════════════════════════════════════════════════════════════════ */}
+      {viewMode === 'hand' && currentCard && (
+        <div className="space-y-6">
+          {/* Deck Action Controller */}
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-card border-2 border-border rounded-2xl p-3.5 shadow-sm">
             {/* Card selector pills */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="flex items-center gap-1.5 overflow-x-auto py-1">
+              <span className="font-mono text-xs text-muted-foreground font-bold mr-1">Karte:</span>
               {filteredCards.map((card, idx) => (
                 <button
                   key={card.id}
-                  onClick={() => setCurrentFocusIndex(idx)}
-                  className={`w-8 h-8 rounded-lg font-mono text-xs font-bold transition-colors ${
-                    idx === currentFocusIndex
-                      ? 'bg-foreground text-background shadow-xs'
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-9 h-9 rounded-xl font-mono text-xs font-black transition-all flex items-center justify-center cursor-pointer ${
+                    idx === currentIndex
+                      ? 'bg-foreground text-background scale-105 shadow-sm'
                       : 'bg-muted/70 text-muted-foreground hover:bg-muted hover:text-foreground'
                   }`}
+                  title={card.title}
                 >
-                  {card.id}
+                  {card.id.toString().padStart(2, '0')}
                 </button>
               ))}
             </div>
 
-            <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-              <span>
-                Karte {currentFocusIndex + 1} von {filteredCards.length}
-              </span>
-              <span className="hidden sm:inline">· [Leertaste = Umdrehen]</span>
+            {/* Stack Gestures */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => toggleFlip(currentCard.id)}
+                className="paper-btn-secondary !min-h-[38px] !text-xs !py-1.5 !px-3.5 flex items-center gap-1.5 font-bold cursor-pointer"
+                title="Karte umdrehen: Wechselt zwischen Moderatorseite (Text) und Kamerarückseite (Logo)"
+              >
+                <RotateCw className="w-3.5 h-3.5" />
+                <span>
+                  {flippedCards[currentCard.id]
+                    ? '👉 Zur Moderatorseite'
+                    : '📺 Zur Kamerarückseite'}
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentIndex((prev) => (prev > 0 ? prev - 1 : filteredCards.length - 1))
+                }
+                className="paper-btn-secondary !min-h-[38px] !text-xs !py-1.5 !px-3 flex items-center gap-1 font-semibold"
+                title="Vorherige Karte aus dem Stapel holen"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                <span className="hidden sm:inline">Zurück</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setCurrentIndex((prev) => (prev < filteredCards.length - 1 ? prev + 1 : 0))
+                }
+                className="paper-btn-primary !min-h-[38px] !text-xs !py-1.5 !px-4 flex items-center gap-1.5 font-black shadow-md cursor-pointer"
+                title="TV-Geste: Karte nach hinten stecken und nächste Karte vorziehen"
+              >
+                <span>Nächste Karte</span>
+                <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
           </div>
 
-          {/* Focused Large Card Render */}
-          {filteredCards[currentFocusIndex] && (
-            <div className="max-w-3xl mx-auto">
-              <SingleFlipCard
-                card={filteredCards[currentFocusIndex]}
-                isFlipped={!!flippedCards[filteredCards[currentFocusIndex].id]}
-                onFlip={() => toggleFlip(filteredCards[currentFocusIndex].id)}
+          {/* 3D Realistic TV Moderator Card Stack in Hand */}
+          <div className="relative max-w-4xl mx-auto py-4 px-2">
+            {/* Background layered cards to simulate physical card stack in moderator hands */}
+            <div
+              className="absolute inset-x-6 top-8 bottom-0 rounded-3xl bg-zinc-300/60 dark:bg-zinc-800/60 border-2 border-zinc-400/50 dark:border-zinc-700/50 shadow-lg transform rotate-1 pointer-events-none transition-transform"
+              style={{ zIndex: 1 }}
+            />
+            <div
+              className="absolute inset-x-4 top-6 bottom-2 rounded-3xl bg-zinc-200/80 dark:bg-zinc-850 border-2 border-zinc-300 dark:border-zinc-700 shadow-xl transform -rotate-1 pointer-events-none transition-transform"
+              style={{ zIndex: 2 }}
+            />
+
+            {/* The Active Top TV Card */}
+            <div className="relative" style={{ zIndex: 10 }}>
+              <TvHostCueCard
+                card={currentCard}
+                isFlipped={!!flippedCards[currentCard.id]}
+                onFlip={() => toggleFlip(currentCard.id)}
+                onNextCard={() =>
+                  setCurrentIndex((prev) => (prev < filteredCards.length - 1 ? prev + 1 : 0))
+                }
+                onCopyQuote={handleCopy}
+                isCopied={copiedQuote !== null}
                 isLarge
-                onCopyQuote={handleCopyQuote}
-                isCopied={copiedId === filteredCards[currentFocusIndex].id}
               />
             </div>
-          )}
+          </div>
+
+          {/* Stack Navigation & Hotkey Help */}
+          <div className="flex items-center justify-between text-xs font-mono text-muted-foreground max-w-4xl mx-auto px-4">
+            <div className="flex items-center gap-3">
+              <span>
+                Karte <strong>{currentIndex + 1}</strong> von <strong>{filteredCards.length}</strong>
+              </span>
+              <span>·</span>
+              <span className="hidden sm:inline">
+                Tasten: <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded font-bold">Leertaste</kbd> = Wenden,{' '}
+                <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded font-bold">→</kbd> = Nächste Karte
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1.5 text-zinc-950 dark:text-zinc-100 font-bold">
+              <span>Bühnentipp:</span>
+              <span className="text-muted-foreground font-normal">
+                Karten locker mit den Daumen an den Rändern halten, Blick 1 Sekunde heben!
+              </span>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* ── RASTER-ANSICHT (ALLE 8 KARTEN ZUM DURCHSCROLLEN & FLIPPEN) ── */}
-      {viewMode === 'grid' && (
+      {/* ══════════════════════════════════════════════════════════════════════════
+          MODUS 2: AUF DEM PULT (ALLE 8 TV-KARTEN NEBENEINANDER)
+      ══════════════════════════════════════════════════════════════════════════ */}
+      {viewMode === 'desk' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredCards.map((card) => (
-            <SingleFlipCard
-              key={card.id}
-              card={card}
-              isFlipped={!!flippedCards[card.id]}
-              onFlip={() => toggleFlip(card.id)}
-              onCopyQuote={handleCopyQuote}
-              isCopied={copiedId === card.id}
-            />
+            <div key={card.id} className="w-full">
+              <TvHostCueCard
+                card={card}
+                isFlipped={!!flippedCards[card.id]}
+                onFlip={() => toggleFlip(card.id)}
+                onCopyQuote={handleCopy}
+                isCopied={copiedQuote !== null}
+              />
+            </div>
           ))}
         </div>
       )}
 
       {/* Footer Info Box */}
-      <div className="bg-muted/30 border border-border rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-muted-foreground font-mono">
+      <div className="bg-muted/40 border-2 border-border rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-muted-foreground font-mono">
         <div className="flex items-center gap-2">
-          <Info className="w-4 h-4 text-foreground shrink-0" />
+          <Sparkles className="w-4 h-4 text-foreground shrink-0" />
           <span>
-            Bühnen-Regel: Pro Karte maximal 2 bis 2,5 Minuten reden. Blickkontakt zu Staatssekretär Andreas Deuschle halten!
+            Offizieller Leitfaden Umweltmentoren BW: Die Karten sind exakt auf den 15-Minuten-Slot von 13:15 bis 13:30 Uhr abgestimmt.
           </span>
         </div>
         <div className="text-left sm:text-right shrink-0">
-          UBA-Standard 2026: <strong className="text-foreground">4,4 t Basispauschale</strong> (1,2 t Öffentl. Infrastruktur)
+          UBA-Grundpauschale: <strong className="text-foreground">4,4 Tonnen CO₂/Kopf</strong> (inkl. 1.200 kg Öffentliche Hand)
         </div>
       </div>
     </div>
   );
 }
 
-// ── EINZELNE 3D FLIPCARD KOMPONENTE ──
-interface SingleFlipCardProps {
-  card: SpeechCardItem;
+// ══════════════════════════════════════════════════════════════════════════════
+// TV HOST CUE CARD (AUTHENTISCHE FERNSEH-MODERATIONSKARTE)
+// ══════════════════════════════════════════════════════════════════════════════
+
+interface TvHostCueCardProps {
+  card: TvCueCard;
   isFlipped: boolean;
   onFlip: () => void;
-  isLarge?: boolean;
-  onCopyQuote: (cardId: number, text: string) => void;
+  onNextCard?: () => void;
+  onCopyQuote: (text: string) => void;
   isCopied: boolean;
+  isLarge?: boolean;
 }
 
-function SingleFlipCard({
+function TvHostCueCard({
   card,
   isFlipped,
   onFlip,
-  isLarge = false,
+  onNextCard,
   onCopyQuote,
   isCopied,
-}: SingleFlipCardProps) {
+  isLarge = false,
+}: TvHostCueCardProps) {
+  // Helper to render text with yellow/blue/green highlighter markers
+  const renderHighlightedQuote = (quote: string, highlights: string[]) => {
+    let parts: { text: string; isHighlight: boolean }[] = [{ text: quote, isHighlight: false }];
+
+    highlights.forEach((hl) => {
+      const newParts: { text: string; isHighlight: boolean }[] = [];
+      parts.forEach((p) => {
+        if (p.isHighlight) {
+          newParts.push(p);
+        } else {
+          const split = p.text.split(hl);
+          split.forEach((seg, sIdx) => {
+            if (seg) newParts.push({ text: seg, isHighlight: false });
+            if (sIdx < split.length - 1) {
+              newParts.push({ text: hl, isHighlight: true });
+            }
+          });
+        }
+      });
+      parts = newParts;
+    });
+
+    return (
+      <span>
+        {parts.map((part, i) =>
+          part.isHighlight ? (
+            <mark
+              key={i}
+              className="bg-amber-200/90 dark:bg-amber-400/30 text-zinc-950 dark:text-amber-100 font-bold px-1 py-0.5 rounded shadow-xs mx-0.5"
+            >
+              {part.text}
+            </mark>
+          ) : (
+            <span key={i}>{part.text}</span>
+          )
+        )}
+      </span>
+    );
+  };
+
   return (
     <div
       className={`perspective-1000 w-full transition-all duration-300 ${
-        isLarge ? 'min-h-[520px]' : 'min-h-[480px]'
+        isLarge ? 'min-h-[580px]' : 'min-h-[540px]'
       }`}
     >
       <div
-        className={`relative w-full h-full transform-style-3d transition-transform duration-500 ease-out rounded-2xl ${
+        className={`relative w-full h-full transform-style-3d transition-transform duration-500 ease-out rounded-3xl ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
-        style={{ minHeight: isLarge ? '520px' : '480px' }}
+        style={{ minHeight: isLarge ? '580px' : '540px' }}
       >
-        {/* ══════════════════════════════════════════════════════════════
-            VORDERSEITE (FRONT): Wörtlicher Einstieg & Sofort-Blick
-        ══════════════════════════════════════════════════════════════ */}
-        <div className="absolute inset-0 w-full h-full backface-hidden bg-card border-2 border-border rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col justify-between overflow-y-auto">
+        {/* ══════════════════════════════════════════════════════════════════════
+            VORDERSEITE (MODERATOR-ANSICHT / PROMPTER-SEITE)
+            Thick cardboard look with authentic studio ring hole & highlighters
+        ══════════════════════════════════════════════════════════════════════ */}
+        <div className="absolute inset-0 w-full h-full backface-hidden bg-[#ffffff] dark:bg-[#0f0e11] text-zinc-950 dark:text-zinc-50 border-[6px] border-[#d4d4d8] dark:border-[#27272a] rounded-3xl p-6 sm:p-7 shadow-2xl flex flex-col justify-between overflow-y-auto font-sans select-text">
+          {/* Cardboard Header Bar with Punched Ring Hole */}
           <div className="space-y-4">
-            {/* Top Badge Bar */}
-            <div className="flex items-center justify-between border-b border-border pb-3">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-mono text-xs font-black bg-foreground text-background px-2 py-0.5 rounded">
-                  KARTE {card.id.toString().padStart(2, '0')}
-                </span>
-                <span className="font-mono text-[11px] text-muted-foreground bg-muted px-2 py-0.5 rounded font-medium">
-                  {card.slideTitle}
-                </span>
-                <span className="font-mono text-[11px] text-amber-700 bg-amber-50 dark:bg-amber-950/40 dark:text-amber-300 px-2 py-0.5 rounded flex items-center gap-1 font-bold">
-                  <Clock className="w-3 h-3" />
-                  {card.timeSlot}
-                </span>
+            <div className="flex items-center justify-between border-b-2 border-zinc-950/20 dark:border-zinc-700/60 pb-3">
+              <div className="flex items-center gap-3">
+                {/* Metallic Ring Punched Hole */}
+                <div
+                  className="w-6 h-6 rounded-full border-2 border-zinc-400 dark:border-zinc-600 bg-zinc-200 dark:bg-zinc-800 shadow-inner flex items-center justify-center shrink-0"
+                  title="Ring-Lochung der Moderationskarte"
+                >
+                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-350 dark:bg-zinc-900 border border-zinc-400/50"></div>
+                </div>
+
+                {/* Card Number Stamp */}
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-black tracking-wider bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 px-2.5 py-1 rounded-lg uppercase shadow-xs">
+                    KARTE {card.id.toString().padStart(2, '0')}
+                  </span>
+                  <span className="font-mono text-[11px] font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-widest hidden sm:inline">
+                    {card.moderator.segmentBadge}
+                  </span>
+                </div>
               </div>
 
-              {/* Speaker Badges */}
-              <div className="flex items-center gap-1.5">
-                {card.speakers.includes('paul') && (
-                  <span className="font-mono text-[10px] font-bold text-blue-700 bg-blue-50 dark:bg-blue-950/50 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-200 dark:border-blue-900">
-                    🔵 Paul
-                  </span>
-                )}
-                {card.speakers.includes('jona') && (
-                  <span className="font-mono text-[10px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/50 dark:text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-900">
-                    🟢 Jona
-                  </span>
-                )}
+              {/* Time & Speaker Pills */}
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs font-bold text-amber-900 bg-amber-100 dark:bg-amber-950/60 dark:text-amber-200 px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-800 flex items-center gap-1 shadow-xs">
+                  <Clock className="w-3 h-3 text-amber-700 dark:text-amber-400" />
+                  <span>{card.timeSlot}</span>
+                </span>
+
+                <div className="flex items-center gap-1">
+                  {card.speakers.includes('paul') && (
+                    <span className="font-mono text-[10px] font-black tracking-wider text-blue-700 bg-blue-100 dark:bg-blue-950 dark:text-blue-200 px-2 py-1 rounded-md border border-blue-300 dark:border-blue-800">
+                      🔵 PAUL
+                    </span>
+                  )}
+                  {card.speakers.includes('jona') && (
+                    <span className="font-mono text-[10px] font-black tracking-wider text-emerald-700 bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-200 px-2 py-1 rounded-md border border-emerald-300 dark:border-emerald-800">
+                      🟢 JONA
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Card Title */}
-            <div>
-              <h3 className="font-serif text-lg sm:text-xl font-bold text-foreground leading-snug">
+            {/* Segment Title & Slide Indicator */}
+            <div className="flex items-baseline justify-between gap-2">
+              <h3 className="font-serif text-xl sm:text-2xl font-black text-zinc-950 dark:text-white tracking-tight leading-tight">
                 {card.title}
               </h3>
-              <p className="text-xs text-muted-foreground mt-0.5 font-medium">
-                {card.front.stageFocus}
-              </p>
+              <span className="font-mono text-[10px] font-bold text-zinc-500 uppercase tracking-wider shrink-0 bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 rounded">
+                {card.slideTitle}
+              </span>
             </div>
 
-            {/* Wörtliche Einstiegssätze (Literal Quotes) */}
-            <div className="space-y-2.5">
-              {card.front.openings.map((opening, idx) => {
-                const isPaul = opening.speaker === 'paul';
+            {/* Studio Regie Box (Director Notes) */}
+            <div className="bg-amber-500/10 border-l-4 border-amber-500 p-2.5 rounded-r-xl text-xs text-amber-950 dark:text-amber-200 font-sans leading-relaxed flex items-start gap-2">
+              <span className="font-mono text-[10px] font-black bg-amber-500 text-white px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 mt-0.5">
+                REGIE
+              </span>
+              <p className="font-medium">{card.moderator.regieInstruction}</p>
+            </div>
+
+            {/* Teleprompter Speech Lines with Highlighter Markers */}
+            <div className="space-y-3 pt-1">
+              {card.moderator.speechLines.map((line, idx) => {
+                const isPaul = line.speaker === 'paul';
                 return (
                   <div
                     key={idx}
-                    className={`p-3 rounded-xl border text-xs leading-relaxed transition-colors ${
+                    className={`p-3.5 rounded-2xl border-2 text-xs sm:text-sm leading-relaxed ${
                       isPaul
-                        ? 'bg-blue-50/50 border-blue-200/80 dark:bg-blue-950/20 dark:border-blue-900/60'
-                        : 'bg-emerald-50/50 border-emerald-200/80 dark:bg-emerald-950/20 dark:border-emerald-900/60'
+                        ? 'bg-blue-50/70 border-blue-200 dark:bg-blue-950/20 dark:border-blue-900/60'
+                        : 'bg-emerald-50/70 border-emerald-200 dark:bg-emerald-950/20 dark:border-emerald-900/60'
                     }`}
                   >
-                    <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center justify-between mb-1.5">
                       <span
-                        className={`font-mono text-[10px] font-bold uppercase tracking-wider ${
-                          isPaul ? 'text-blue-700 dark:text-blue-300' : 'text-emerald-700 dark:text-emerald-300'
+                        className={`font-mono text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 ${
+                          isPaul
+                            ? 'text-blue-800 dark:text-blue-300'
+                            : 'text-emerald-800 dark:text-emerald-300'
                         }`}
                       >
-                        {opening.speakerName} · Wörtlicher Einstieg:
+                        <span
+                          className={`w-2.5 h-2.5 rounded-full ${
+                            isPaul ? 'bg-blue-600' : 'bg-emerald-600'
+                          }`}
+                        ></span>
+                        {line.speakerName}:
                       </span>
+
                       <button
                         type="button"
-                        onClick={() => onCopyQuote(card.id, opening.quote)}
-                        className="text-muted-foreground hover:text-foreground transition-colors p-1"
-                        title="Einstiegssatz kopieren"
+                        onClick={() => onCopyQuote(line.quote)}
+                        className="text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors p-1"
+                        title="Zitat in Zwischenablage kopieren"
                       >
-                        {isCopied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                        <Copy className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <blockquote className="font-serif text-[13px] sm:text-sm font-semibold text-foreground italic">
-                      {opening.quote}
-                    </blockquote>
-                    {opening.note && (
-                      <p className="text-[10px] text-muted-foreground mt-1 font-mono">
-                        Regie: {opening.note}
+
+                    <div className="font-serif text-[14px] sm:text-[15px] font-semibold text-zinc-900 dark:text-zinc-100 leading-snug">
+                      {renderHighlightedQuote(line.quote, line.highlights)}
+                    </div>
+
+                    {line.stageAction && (
+                      <p className="text-[11px] font-mono text-zinc-500 dark:text-zinc-400 mt-2 italic flex items-center gap-1">
+                        <span>👉 [Bühnen-Aktion: {line.stageAction}]</span>
                       </p>
                     )}
                   </div>
@@ -1093,139 +1238,143 @@ function SingleFlipCard({
               })}
             </div>
 
-            {/* Quick Cues on Stage */}
-            <div className="space-y-1.5 pt-1">
-              <span className="font-mono text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
-                Kernstichpunkte für den 0,5-Sekunden-Blick:
+            {/* Quick-Glance Studio Bullet Points */}
+            <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800">
+              <span className="font-mono text-[10px] font-black text-zinc-400 uppercase tracking-widest block mb-2">
+                STUDIO-STICHWÖRTER FÜR DEN 0,2-SEKUNDEN-BLICK:
               </span>
-              <ul className="space-y-1 text-xs text-foreground/90 font-medium">
-                {card.front.cues.map((cue, idx) => (
-                  <li key={idx} className="flex items-start gap-2">
-                    <span className="text-foreground/40 font-bold">•</span>
-                    <span>{cue}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Flip Trigger & Handover */}
-          <div className="pt-4 border-t border-border flex items-center justify-between gap-2 mt-4">
-            <div className="text-[11px] font-mono text-muted-foreground truncate">
-              {card.front.partnerHandover ? (
-                <span>👉 {card.front.partnerHandover}</span>
-              ) : (
-                <span>⌨️ {card.front.beamerKey}</span>
-              )}
-            </div>
-
-            <button
-              type="button"
-              onClick={onFlip}
-              className="paper-btn-primary !min-h-[36px] !text-xs !py-1.5 !px-3 flex items-center gap-1.5 font-semibold shrink-0 cursor-pointer shadow-xs"
-            >
-              <RotateCw className="w-3.5 h-3.5" />
-              <span>Rückseite (Details) ↷</span>
-            </button>
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════════════════════════════════
-            RÜCKSEITE (BACK): Vertiefung, UBA-Fakten, Regie & Hotkeys
-        ══════════════════════════════════════════════════════════════ */}
-        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-zinc-950 text-white border-2 border-zinc-800 rounded-2xl p-5 sm:p-6 shadow-xl flex flex-col justify-between overflow-y-auto">
-          <div className="space-y-4">
-            {/* Top Back Bar */}
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs font-bold bg-white text-zinc-950 px-2 py-0.5 rounded">
-                  RÜCKSEITE · KARTE {card.id.toString().padStart(2, '0')}
-                </span>
-                <span className="font-mono text-[11px] text-zinc-400">
-                  Wissenschaft & Regie
-                </span>
-              </div>
-              <span className="text-[10px] font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded">
-                {card.timeSlot}
-              </span>
-            </div>
-
-            {/* In-Depth Bullet Points */}
-            <div className="space-y-2.5">
-              <span className="font-mono text-[10px] font-bold text-zinc-400 uppercase tracking-wider block">
-                Ausführliche Sprechpunkte & Begründungen:
-              </span>
-              <div className="space-y-2">
-                {card.back.bulletPoints.map((bp, idx) => (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {card.moderator.bulletPoints.map((bp, i) => (
                   <div
-                    key={idx}
-                    className={`p-2.5 rounded-xl border text-xs leading-relaxed ${
+                    key={i}
+                    className={`p-2 rounded-xl border text-[11px] leading-tight ${
                       bp.highlight
-                        ? 'bg-zinc-900 border-emerald-500/50 text-zinc-100 shadow-xs'
-                        : 'bg-zinc-900/60 border-zinc-800 text-zinc-300'
+                        ? 'bg-zinc-100 dark:bg-zinc-800/80 border-zinc-400 dark:border-zinc-600 font-bold text-zinc-950 dark:text-white'
+                        : 'bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300'
                     }`}
                   >
-                    {bp.label && (
-                      <strong className="font-mono text-[11px] text-white block mb-0.5">
-                        {bp.label}
-                      </strong>
-                    )}
-                    <p>{bp.text}</p>
+                    <strong className="block font-mono text-[10px] uppercase text-zinc-900 dark:text-zinc-200 mb-0.5">
+                      • {bp.label}
+                    </strong>
+                    <span>{bp.text}</span>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
 
-            {/* UBA Fact Box if present */}
-            {card.back.ubaNote && (
-              <div className="bg-emerald-950/40 border border-emerald-500/40 p-2.5 rounded-xl text-xs text-emerald-200 space-y-1">
-                <div className="font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  <span>Umweltbundesamt Basispauschale</span>
-                </div>
-                <p className="text-[11px] leading-relaxed font-sans">{card.back.ubaNote}</p>
+          {/* Bottom Card Footer: Handover & Flip Actions */}
+          <div className="pt-4 border-t-2 border-zinc-950/20 dark:border-zinc-700/60 flex items-center justify-between gap-3 mt-4">
+            <div className="space-y-0.5 truncate">
+              <div className="font-mono text-xs font-bold text-zinc-800 dark:text-zinc-200 truncate">
+                {card.moderator.partnerCue}
               </div>
-            )}
-
-            {/* Regie & Körpersprache */}
-            <div className="space-y-1 bg-zinc-900/80 border border-zinc-800 p-2.5 rounded-xl text-xs text-zinc-300">
-              <span className="font-mono text-[10px] font-bold text-amber-400 uppercase tracking-wider block">
-                Regie & Körpersprache auf der Bühne:
-              </span>
-              <ul className="space-y-0.5 text-[11px]">
-                {card.back.regieNotes.map((note, idx) => (
-                  <li key={idx} className="flex items-start gap-1.5">
-                    <span>{note}</span>
-                  </li>
-                ))}
-              </ul>
+              <div className="font-mono text-[11px] text-zinc-500">
+                {card.moderator.beamerTrigger}
+              </div>
             </div>
 
-            {/* Handover & Beamer Trigger */}
-            <div className="bg-zinc-900 border border-zinc-700 p-3 rounded-xl space-y-1.5">
-              <div className="flex items-center justify-between text-[10px] font-mono uppercase text-zinc-400">
-                <span>Signal für Partner & Saal:</span>
-                <span className="text-white font-bold">{card.back.beamerAction}</span>
+            <div className="flex items-center gap-2 shrink-0">
+              {onNextCard && (
+                <button
+                  type="button"
+                  onClick={onNextCard}
+                  className="paper-btn-secondary !min-h-[36px] !text-xs !py-1 !px-3 font-bold"
+                  title="Nächste Karte"
+                >
+                  <span>Weiter ➔</span>
+                </button>
+              )}
+
+              <button
+                type="button"
+                onClick={onFlip}
+                className="bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 !min-h-[38px] !text-xs !py-1.5 !px-3.5 rounded-xl flex items-center gap-1.5 font-black shadow-md cursor-pointer transition-all"
+                title="Wendet die Karte zur offiziellen TV-Kameraseite"
+              >
+                <RotateCw className="w-3.5 h-3.5" />
+                <span>Kamera-Rückseite ↷</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            RÜCKSEITE (KAMERA- & PUBLIKUMS-ANSICHT / TV-STUDIO LOGO)
+            This is what the camera and audience see when the host holds the card!
+        ══════════════════════════════════════════════════════════════════════ */}
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-white border-[6px] border-zinc-700 rounded-3xl p-7 sm:p-10 shadow-2xl flex flex-col justify-between overflow-hidden font-sans select-none relative">
+          {/* Subtle Studio Geometric Background Grid */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+          {/* Big Stylized Card Watermark */}
+          <div className="absolute right-6 bottom-4 font-mono text-[120px] sm:text-[180px] font-black text-white/5 pointer-events-none leading-none select-none">
+            {card.id.toString().padStart(2, '0')}
+          </div>
+
+          {/* Top Camera Header Bar */}
+          <div className="relative z-10 flex items-center justify-between border-b border-zinc-800 pb-4">
+            <div className="flex items-center gap-3">
+              {/* Metallic Ring Punched Hole */}
+              <div className="w-6 h-6 rounded-full border-2 border-zinc-500 bg-zinc-800 shadow-inner flex items-center justify-center shrink-0">
+                <div className="w-2.5 h-2.5 rounded-full bg-zinc-950 border border-zinc-700"></div>
               </div>
-              <p className="font-serif text-xs sm:text-sm font-semibold text-emerald-300 italic">
-                {card.back.handoverSentence}
+
+              <div>
+                <span className="font-mono text-[11px] font-bold tracking-widest uppercase text-emerald-400 block">
+                  LAND BADEN-WÜRTTEMBERG
+                </span>
+                <span className="font-mono text-xs font-black tracking-wider text-zinc-300">
+                  UMWELTMENTORINNEN & UMWELTMENTOREN
+                </span>
+              </div>
+            </div>
+
+            <span className="font-mono text-xs font-black bg-white text-zinc-950 px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+              {card.cameraBack.badgeText}
+            </span>
+          </div>
+
+          {/* Centerpiece: Iconic TV Show Logo & Branding */}
+          <div className="relative z-10 my-auto text-center space-y-3 py-6">
+            <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-zinc-800/80 border border-zinc-700 shadow-inner mb-2">
+              <Sparkles className="w-8 h-8 text-emerald-400" />
+            </div>
+
+            <div className="space-y-1">
+              <h2 className="font-serif text-3xl sm:text-5xl font-black tracking-tight text-white uppercase drop-shadow-md">
+                {card.cameraBack.showTitle}
+              </h2>
+              <p className="font-mono text-xs sm:text-sm font-bold tracking-widest text-emerald-400 uppercase">
+                {card.cameraBack.subTitle}
               </p>
+            </div>
+
+            <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto rounded-full my-3"></div>
+
+            <div className="space-y-0.5 text-xs text-zinc-400 font-mono">
+              <p className="text-zinc-200 font-bold">{card.cameraBack.venue}</p>
+              <p>{card.cameraBack.date}</p>
             </div>
           </div>
 
-          {/* Bottom Flip Trigger Back */}
-          <div className="pt-4 border-t border-zinc-800 flex items-center justify-between gap-2 mt-4">
-            <span className="text-[11px] font-mono text-zinc-400">
-              Beamer-Taste: <strong className="text-white">{card.front.beamerKey}</strong>
-            </span>
+          {/* Bottom Camera Footer Bar */}
+          <div className="relative z-10 pt-4 border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
+            <div>
+              <span className="text-zinc-500 block text-[10px] uppercase">MODERATION TEAM:</span>
+              <strong className="text-white text-xs sm:text-sm tracking-wide">
+                {card.cameraBack.hosts}
+              </strong>
+            </div>
 
             <button
               type="button"
               onClick={onFlip}
-              className="bg-white text-zinc-950 hover:bg-zinc-200 !min-h-[36px] !text-xs !py-1.5 !px-3.5 rounded-lg flex items-center gap-1.5 font-bold shrink-0 cursor-pointer shadow-sm transition-colors"
+              className="bg-white text-zinc-950 hover:bg-zinc-200 !min-h-[38px] !text-xs !py-1.5 !px-4 rounded-xl flex items-center gap-1.5 font-black shadow-lg cursor-pointer transition-all"
+              title="Wendet die Karte zurück zur Moderator-Sprecherseite"
             >
               <RotateCw className="w-3.5 h-3.5" />
-              <span>Vorderseite ↶</span>
+              <span>Moderatorseite ↶</span>
             </button>
           </div>
         </div>
