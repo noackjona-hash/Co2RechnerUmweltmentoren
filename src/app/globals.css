@@ -271,26 +271,49 @@
     display: none !important;
   }
 
-  /* Show ONLY the printable certificate document */
-  #print-certificate-document {
+  /* Show ONLY the printable certificate or material document */
+  #print-certificate-document,
+  #print-materials-wrapper {
     display: block !important;
     visibility: visible !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto !important;
-    padding: 2.5rem !important;
-    border: 4px double #1c1917 !important;
     background: #ffffff !important;
     color: #1c1917 !important;
     box-sizing: border-box !important;
+  }
+
+  #print-certificate-document {
+    padding: 2.5rem !important;
+    border: 4px double #1c1917 !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
-  #print-certificate-document * {
+  .print-page {
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    min-height: 95vh !important;
+    box-sizing: border-box !important;
+    padding: 2rem !important;
+    border: 1px solid #e2e8f0 !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .print-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  #print-certificate-document *,
+  #print-materials-wrapper * {
     visibility: visible !important;
     color: #1c1917 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 }
+

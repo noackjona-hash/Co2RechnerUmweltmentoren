@@ -80,6 +80,18 @@ export default function HomePage() {
 
           <div className="flex items-center gap-3">
             <Link
+              href="/presentation"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium hidden sm:inline-flex"
+            >
+              Präsentation
+            </Link>
+            <Link
+              href="/materials"
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium hidden sm:inline-flex"
+            >
+              Stellwand (140×120)
+            </Link>
+            <Link
               href="/login"
               className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
             >
@@ -182,6 +194,23 @@ export default function HomePage() {
                 Kleidung, Geräte, Streaming und Hobbys.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Umweltmentoren Event Info Banner */}
+        <div className="paper-sheet p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="paper-stamp !py-0.5 !text-[10px] text-foreground">25.09. Stuttgart</span>
+            <span className="text-muted-foreground text-xs">Abschlussveranstaltung Innenministerium</span>
+          </div>
+          <div className="flex items-center gap-3 font-medium text-xs">
+            <Link href="/presentation" className="text-foreground underline underline-offset-4 hover:text-muted-foreground">
+              Beamer-Präsentation
+            </Link>
+            <span className="text-border">|</span>
+            <Link href="/materials" className="text-foreground underline underline-offset-4 hover:text-muted-foreground">
+              Stellwand-Materialien
+            </Link>
           </div>
         </div>
 
