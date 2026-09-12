@@ -267,21 +267,21 @@ export default function ResultsClient() {
     <div className="min-h-screen flex flex-col justify-between pb-12 bg-background">
       {/* Minimal Header */}
       <header className="w-full border-b border-border bg-background sticky top-0 z-30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <span className="font-semibold text-sm tracking-tight text-foreground">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-semibold text-sm tracking-tight text-foreground truncate">
               CO₂-Auswertung
             </span>
             <span className="text-muted-foreground text-xs">/</span>
-            <span className="text-xs text-muted-foreground">
-              {results.isGuest ? 'Gast-Modus' : `Klasse ${results.className || 'Schule'}`}
+            <span className="text-xs text-muted-foreground truncate">
+              {results.isGuest ? 'Gast' : results.className ? `Klasse ${results.className}` : 'Schüler'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setShowCertificate(true)}
-              className="paper-btn-primary text-xs flex items-center gap-1.5"
+              className="paper-btn-primary text-xs flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] sm:min-h-[44px]"
               title="Urkunde erstellen & drucken"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -291,7 +291,7 @@ export default function ResultsClient() {
             <ThemeToggle />
             <button
               onClick={handleLogout}
-              className="paper-btn-secondary text-xs"
+              className="paper-btn-secondary text-xs px-2.5 py-1.5 min-h-[38px] sm:min-h-[44px]"
               title="Abmelden"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -302,14 +302,14 @@ export default function ResultsClient() {
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex-1 w-full space-y-6">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex-1 w-full space-y-6">
         {/* Scorecard Hero Banner */}
-        <article className="paper-sheet p-8 sm:p-12 text-center space-y-4">
+        <article className="paper-sheet p-6 sm:p-12 text-center space-y-4">
           <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono block">
             Dein persönlicher CO₂-Fußabdruck
           </span>
 
-          <div className="text-5xl sm:text-6xl font-mono font-semibold text-foreground tracking-tight py-1">
+          <div className="text-4xl sm:text-6xl font-mono font-semibold text-foreground tracking-tight py-1">
             {formatCO2(animatedTotal)}
           </div>
 
@@ -317,25 +317,25 @@ export default function ResultsClient() {
             <p className="text-sm font-medium text-foreground">
               {rating.label}
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground max-w-sm mx-auto">
               {rating.desc}
             </p>
           </div>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
             <button
               onClick={() => setShowCertificate(true)}
-              className="paper-btn-primary text-xs flex items-center gap-1.5"
+              className="w-full sm:w-auto paper-btn-primary text-xs sm:text-sm flex items-center justify-center gap-2 font-medium"
             >
-              <Award className="w-3.5 h-3.5" />
+              <Award className="w-4 h-4" />
               <span>Urkunde erstellen & anpassen</span>
             </button>
           </div>
         </article>
 
         {/* 3 Meaningful Equivalents */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="paper-sheet p-5 space-y-1 text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+          <div className="paper-sheet p-4 sm:p-5 space-y-1 text-left">
             <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
               Kompensation
             </span>
@@ -347,7 +347,7 @@ export default function ResultsClient() {
             </p>
           </div>
 
-          <div className="paper-sheet p-5 space-y-1 text-left">
+          <div className="paper-sheet p-4 sm:p-5 space-y-1 text-left">
             <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
               Mobilität
             </span>
@@ -359,7 +359,7 @@ export default function ResultsClient() {
             </p>
           </div>
 
-          <div className="paper-sheet p-5 space-y-1 text-left">
+          <div className="paper-sheet p-4 sm:p-5 space-y-1 text-left">
             <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
               Ernährung
             </span>
@@ -372,37 +372,40 @@ export default function ResultsClient() {
           </div>
         </div>
 
-        {/* Minimal Underline Navigation Tabs */}
-        <div className="border-b border-border flex gap-6 text-xs font-medium pt-2">
+        {/* Mobile First Segmented Navigation Tabs */}
+        <div className="grid grid-cols-3 p-1 bg-muted/60 rounded-xl border border-border text-xs text-center font-medium">
           <button
+            type="button"
             onClick={() => setActiveTab('analysis')}
-            className={`pb-2.5 transition-colors cursor-pointer border-b-2 -mb-px ${
+            className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
               activeTab === 'analysis'
-                ? 'border-foreground text-foreground font-semibold'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
+                ? 'bg-background text-foreground font-semibold shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            01 Detail-Analyse
+            Analyse
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('simulator')}
-            className={`pb-2.5 transition-colors cursor-pointer border-b-2 -mb-px ${
+            className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
               activeTab === 'simulator'
-                ? 'border-foreground text-foreground font-semibold'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
+                ? 'bg-background text-foreground font-semibold shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            02 Versprechen & Simulator
+            Simulator
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('challenge')}
-            className={`pb-2.5 transition-colors cursor-pointer border-b-2 -mb-px ${
+            className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
               activeTab === 'challenge'
-                ? 'border-foreground text-foreground font-semibold'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
+                ? 'bg-background text-foreground font-semibold shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            03 Klassen-Vergleich
+            Vergleich
           </button>
         </div>
 

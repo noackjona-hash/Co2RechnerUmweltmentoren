@@ -69,6 +69,12 @@
     font-family: var(--font-sans);
     letter-spacing: -0.011em;
     -webkit-font-smoothing: antialiased;
+    touch-action: manipulation;
+  }
+
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -84,7 +90,7 @@
     font-family: var(--font-sans);
     font-size: 0.75rem;
     font-weight: 500;
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.65rem;
     border-radius: 6px;
     background-color: var(--color-muted);
     color: var(--color-foreground);
@@ -94,7 +100,7 @@
     gap: 0.35rem;
   }
 
-  /* ═══ Minimal Functional Buttons ═══ */
+  /* ═══ Minimal Functional Buttons (Mobile First 44px touch targets) ═══ */
   .paper-btn-primary {
     background-color: #09090b;
     color: #ffffff;
@@ -102,14 +108,20 @@
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+    min-height: 44px;
+    padding: 0.625rem 1.125rem;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.45rem;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    user-select: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .paper-btn-primary:active {
+    transform: scale(0.98);
   }
 
   .paper-btn-primary:hover {
@@ -120,6 +132,7 @@
   .paper-btn-primary:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+    transform: none;
   }
 
   .dark .paper-btn-primary {
@@ -140,19 +153,31 @@
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+    min-height: 44px;
+    padding: 0.625rem 1.125rem;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
     cursor: pointer;
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    user-select: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  }
+
+  .paper-btn-secondary:active {
+    transform: scale(0.98);
   }
 
   .paper-btn-secondary:hover {
     background-color: var(--color-muted);
     border-color: var(--color-muted-foreground);
+  }
+
+  .paper-btn-secondary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
   }
 
   /* ═══ Minimal Clean Slider ═══ */

@@ -162,8 +162,8 @@ export default function LoginClient() {
             </p>
           </div>
 
-          {/* Minimal Tabs */}
-          <div className="border-b border-border flex gap-4 text-xs font-medium justify-center">
+          {/* Mobile-First Segmented Tabs */}
+          <div className="grid grid-cols-4 p-1 bg-muted/60 rounded-xl border border-border text-[11px] sm:text-xs font-medium text-center">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -172,10 +172,10 @@ export default function LoginClient() {
                   setActiveTab(tab.key);
                   setError('');
                 }}
-                className={`pb-2 transition-colors cursor-pointer border-b-2 -mb-px ${
+                className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
                   activeTab === tab.key
-                    ? 'border-foreground text-foreground font-semibold'
-                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                    ? 'bg-background text-foreground font-semibold shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {tab.label}
@@ -197,7 +197,7 @@ export default function LoginClient() {
                   onChange={(e) => setAccessKey(formatAccessKey(e.target.value))}
                   maxLength={9}
                   autoFocus
-                  className="w-full px-3 py-2.5 text-center font-mono text-lg font-bold tracking-widest border border-border rounded-md bg-background text-foreground focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/40 placeholder:tracking-normal"
+                  className="w-full h-12 sm:h-14 px-3 text-center font-mono text-xl sm:text-2xl font-bold tracking-widest border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/30 placeholder:tracking-normal"
                 />
                 <span className="text-[11px] text-muted-foreground block text-center">
                   Den 8-stelligen Code erhältst du von deiner Lehrkraft.
@@ -207,12 +207,12 @@ export default function LoginClient() {
               <button
                 type="submit"
                 disabled={accessKey.length < 9 || loading}
-                className="w-full py-2.5 paper-btn-primary text-xs"
+                className="w-full paper-btn-primary text-xs sm:text-sm font-semibold"
               >
                 {loading ? 'Code wird geprüft...' : 'Weiter zum Fragebogen →'}
               </button>
 
-              <div className="pt-3 border-t border-border text-center">
+              <div className="pt-3 border-t border-border">
                 <button
                   type="button"
                   onClick={async () => {
@@ -231,9 +231,9 @@ export default function LoginClient() {
                       setLoading(false);
                     }
                   }}
-                  className="text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+                  className="w-full paper-btn-secondary text-xs sm:text-sm font-medium"
                 >
-                  Kein Code? Als Gast ohne Speicherung starten →
+                  Ohne Code: Als Gast starten →
                 </button>
               </div>
             </form>

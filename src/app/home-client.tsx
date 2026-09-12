@@ -91,18 +91,18 @@ export default function HomePage() {
       </header>
 
       {/* Main Focus Area */}
-      <main className="max-w-xl w-full mx-auto px-4 py-16 sm:py-24 flex-1 flex flex-col justify-center space-y-10">
-        <div className="text-center space-y-3">
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
+      <main className="max-w-xl w-full mx-auto px-4 py-8 sm:py-16 flex-1 flex flex-col justify-center space-y-6 sm:space-y-8">
+        <div className="text-center space-y-2 sm:space-y-3">
+          <h1 className="text-2xl sm:text-4xl font-semibold tracking-tight text-foreground">
             CO₂-Rechner für Schulen
           </h1>
-          <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
             Erfasse deinen persönlichen ökologischen Fußabdruck in Mobilität, Ernährung, Energie und Konsum.
           </p>
         </div>
 
         {/* Central Clean Code Input Box */}
-        <div className="paper-sheet p-6 sm:p-8 space-y-5">
+        <div className="paper-sheet p-5 sm:p-8 space-y-5">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1.5 text-left">
               <label htmlFor="access-key-input" className="block text-xs font-medium text-foreground">
@@ -116,7 +116,7 @@ export default function HomePage() {
                 onChange={(e) => setAccessKey(formatKey(e.target.value))}
                 maxLength={9}
                 autoFocus
-                className="w-full px-4 py-3 text-center text-lg font-mono font-medium tracking-widest bg-background border border-border rounded-lg text-foreground focus:outline-none focus:border-foreground transition-colors"
+                className="w-full h-12 sm:h-14 px-4 text-center text-xl sm:text-2xl font-mono font-medium tracking-widest bg-background border border-border rounded-xl text-foreground focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/30 placeholder:tracking-normal"
                 autoComplete="off"
               />
               <span className="text-[11px] text-muted-foreground block text-center">
@@ -133,20 +133,20 @@ export default function HomePage() {
             <button
               type="submit"
               disabled={accessKey.length < 9 || loading}
-              className="w-full py-2.5 paper-btn-primary text-xs"
+              className="w-full paper-btn-primary text-xs sm:text-sm font-semibold"
             >
               {loading ? 'Wird geprüft...' : 'Fragebogen starten →'}
             </button>
           </form>
 
-          <div className="pt-4 border-t border-border text-center space-y-2">
+          <div className="pt-4 border-t border-border space-y-2">
             <button
               type="button"
               onClick={handleGuestLogin}
               disabled={guestLoading}
-              className="text-xs text-muted-foreground hover:text-foreground cursor-pointer transition-colors"
+              className="w-full paper-btn-secondary text-xs sm:text-sm font-medium"
             >
-              {guestLoading ? 'Gast-Sitzung startet...' : 'Kein Code vorhanden? Als Gast ausprobieren →'}
+              {guestLoading ? 'Gast-Sitzung startet...' : 'Ohne Code: Als Gast ausprobieren →'}
             </button>
           </div>
         </div>
