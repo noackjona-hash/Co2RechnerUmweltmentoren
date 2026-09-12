@@ -47,6 +47,7 @@ export default function QuizPage() {
   const [showCategoryIntro, setShowCategoryIntro] = useState(true);
   const [studentId, setStudentId] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(false);
+  const [quizMode, setQuizMode] = useState<number>(10);
   const router = useRouter();
 
   const currentQuestion = questions[currentIndex];
@@ -56,57 +57,71 @@ export default function QuizPage() {
     return value * question.co2Factor;
   }, []);
 
-  useEffect(() => {
-    async function fetchQuestions() {
-      try {
-        const res = await fetch('/api/quiz');
-        const data = await res.json();
+  const loadQuestions = useCallback(async (modeOverride?: number) => {
+    try {
+      setLoading(true);
+      const url = modeOverride ? `/api/quiz?mode=${modeOverride}` : '/api/quiz';
+      const res = await fetch(url);
+      const data = await res.json();
 
-        if (data.isCompleted) {
-          router.push('/results');
-          return;
-        }
-
-        setQuestions(data.questions || []);
-        setStudentId(data.studentId);
-        setIsGuest(data.isGuest || false);
-
-        const storageKey = `co2rechner_quiz_progress_${data.studentId}`;
-        const saved = localStorage.getItem(storageKey);
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            setAnswers(parsed.answers || {});
-            setCurrentIndex(parsed.currentIndex || 0);
-            setShowCategoryIntro(false);
-          } catch {
-            /* ignore */
-          }
-        }
-
-        if (data.responses?.length > 0 && !saved) {
-          const existing: Record<string, Answer> = {};
-          data.responses.forEach(
-            (r: { questionId: string; category: string; numericalValue: number; calculatedCo2: number }) => {
-              existing[r.questionId] = {
-                questionId: r.questionId,
-                category: r.category,
-                numericalValue: r.numericalValue,
-                calculatedCo2: r.calculatedCo2,
-              };
-            }
-          );
-          setAnswers(existing);
-        }
-
-        setLoading(false);
-      } catch {
-        setLoading(false);
+      if (data.isCompleted) {
+        router.push('/results');
+        return;
       }
+
+      const qList: QuizQuestion[] = data.questions || [];
+      setQuestions(qList);
+      setStudentId(data.studentId);
+      setIsGuest(data.isGuest || false);
+      if (data.quizMode) {
+        setQuizMode(Number(data.quizMode));
+      }
+
+      const storageKey = `co2rechner_quiz_progress_${data.studentId}`;
+      const saved = localStorage.getItem(storageKey);
+      if (saved && !modeOverride) {
+        try {
+          const parsed = JSON.parse(saved);
+          setAnswers(parsed.answers || {});
+          setCurrentIndex(parsed.currentIndex || 0);
+          setShowCategoryIntro(false);
+        } catch {
+          /* ignore */
+        }
+      } else if (data.responses?.length > 0 && !saved) {
+        const existing: Record<string, Answer> = {};
+        data.responses.forEach(
+          (r: { questionId: string; category: string; numericalValue: number; calculatedCo2: number }) => {
+            existing[r.questionId] = {
+              questionId: r.questionId,
+              category: r.category,
+              numericalValue: r.numericalValue,
+              calculatedCo2: r.calculatedCo2,
+            };
+          }
+        );
+        setAnswers(existing);
+      }
+
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to load questions:', err);
+      setLoading(false);
     }
-    fetchQuestions();
   }, [router]);
 
+  useEffect(() => {
+    loadQuestions();
+  }, [loadQuestions]);
+
+  const handleModeChange = async (newMode: number) => {
+    if (newMode === quizMode) return;
+    setCurrentIndex(0);
+    setShowCategoryIntro(true);
+    await loadQuestions(newMode);
+  };
+
+  // Save progress locally
   useEffect(() => {
     if (studentId && questions.length > 0 && Object.keys(answers).length > 0) {
       const storageKey = `co2rechner_quiz_progress_${studentId}`;
@@ -114,26 +129,36 @@ export default function QuizPage() {
     }
   }, [answers, currentIndex, questions.length, studentId]);
 
+  // Ensure current question has an initial answer populated
   useEffect(() => {
     if (loading || !currentQuestion) return;
 
     if (answers[currentQuestion.id] === undefined) {
-      const defaultVal = currentQuestion.defaultValue ?? currentQuestion.minValue;
+      let defaultVal = currentQuestion.defaultValue;
+      let optionIndex: number | undefined = undefined;
+
+      if (currentQuestion.questionType === 'select' || currentQuestion.questionType === 'radio') {
+        const opts = currentQuestion.options as { label: string; value: number }[] | null;
+        if (opts && Array.isArray(opts) && opts.length > 0) {
+          defaultVal = defaultVal ?? opts[0].value;
+          optionIndex = opts.findIndex((o) => o.value === defaultVal);
+          if (optionIndex === -1) optionIndex = 0;
+        }
+      } else {
+        defaultVal = defaultVal ?? currentQuestion.minValue ?? 0;
+      }
+
       if (defaultVal !== null && defaultVal !== undefined) {
+        const initialAns: Answer = {
+          questionId: currentQuestion.id,
+          category: currentQuestion.category,
+          numericalValue: defaultVal,
+          calculatedCo2: calculateCo2(currentQuestion, defaultVal),
+          optionIndex,
+        };
         setAnswers((prev) => ({
           ...prev,
-          [currentQuestion.id]: {
-            questionId: currentQuestion.id,
-            category: currentQuestion.category,
-            numericalValue: defaultVal,
-            calculatedCo2: calculateCo2(currentQuestion, defaultVal),
-            optionIndex:
-              currentQuestion.options && currentQuestion.options.length > 0
-                ? (currentQuestion.options as { label: string; value: number }[]).findIndex(
-                    (o) => o.value === defaultVal
-                  )
-                : undefined,
-          },
+          [currentQuestion.id]: initialAns,
         }));
       }
     }
@@ -189,6 +214,66 @@ export default function QuizPage() {
   const categoryIndex = categoryQuestions.findIndex((q) => q.id === currentQuestion?.id);
   const isNewCategory = categoryIndex === 0;
 
+  const handleSubmit = useCallback(async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    try {
+      // Build final responses array guaranteed to include all questions
+      const finalResponses = questions.map((q) => {
+        const existing = answers[q.id];
+        if (existing && existing.numericalValue !== undefined) {
+          return {
+            questionId: q.id,
+            category: q.category,
+            numericalValue: existing.numericalValue,
+            calculatedCo2: existing.calculatedCo2,
+          };
+        }
+
+        let fallbackVal = q.defaultValue;
+        if (q.questionType === 'select' || q.questionType === 'radio') {
+          const opts = q.options as { label: string; value: number }[] | null;
+          if (opts && Array.isArray(opts) && opts.length > 0) {
+            fallbackVal = fallbackVal ?? opts[0].value;
+          }
+        } else {
+          fallbackVal = fallbackVal ?? q.minValue ?? 0;
+        }
+        const val = fallbackVal ?? 0;
+        return {
+          questionId: q.id,
+          category: q.category,
+          numericalValue: val,
+          calculatedCo2: calculateCo2(q, val),
+        };
+      });
+
+      const res = await fetch('/api/quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          responses: finalResponses,
+          complete: true,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Fehler beim Übermitteln des Fragebogens.');
+      }
+
+      if (studentId) {
+        localStorage.removeItem(`co2rechner_quiz_progress_${studentId}`);
+      }
+
+      router.push('/results');
+    } catch (err: any) {
+      console.error('Submit error:', err);
+      alert(err.message || 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
+      setSubmitting(false);
+    }
+  }, [answers, questions, studentId, router, calculateCo2, submitting]);
+
   const goNext = useCallback(() => {
     if (currentIndex < questions.length - 1) {
       const nextQ = questions[currentIndex + 1];
@@ -197,8 +282,10 @@ export default function QuizPage() {
       }
       setShowHelp(false);
       setCurrentIndex((prev) => prev + 1);
+    } else if (currentIndex === questions.length - 1) {
+      handleSubmit();
     }
-  }, [currentIndex, questions, currentQuestion]);
+  }, [currentIndex, questions, currentQuestion, handleSubmit]);
 
   const goPrev = useCallback(() => {
     if (currentIndex > 0) {
@@ -207,36 +294,6 @@ export default function QuizPage() {
       setCurrentIndex((prev) => prev - 1);
     }
   }, [currentIndex]);
-
-  const handleSubmit = useCallback(async () => {
-    setSubmitting(true);
-    try {
-      const answeredCount = Object.keys(answers).length;
-      if (answeredCount < questions.length) {
-        const unanswered = questions.filter((q) => !answers[q.id]);
-        if (unanswered.length > 0) {
-          const firstUnansweredIndex = questions.findIndex((q) => q.id === unanswered[0].id);
-          setCurrentIndex(firstUnansweredIndex);
-          setSubmitting(false);
-          return;
-        }
-      }
-
-      await fetch('/api/quiz', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ complete: true }),
-      });
-
-      if (studentId) {
-        localStorage.removeItem(`co2rechner_quiz_progress_${studentId}`);
-      }
-
-      router.push('/results');
-    } catch {
-      setSubmitting(false);
-    }
-  }, [answers, questions, studentId, router]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -293,7 +350,7 @@ export default function QuizPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
         <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
           Fragebogen wird geladen...
         </p>
@@ -344,16 +401,55 @@ export default function QuizPage() {
       {/* Minimal Header & Progress Line */}
       <header className="w-full border-b border-border bg-background sticky top-0 z-20">
         <div className="max-w-2xl mx-auto px-4 py-3.5 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2">
-            {isGuest && (
-              <span className="text-[10px] px-1.5 py-0.5 border border-border rounded text-muted-foreground">
-                Gast
+          <div className="flex items-center gap-3">
+            {isGuest ? (
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] px-1.5 py-0.5 border border-border rounded text-muted-foreground font-mono">
+                  Gast
+                </span>
+                <div className="flex items-center border border-border rounded overflow-hidden text-[10px]">
+                  <button
+                    type="button"
+                    onClick={() => handleModeChange(10)}
+                    className={`px-2 py-0.5 font-mono cursor-pointer transition-colors ${
+                      quizMode === 10
+                        ? 'bg-foreground text-background font-semibold'
+                        : 'bg-background hover:bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    10Q
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleModeChange(30)}
+                    className={`px-2 py-0.5 font-mono border-l border-border cursor-pointer transition-colors ${
+                      quizMode === 30
+                        ? 'bg-foreground text-background font-semibold'
+                        : 'bg-background hover:bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    30Q
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleModeChange(60)}
+                    className={`px-2 py-0.5 font-mono border-l border-border cursor-pointer transition-colors ${
+                      quizMode === 60
+                        ? 'bg-foreground text-background font-semibold'
+                        : 'bg-background hover:bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    60Q
+                  </button>
+                </div>
+              </div>
+            ) : null}
+            <div className="flex items-center gap-1.5">
+              <span className="text-muted-foreground hidden sm:inline">Bereich:</span>
+              <span className="font-medium text-foreground">
+                {catInfo.label}
               </span>
-            )}
-            <span className="text-muted-foreground">Bereich:</span>
-            <span className="font-medium text-foreground">
-              {catInfo.label}
-            </span>
+            </div>
           </div>
           <span className="text-muted-foreground font-mono text-[11px]">
             Frage {currentIndex + 1} von {questions.length}
@@ -505,10 +601,7 @@ export default function QuizPage() {
                     const isSelected =
                       answers[currentQuestion.id]?.optionIndex !== undefined
                         ? answers[currentQuestion.id]?.optionIndex === i
-                        : currentValue === option.value &&
-                          (currentQuestion.options as { label: string; value: number }[]).findIndex(
-                            (o) => o.value === currentValue
-                          ) === i;
+                        : currentValue === option.value;
 
                     return (
                       <button

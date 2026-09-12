@@ -37,7 +37,7 @@ export async function POST() {
         data: {
           licenseId: license.id,
           className: 'Gast-Teilnahme',
-          quizMode: 60,
+          quizMode: 10,
         },
       });
     }
