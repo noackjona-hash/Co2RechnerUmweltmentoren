@@ -137,7 +137,9 @@ interface StatsData {
   transportDistribution: TransportDistribution[];
 }
 
-type Tab = 'stats' | 'schools' | 'questions' | 'admins' | 'system' | 'simulation';
+type Tab = 'stats' | 'schools' | 'questions' | 'materials' | 'admins' | 'system' | 'simulation';
+
+import AdminMaterialsTab from '@/components/admin/admin-materials-tab';
 
 const CATEGORY_COLORS: Record<string, string> = {
   mobility: '#10b981', // emerald
@@ -254,7 +256,14 @@ export default function AdminClient() {
           return;
         }
         const sessionData = await sessionRes.json();
-        setSession(sessionData);
+        // Check URL search params for direct tab navigation
+        if (typeof window !== 'undefined') {
+          const params = new URLSearchParams(window.location.search);
+          const tabParam = params.get('tab') as Tab;
+          if (tabParam && ['stats', 'schools', 'questions', 'materials', 'admins', 'system', 'simulation'].includes(tabParam)) {
+            setActiveTab(tabParam);
+          }
+        }
 
         // Fetch Tab data
         await Promise.all([fetchStats(), fetchLicenses(), fetchQuestions()]);
@@ -804,6 +813,18 @@ export default function AdminClient() {
             <HelpCircle className="w-3.5 h-3.5" />
             <span>Quiz-Fragen</span>
             <span className="text-[10px] font-mono opacity-80 ml-0.5">({questions.length})</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('materials'); setError(''); setSuccess(''); }}
+            className={`px-3.5 py-2 rounded-lg font-medium transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'materials'
+                ? 'bg-foreground text-background shadow-sm'
+                : 'bg-muted/60 text-muted-foreground hover:bg-muted hover:text-foreground'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>Stellwand & Materialien</span>
           </button>
 
           {isSuperAdmin && (
@@ -1759,6 +1780,11 @@ export default function AdminClient() {
             </div>
           </div>
         )}
+
+        {/* ══════════════════════════════════════════════════════════════════════════
+            TAB: STELLWAND & MATERIALIEN (EXKLUSIV IM ADMIN-PORTAL)
+        ══════════════════════════════════════════════════════════════════════════ */}
+        {activeTab === 'materials' && <AdminMaterialsTab />}
 
         {/* ══════════════════════════════════════════════════════════════════════════
             TAB 4: ADMIN ACCOUNTS (SUPERADMIN)
