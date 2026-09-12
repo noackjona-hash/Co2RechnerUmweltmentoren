@@ -150,8 +150,8 @@ export default function LoginClient() {
       </header>
 
       {/* Main card */}
-      <main className="w-full max-w-md mx-auto px-4 py-10 sm:py-16 flex-1 flex flex-col justify-center">
-        <article className="paper-sheet p-6 sm:p-8 space-y-6">
+      <main className="w-full max-w-md mx-auto px-3 sm:px-4 py-8 sm:py-16 flex-1 flex flex-col justify-center">
+        <article className="paper-sheet p-4 sm:p-8 space-y-5 sm:space-y-6">
           {/* Header */}
           <div className="text-center space-y-1.5">
             <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
@@ -163,7 +163,7 @@ export default function LoginClient() {
           </div>
 
           {/* Mobile-First Segmented Tabs */}
-          <div className="grid grid-cols-4 p-1 bg-muted/60 rounded-xl border border-border text-[11px] sm:text-xs font-medium text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 p-1 bg-muted/60 rounded-xl border border-border text-xs font-medium text-center">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
@@ -172,7 +172,7 @@ export default function LoginClient() {
                   setActiveTab(tab.key);
                   setError('');
                 }}
-                className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
+                className={`py-2 px-2 rounded-lg transition-all cursor-pointer truncate ${
                   activeTab === tab.key
                     ? 'bg-background text-foreground font-semibold shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
@@ -197,7 +197,7 @@ export default function LoginClient() {
                   onChange={(e) => setAccessKey(formatAccessKey(e.target.value))}
                   maxLength={9}
                   autoFocus
-                  className="w-full h-12 sm:h-14 px-3 text-center font-mono text-xl sm:text-2xl font-bold tracking-widest border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/30 placeholder:tracking-normal"
+                  className="w-full h-12 sm:h-14 px-3 text-center font-mono text-lg min-[360px]:text-xl sm:text-2xl font-bold tracking-wider sm:tracking-widest border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-foreground transition-colors placeholder:text-muted-foreground/30 placeholder:tracking-normal"
                 />
                 <span className="text-[11px] text-muted-foreground block text-center">
                   Den 8-stelligen Code erhältst du von deiner Lehrkraft.

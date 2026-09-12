@@ -16,10 +16,10 @@ export function LegalFooter() {
   };
 
   return (
-    <footer className="w-full border-t border-border bg-background py-5 px-4 font-mono text-[11px] text-muted-foreground mt-auto">
-      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+    <footer className="w-full border-t border-border bg-background py-4 sm:py-5 px-3 sm:px-4 font-mono text-[10px] sm:text-[11px] text-muted-foreground mt-auto">
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-3 text-center">
         <p>© {year} CO₂-Rechner · Jona Noack & Umweltmentoren</p>
-        <div className="flex items-center gap-3 uppercase tracking-wider">
+        <div className="flex items-center gap-2.5 sm:gap-3 uppercase tracking-wider">
           <Link href="/impressum" className="hover:text-foreground transition-colors">
             Impressum
           </Link>

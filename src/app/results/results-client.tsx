@@ -264,25 +264,25 @@ export default function ResultsClient() {
   };
 
   const renderCertificateMarkup = () => (
-    <div className="border-4 border-double border-stone-800 p-8 sm:p-12 text-center bg-white text-stone-900 font-serif">
-      <span className="text-[11px] font-mono tracking-widest uppercase text-stone-600 block mb-2">
+    <div className="border-2 sm:border-4 border-double border-stone-800 p-4 sm:p-12 text-center bg-white text-stone-900 font-serif">
+      <span className="text-[10px] sm:text-[11px] font-mono tracking-widest uppercase text-stone-600 block mb-1.5 sm:mb-2">
         Umweltmentoren Baden-Württemberg
       </span>
-      <h2 className="text-2xl sm:text-3xl font-bold tracking-wider text-stone-900 mb-1">
+      <h2 className="text-xl sm:text-3xl font-bold tracking-wider text-stone-900 mb-1">
         KLIMASCHUTZ-URKUNDE
       </h2>
-      <div className="w-16 h-0.5 bg-stone-900 mx-auto my-4" />
+      <div className="w-12 sm:w-16 h-0.5 bg-stone-900 mx-auto my-2 sm:my-4" />
 
-      <p className="text-xs italic text-stone-700 mb-4">
+      <p className="text-[11px] sm:text-xs italic text-stone-700 mb-2.5 sm:mb-4">
         Hiermit wird bescheinigt, dass
       </p>
 
-      <div className="border-b-2 border-stone-400 max-w-xs mx-auto pb-1 mb-2">
-        <span className="text-xl font-bold text-stone-900 font-sans tracking-wide">
+      <div className="border-b-2 border-stone-400 max-w-xs mx-auto pb-1 mb-1.5 sm:mb-2">
+        <span className="text-base sm:text-xl font-bold text-stone-900 font-sans tracking-wide">
           {studentName.trim() || '_______________________'}
         </span>
       </div>
-      <p className="text-xs text-stone-600 mb-6 font-sans">
+      <p className="text-[11px] sm:text-xs text-stone-600 mb-4 sm:mb-6 font-sans">
         {customSchoolName.trim()
           ? customSchoolName.trim()
           : results.isGuest
@@ -290,18 +290,18 @@ export default function ResultsClient() {
           : results.className ? `Klasse: ${results.className}` : 'Schulgemeinschaft'}
       </p>
 
-      <p className="text-xs leading-relaxed max-w-md mx-auto mb-6 text-stone-800">
+      <p className="text-[11px] sm:text-xs leading-relaxed max-w-md mx-auto mb-4 sm:mb-6 text-stone-800">
         den persönlichen CO₂-Fußabdruck analysiert und ein Jahresergebnis von{' '}
         <strong className="font-sans text-stone-900 font-bold">{formatCO2(totalCo2)}</strong> ermittelt hat.
       </p>
 
       {/* Pledges box */}
       {Object.values(pledges).some(Boolean) ? (
-        <div className="border border-stone-400 p-4 max-w-md mx-auto text-left mb-6 text-xs font-sans bg-stone-50/50">
+        <div className="border border-stone-400 p-3 sm:p-4 max-w-md mx-auto text-left mb-4 sm:mb-6 text-xs font-sans bg-stone-50/50">
           <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
             Persönliches Klima-Versprechen:
           </span>
-          <ul className="list-disc list-inside space-y-1 text-stone-800 text-[11px]">
+          <ul className="list-disc list-inside space-y-1 text-stone-800 text-[10px] sm:text-[11px]">
             {pledges.vegetarian && <li>Vegetarische Ernährung</li>}
             {pledges.vegan && <li>Vegane Ernährung</li>}
             {pledges.bioRegional && <li>Regionale & saisonale Lebensmittel</li>}
@@ -313,7 +313,7 @@ export default function ResultsClient() {
             {pledges.digitalReduction && <li>Bewusster Umgang mit Streaming & Geräten</li>}
           </ul>
           {co2Saved > 0 && (
-            <p className="text-xs text-stone-700 mt-3 pt-2 border-t border-stone-300 font-medium">
+            <p className="text-[11px] sm:text-xs text-stone-700 mt-2.5 pt-2 border-t border-stone-300 font-medium">
               Prognostizierte Einsparung:{' '}
               <strong className="font-bold text-stone-900">-{formatCO2(co2Saved)} CO₂/Jahr</strong>{' '}
               (ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}).
@@ -321,17 +321,17 @@ export default function ResultsClient() {
           )}
         </div>
       ) : (
-        <div className="border border-stone-400 p-4 max-w-md mx-auto text-center mb-6 text-xs font-sans bg-stone-50/50">
+        <div className="border border-stone-400 p-3 sm:p-4 max-w-md mx-auto text-center mb-4 sm:mb-6 text-xs font-sans bg-stone-50/50">
           <span className="font-bold text-stone-900 block mb-1 uppercase tracking-wider text-[10px] font-mono">
             Auszeichnung für Engagement
           </span>
-          <p className="text-[11px] text-stone-700 leading-relaxed">
+          <p className="text-[10px] sm:text-[11px] text-stone-700 leading-relaxed">
             Ausgezeichnet für die erfolgreiche Reflexion des Alltagsverbrauchs und den aktiven Beitrag zum Klimabewusstsein an der Schule.
           </p>
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-8 pt-6 max-w-sm mx-auto text-[10px] font-mono text-stone-600">
+      <div className="grid grid-cols-2 gap-4 sm:gap-8 pt-4 sm:pt-6 max-w-sm mx-auto text-[9px] sm:text-[10px] font-mono text-stone-600">
         <div className="border-t border-stone-400 pt-1">
           Datum: {new Date().toLocaleDateString('de-DE')}
         </div>
@@ -344,21 +344,21 @@ export default function ResultsClient() {
     <div className="min-h-screen flex flex-col justify-between pb-12 bg-background">
       {/* Minimal Header */}
       <header className="w-full border-b border-border bg-background sticky top-0 z-30 print:hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="font-semibold text-sm tracking-tight text-foreground truncate">
+        <div className="max-w-4xl mx-auto px-3 sm:px-6 py-2 sm:py-3.5 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <span className="font-semibold text-xs sm:text-sm tracking-tight text-foreground truncate">
               CO₂-Auswertung
             </span>
             <span className="text-muted-foreground text-xs">/</span>
-            <span className="text-xs text-muted-foreground truncate">
+            <span className="text-xs text-muted-foreground truncate max-w-[85px] min-[360px]:max-w-[120px] sm:max-w-none">
               {results.isGuest ? 'Gast' : results.className ? `Klasse ${results.className}` : 'Schüler'}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={() => setShowCertificate(true)}
-              className="paper-btn-primary text-xs flex items-center gap-1.5 px-3 py-1.5 min-h-[38px] sm:min-h-[44px]"
+              className="paper-btn-primary text-xs flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 min-h-[36px] sm:min-h-[44px]"
               title="Urkunde erstellen & drucken"
             >
               <Printer className="w-3.5 h-3.5" />
@@ -368,7 +368,7 @@ export default function ResultsClient() {
             <ThemeToggle />
             <button
               onClick={handleLogout}
-              className="paper-btn-secondary text-xs px-2.5 py-1.5 min-h-[38px] sm:min-h-[44px]"
+              className="paper-btn-secondary text-xs px-2 sm:px-2.5 py-1.5 min-h-[36px] sm:min-h-[44px]"
               title="Abmelden"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -379,30 +379,30 @@ export default function ResultsClient() {
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 flex-1 w-full space-y-6">
+      <main className="max-w-4xl mx-auto px-3 sm:px-6 py-4 sm:py-10 flex-1 w-full space-y-4 sm:space-y-6">
         {/* Scorecard Hero Banner */}
-        <article className="paper-sheet p-6 sm:p-12 text-center space-y-4">
-          <span className="text-xs uppercase tracking-wider text-muted-foreground font-mono block">
+        <article className="paper-sheet p-5 sm:p-12 text-center space-y-3 sm:space-y-4">
+          <span className="text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground font-mono block">
             Dein persönlicher CO₂-Fußabdruck
           </span>
 
-          <div className="text-4xl sm:text-6xl font-mono font-semibold text-foreground tracking-tight py-1">
+          <div className="text-3xl min-[360px]:text-4xl sm:text-6xl font-mono font-semibold text-foreground tracking-tight py-1">
             {formatCO2(animatedTotal)}
           </div>
 
           <div className="space-y-1">
-            <p className="text-sm font-medium text-foreground">
+            <p className="text-xs sm:text-sm font-medium text-foreground">
               {rating.label}
             </p>
-            <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+            <p className="text-[11px] sm:text-xs text-muted-foreground max-w-sm mx-auto">
               {rating.desc}
             </p>
           </div>
 
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
+          <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2.5">
             <button
               onClick={() => setShowCertificate(true)}
-              className="w-full sm:w-auto paper-btn-primary text-xs sm:text-sm flex items-center justify-center gap-2 font-medium"
+              className="w-full sm:w-auto paper-btn-primary text-xs sm:text-sm flex items-center justify-center gap-2 font-medium min-h-[42px] sm:min-h-[44px]"
             >
               <Award className="w-4 h-4" />
               <span>Urkunde erstellen & anpassen</span>
@@ -411,50 +411,50 @@ export default function ResultsClient() {
         </article>
 
         {/* 3 Meaningful Equivalents */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-          <div className="paper-sheet p-4 sm:p-5 space-y-1 text-left">
-            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+          <div className="paper-sheet p-3.5 sm:p-5 space-y-1 text-left">
+            <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
               Kompensation
             </span>
-            <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
+            <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground tracking-tight">
               {Math.round(totalCo2 / 12.5)} Bäume
             </div>
-            <p className="text-xs text-muted-foreground leading-snug">
+            <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">
               notwendig zur jährlichen Bindung dieser Emissionen
             </p>
           </div>
 
-          <div className="paper-sheet p-4 sm:p-5 space-y-1 text-left">
-            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+          <div className="paper-sheet p-3.5 sm:p-5 space-y-1 text-left">
+            <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
               Mobilität
             </span>
-            <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
+            <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground tracking-tight">
               {(totalCo2 / 0.15 / 1000).toFixed(0)}.000 km
             </div>
-            <p className="text-xs text-muted-foreground leading-snug">
+            <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">
               Fahrtstrecke mit einem durchschnittlichen Benziner-PKW
             </p>
           </div>
 
-          <div className="paper-sheet p-4 sm:p-5 space-y-1 text-left">
-            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+          <div className="paper-sheet p-3.5 sm:p-5 space-y-1 text-left">
+            <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
               Ernährung
             </span>
-            <div className="text-2xl font-mono font-semibold text-foreground tracking-tight">
+            <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground tracking-tight">
               {Math.round(totalCo2 / 3.6)} Portionen
             </div>
-            <p className="text-xs text-muted-foreground leading-snug">
+            <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">
               äquivalente durchschnittliche Fleischmahlzeiten
             </p>
           </div>
         </div>
 
         {/* Mobile First Segmented Navigation Tabs */}
-        <div className="grid grid-cols-3 p-1 bg-muted/60 rounded-xl border border-border text-xs text-center font-medium">
+        <div className="grid grid-cols-3 p-1 bg-muted/60 rounded-xl border border-border text-[11px] sm:text-xs text-center font-medium">
           <button
             type="button"
             onClick={() => setActiveTab('analysis')}
-            className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
+            className={`py-2 px-0.5 sm:px-1 rounded-lg transition-all cursor-pointer truncate ${
               activeTab === 'analysis'
                 ? 'bg-background text-foreground font-semibold shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -465,7 +465,7 @@ export default function ResultsClient() {
           <button
             type="button"
             onClick={() => setActiveTab('simulator')}
-            className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
+            className={`py-2 px-0.5 sm:px-1 rounded-lg transition-all cursor-pointer truncate ${
               activeTab === 'simulator'
                 ? 'bg-background text-foreground font-semibold shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -476,7 +476,7 @@ export default function ResultsClient() {
           <button
             type="button"
             onClick={() => setActiveTab('challenge')}
-            className={`py-2 px-1 rounded-lg transition-all cursor-pointer truncate ${
+            className={`py-2 px-0.5 sm:px-1 rounded-lg transition-all cursor-pointer truncate ${
               activeTab === 'challenge'
                 ? 'bg-background text-foreground font-semibold shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -488,45 +488,45 @@ export default function ResultsClient() {
 
         {/* TAB 1: ANALYSE */}
         {activeTab === 'analysis' && (
-          <div className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="paper-sheet p-5 space-y-3">
-                <div className="flex items-center justify-between border-b border-border pb-2.5">
+          <div className="space-y-4 sm:space-y-6">
+            <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
+              <div className="paper-sheet p-3.5 sm:p-5 space-y-2.5 sm:space-y-3">
+                <div className="flex items-center justify-between border-b border-border pb-2">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
                     Anteile nach Bereich
                   </h3>
-                  <span className="text-[11px] text-muted-foreground font-mono">Tortendiagramm</span>
+                  <span className="text-[10px] sm:text-[11px] text-muted-foreground font-mono">Tortendiagramm</span>
                 </div>
                 <CategoryPieChart data={pieData} />
               </div>
 
-              <div className="paper-sheet p-5 space-y-3">
-                <div className="flex items-center justify-between border-b border-border pb-2.5">
+              <div className="paper-sheet p-3.5 sm:p-5 space-y-2.5 sm:space-y-3">
+                <div className="flex items-center justify-between border-b border-border pb-2">
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground font-mono">
                     Vergleichswerte
                   </h3>
-                  <span className="text-[11px] text-muted-foreground font-mono">Benchmark</span>
+                  <span className="text-[10px] sm:text-[11px] text-muted-foreground font-mono">Benchmark</span>
                 </div>
                 <ComparisonBarChart data={comparisonData} />
               </div>
             </div>
 
             {/* 4 Category Cards with Clean Progress Bars */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
               {Object.entries(categoryTotals).map(([key, value]) => {
                 const cat = CATEGORIES[key as Category];
                 if (!cat) return null;
                 const percent = Math.round((Math.max(0, value) / Math.max(1, totalCo2)) * 100);
 
                 return (
-                  <div key={key} className="paper-sheet p-4 space-y-2">
+                  <div key={key} className="paper-sheet p-3 sm:p-4 space-y-1.5 sm:space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-medium text-muted-foreground">
+                      <span className="text-[11px] sm:text-xs font-medium text-muted-foreground truncate">
                         {cat.label}
                       </span>
-                      <span className="text-[11px] font-mono text-muted-foreground">{percent}%</span>
+                      <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground ml-1 shrink-0">{percent}%</span>
                     </div>
-                    <div className="text-lg font-mono font-semibold text-foreground">
+                    <div className="text-base sm:text-lg font-mono font-semibold text-foreground">
                       {formatCO2(Math.max(0, value))}
                     </div>
                     <div>
@@ -543,25 +543,25 @@ export default function ResultsClient() {
             </div>
 
             {/* Practical Recommendations */}
-            <div className="paper-sheet p-6 space-y-4">
-              <div className="border-b border-border pb-3 flex items-center justify-between">
+            <div className="paper-sheet p-4 sm:p-6 space-y-3 sm:space-y-4">
+              <div className="border-b border-border pb-2.5 flex items-center justify-between">
                 <div>
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
+                  <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
                     Empfehlungen
                   </span>
-                  <h3 className="text-sm font-semibold text-foreground">
+                  <h3 className="text-xs sm:text-sm font-semibold text-foreground">
                     Gezielte Praxistipps für {CATEGORIES[highestCategory]?.label}
                   </h3>
                 </div>
-                <span className="text-xs font-mono text-muted-foreground">
+                <span className="text-[10px] sm:text-xs font-mono text-muted-foreground shrink-0 ml-2">
                   Größter Hebel
                 </span>
               </div>
-              <div className="grid sm:grid-cols-3 gap-3">
+              <div className="grid sm:grid-cols-3 gap-2 sm:gap-3">
                 {tips[highestCategory]?.map((tip, i) => (
                   <div
                     key={i}
-                    className="p-3.5 rounded-lg border border-border bg-background text-xs text-foreground leading-relaxed flex items-start gap-2.5"
+                    className="p-3 rounded-lg border border-border bg-background text-xs text-foreground leading-relaxed flex items-start gap-2"
                   >
                     <span className="font-mono text-muted-foreground text-xs">{i + 1}.</span>
                     <span className="text-muted-foreground">{tip}</span>
@@ -571,21 +571,21 @@ export default function ResultsClient() {
             </div>
 
             {/* Certificate Call-to-Action */}
-            <article className="paper-sheet p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <article className="paper-sheet p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
               <div className="space-y-1">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
+                <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
                   Offizieller Nachweis
                 </span>
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="text-xs sm:text-sm font-semibold text-foreground">
                   Deine persönliche Klimaschutz-Urkunde
                 </h3>
-                <p className="text-xs text-muted-foreground max-w-lg">
+                <p className="text-[11px] sm:text-xs text-muted-foreground max-w-lg">
                   Erstelle dein Zertifikat mit deinen Ergebnissen und deinen Zielen zum Ausdrucken oder als PDF.
                 </p>
               </div>
               <button
                 onClick={() => setShowCertificate(true)}
-                className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
+                className="paper-btn-primary text-xs shrink-0 flex items-center justify-center gap-1.5 cursor-pointer min-h-[42px] sm:min-h-[44px]"
               >
                 <Printer className="w-3.5 h-3.5" />
                 <span>Urkunde erstellen & drucken</span>
@@ -596,62 +596,62 @@ export default function ResultsClient() {
 
         {/* TAB 2: SIMULATOR & URKUNDE */}
         {activeTab === 'simulator' && (
-          <div className="space-y-6">
-            <article className="paper-sheet p-6 sm:p-8 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+          <div className="space-y-4 sm:space-y-6">
+            <article className="paper-sheet p-4 sm:p-8 space-y-5 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-border pb-3 sm:pb-4">
                 <div>
-                  <h3 className="text-sm font-semibold text-foreground">
+                  <h3 className="text-xs sm:text-sm font-semibold text-foreground">
                     Klimaschutz-Versprechen & Simulator
                   </h3>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Wähle Maßnahmen aus, die du in deinem Alltag umsetzen möchtest, und beobachte den Effekt live.
+                  <p className="text-[11px] sm:text-xs text-muted-foreground mt-0.5">
+                    Wähle Maßnahmen aus, die du im Alltag umsetzen möchtest, und sieh den Effekt live.
                   </p>
                 </div>
 
                 <button
                   onClick={() => setShowCertificate(true)}
-                  className="paper-btn-primary text-xs shrink-0 flex items-center gap-1.5 cursor-pointer"
+                  className="paper-btn-primary text-xs shrink-0 flex items-center justify-center gap-1.5 cursor-pointer min-h-[40px] sm:min-h-[44px]"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Urkunde mit Versprechen drucken</span>
+                  <span>Urkunde drucken</span>
                 </button>
               </div>
 
               {/* Dynamic Savings Display */}
-              <div className="p-5 rounded-lg border border-border bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-3.5 sm:p-5 rounded-lg border border-border bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
-                  <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground block mb-1">
+                  <span className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-muted-foreground block mb-0.5">
                     Prognostizierte Einsparung
                   </span>
-                  <div className="text-2xl font-mono font-semibold text-foreground">
+                  <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground">
                     -{formatCO2(co2Saved)} / Jahr
                   </div>
-                  <span className="text-xs text-muted-foreground block mt-0.5">
-                    Neuer Ausstoß: {formatCO2(simulatedTotalCo2)} (Ausgangswert: {formatCO2(totalCo2)})
+                  <span className="text-[11px] sm:text-xs text-muted-foreground block mt-0.5">
+                    Neuer Ausstoß: {formatCO2(simulatedTotalCo2)} (Ausgang: {formatCO2(totalCo2)})
                   </span>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="p-3 rounded-lg bg-background border border-border text-center min-w-[110px]">
-                    <span className="text-[10px] text-muted-foreground block uppercase font-mono">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="p-2 sm:p-3 rounded-lg bg-background border border-border text-center flex-1 sm:flex-initial sm:min-w-[110px]">
+                    <span className="text-[9px] sm:text-[10px] text-muted-foreground block uppercase font-mono">
                       Entlastung
                     </span>
-                    <span className="text-sm font-mono font-semibold text-foreground">
+                    <span className="text-xs sm:text-sm font-mono font-semibold text-foreground">
                       ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}
                     </span>
                   </div>
                   <button
                     onClick={() => setShowCertificate(true)}
-                    className="paper-btn-primary text-xs flex items-center gap-1.5 self-center"
+                    className="paper-btn-primary text-xs flex items-center justify-center gap-1.5 flex-1 sm:flex-initial px-3 min-h-[38px]"
                   >
                     <Award className="w-3.5 h-3.5" />
-                    <span>Auf Urkunde übernehmen</span>
+                    <span>Auf Urkunde</span>
                   </button>
                 </div>
               </div>
 
               {/* Interactive Checklist */}
-              <div className="space-y-2 pt-1">
+              <div className="space-y-1.5 sm:space-y-2 pt-1">
                 {[
                   { key: 'vegetarian', title: 'Vegetarische Ernährung', desc: 'Ca. 33% weniger Emissionen bei Lebensmitteln.' },
                   { key: 'vegan', title: 'Vegane Ernährung', desc: 'Ca. 45% weniger Emissionen bei Lebensmitteln.' },
@@ -661,13 +661,13 @@ export default function ResultsClient() {
                   { key: 'greenPower', title: '100% Ökostrom zu Hause', desc: 'Spart durchschnittlich 300 kg CO₂.' },
                   { key: 'lowerHeating', title: 'Heizung um 1–2 Grad senken', desc: 'Spart rund 12% der persönlichen Heizenergie.' },
                   { key: 'secondHand', title: 'Second-Hand-Kleidung bevorzugen', desc: 'Spart bis zu 40% der textilen Konsum-Emissionen.' },
-                  { key: 'digitalReduction', title: 'Bewusster Umgang mit Streaming & Geräten', desc: 'Spart ca. 20% digitaler Emissionen.' },
+                  { key: 'digitalReduction', title: 'Bewusster Umgang mit Geräten', desc: 'Spart ca. 20% digitaler Emissionen.' },
                 ].map((item) => {
                   const isChecked = (pledges as any)[item.key];
                   return (
                     <label
                       key={item.key}
-                      className={`p-3.5 rounded-lg border flex items-start gap-3.5 cursor-pointer text-xs transition-colors ${
+                      className={`p-2.5 sm:p-3.5 rounded-lg border flex items-start gap-2.5 sm:gap-3.5 cursor-pointer text-xs transition-colors ${
                         isChecked
                           ? 'border-foreground bg-muted font-medium text-foreground'
                           : 'border-border bg-background hover:bg-muted/40 text-foreground'
@@ -686,9 +686,9 @@ export default function ResultsClient() {
                         }
                         className="mt-0.5 accent-foreground rounded"
                       />
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <span className="font-medium block text-xs">{item.title}</span>
-                        <span className="text-[11px] text-muted-foreground block mt-0.5">{item.desc}</span>
+                        <span className="text-[10px] sm:text-[11px] text-muted-foreground block mt-0.5 leading-snug">{item.desc}</span>
                       </div>
                     </label>
                   );
@@ -700,25 +700,25 @@ export default function ResultsClient() {
 
         {/* TAB 3: CHALLENGE */}
         {activeTab === 'challenge' && (
-          <div className="space-y-6">
-            <article className="paper-sheet p-6 space-y-4">
-              <div className="border-b border-border pb-3">
-                <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
+          <div className="space-y-4 sm:space-y-6">
+            <article className="paper-sheet p-4 sm:p-6 space-y-3 sm:space-y-4">
+              <div className="border-b border-border pb-2.5">
+                <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground uppercase tracking-wider block">
                   Schul-Übersicht
                 </span>
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="text-xs sm:text-sm font-semibold text-foreground">
                   Klassen-Rangliste der Schule
                 </h3>
               </div>
 
               {results.isGuest ? (
-                <div className="p-4 rounded-lg border border-border bg-muted/40 space-y-2 text-xs">
+                <div className="p-3.5 sm:p-4 rounded-lg border border-border bg-muted/40 space-y-1.5 text-xs">
                   <span className="font-medium text-foreground block">
                     Gast-Teilnahme · Keine Schulklasse zugeordnet
                   </span>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed">
                     Da du diesen Rechner im freien Gast-Modus nutzt, nimmst du an keinem internen Klassenwettbewerb teil.
-                    Im Reiter <strong>01 Detail-Analyse</strong> siehst du den direkten Vergleich deiner Werte mit dem Bundesdurchschnitt (10,8 t) und dem Pariser Klimaziel (unter 2 t).
+                    Im Reiter <strong>Analyse</strong> siehst du den direkten Vergleich deiner Werte mit dem Bundesdurchschnitt (10,8 t) und dem Pariser Klimaziel (unter 2 t).
                   </p>
                 </div>
               ) : (
@@ -730,25 +730,25 @@ export default function ResultsClient() {
                     return (
                       <div
                         key={entry.classId}
-                        className={`p-3.5 flex items-center justify-between text-xs transition-colors ${
+                        className={`p-2.5 sm:p-3.5 flex items-center justify-between text-xs transition-colors ${
                           isOwn ? 'bg-muted font-medium text-foreground' : 'bg-background hover:bg-muted/40 text-foreground'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className="w-6 text-center font-mono font-semibold text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                          <span className="w-5 sm:w-6 text-center font-mono font-semibold text-xs text-muted-foreground shrink-0">
                             {rankMedal}
                           </span>
-                          <div>
-                            <span className="text-foreground block font-medium">
+                          <div className="min-w-0">
+                            <span className="text-foreground block font-medium truncate">
                               {entry.className} {isOwn && '(Deine Klasse)'}
                             </span>
-                            <span className="text-[11px] text-muted-foreground block">
-                              {entry.completedCount} von {entry.totalCount} Schüler:innen abgeschlossen
+                            <span className="text-[10px] sm:text-[11px] text-muted-foreground block truncate">
+                              {entry.completedCount} von {entry.totalCount} abgeschlossen
                             </span>
                           </div>
                         </div>
 
-                        <div className="text-right font-mono font-medium text-foreground">
+                        <div className="text-right font-mono font-medium text-foreground shrink-0 ml-2">
                           {entry.completedCount > 0 ? formatCO2(entry.averageCo2) : '---'}
                         </div>
                       </div>
@@ -769,47 +769,47 @@ export default function ResultsClient() {
       {/* On-Screen Interactive Certificate Modal */}
       {showCertificate && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto print:hidden"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto print:hidden"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowCertificate(false);
           }}
         >
-          <div className="w-full max-w-xl bg-card p-5 sm:p-8 border border-border rounded-2xl relative shadow-2xl my-auto">
+          <div className="w-full max-w-xl bg-card p-3.5 sm:p-8 border border-border rounded-2xl relative shadow-2xl my-auto">
             <button
               onClick={() => setShowCertificate(false)}
-              className="absolute right-4 top-4 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
+              className="absolute right-3 top-3 p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted cursor-pointer transition-colors"
               title="Schließen"
             >
               <X className="w-4 h-4" />
             </button>
 
             {/* Customization controls */}
-            <div className="mb-5 space-y-3.5 text-xs">
-              <div className="flex items-center justify-between border-b border-border pb-2.5">
-                <div className="flex items-center gap-2">
-                  <Award className="w-4 h-4 text-foreground" />
-                  <h3 className="font-semibold text-foreground">
+            <div className="mb-4 space-y-3 text-xs pr-6 sm:pr-0">
+              <div className="flex items-center justify-between border-b border-border pb-2">
+                <div className="flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-foreground shrink-0" />
+                  <h3 className="font-semibold text-foreground text-xs sm:text-sm truncate">
                     Urkunde anpassen & drucken
                   </h3>
                 </div>
-                <span className="text-[11px] font-mono text-muted-foreground">Vorschau live</span>
+                <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground shrink-0">Vorschau live</span>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">
-                    Name der Schülerin / des Schülers (optional)
+                  <label className="block text-[11px] sm:text-xs font-medium text-muted-foreground mb-1">
+                    Name (optional)
                   </label>
                   <input
                     type="text"
                     placeholder="Vor- und Nachname"
                     value={studentName}
                     onChange={(e) => setStudentName(e.target.value)}
-                    className="w-full h-10 px-3 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-foreground"
+                    className="w-full h-9 sm:h-10 px-2.5 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">
+                  <label className="block text-[11px] sm:text-xs font-medium text-muted-foreground mb-1">
                     Schule / Klasse (optional)
                   </label>
                   <input
@@ -817,26 +817,26 @@ export default function ResultsClient() {
                     placeholder={results.isGuest ? 'Schule / Wohnort' : results.className || 'Klasse'}
                     value={customSchoolName}
                     onChange={(e) => setCustomSchoolName(e.target.value)}
-                    className="w-full h-10 px-3 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-foreground"
+                    className="w-full h-9 sm:h-10 px-2.5 text-xs border border-border rounded-lg bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center justify-between pt-1 gap-2">
                 <button
                   type="button"
                   onClick={() => setShowCertificate(false)}
-                  className="paper-btn-secondary text-xs"
+                  className="paper-btn-secondary text-xs px-3 min-h-[38px]"
                 >
                   Zurück
                 </button>
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="paper-btn-primary text-xs flex items-center gap-2 cursor-pointer font-medium"
+                  className="paper-btn-primary text-xs flex items-center gap-1.5 px-3 min-h-[38px] cursor-pointer font-medium"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Jetzt drucken / Als PDF speichern</span>
+                  <span>Drucken / PDF</span>
                 </button>
               </div>
             </div>

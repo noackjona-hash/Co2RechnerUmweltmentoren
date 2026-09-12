@@ -367,15 +367,15 @@ export default function QuizPage() {
   // Intermission between categories
   if (showCategoryIntro && isNewCategory) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-        <div className="paper-sheet w-full max-w-md p-6 sm:p-10 space-y-6">
-          <div className="border-b border-border pb-3 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="min-h-screen flex items-center justify-center p-3 sm:p-4 bg-background">
+        <div className="paper-sheet w-full max-w-md p-5 sm:p-10 space-y-5 sm:space-y-6">
+          <div className="border-b border-border pb-2.5 flex items-center justify-between text-xs text-muted-foreground">
             <span>Abschnitt {categories.indexOf(currentCategory) + 1} von {categories.length}</span>
-            <span className="font-mono text-[11px]">CO₂-Erfassung</span>
+            <span className="font-mono text-[10px] sm:text-[11px]">CO₂-Erfassung</span>
           </div>
 
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+          <div className="space-y-1.5 sm:space-y-2">
+            <h2 className="text-xl sm:text-3xl font-semibold tracking-tight text-foreground">
               {catInfo.label}
             </h2>
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
@@ -386,7 +386,7 @@ export default function QuizPage() {
           <div className="pt-2">
             <button
               onClick={() => setShowCategoryIntro(false)}
-              className="w-full paper-btn-primary text-xs sm:text-sm font-medium"
+              className="w-full paper-btn-primary text-xs sm:text-sm font-medium min-h-[44px]"
             >
               Abschnitt beginnen →
             </button>
@@ -400,60 +400,63 @@ export default function QuizPage() {
     <div className="min-h-screen flex flex-col justify-between bg-background">
       {/* Minimal Header & Progress Line */}
       <header className="w-full border-b border-border bg-background sticky top-0 z-20">
-        <div className="max-w-2xl mx-auto px-4 py-2.5 sm:py-3.5 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-            {isGuest ? (
-              <div className="flex items-center gap-1.5 shrink-0">
-                <span className="text-[10px] px-1.5 py-0.5 border border-border rounded text-muted-foreground font-mono">
-                  Gast
-                </span>
-                <div className="flex items-center border border-border rounded overflow-hidden text-[10px]">
-                  <button
-                    type="button"
-                    onClick={() => handleModeChange(10)}
-                    className={`px-2 py-0.5 font-mono cursor-pointer transition-colors ${
-                      quizMode === 10
-                        ? 'bg-foreground text-background font-semibold'
-                        : 'bg-background hover:bg-muted text-muted-foreground'
-                    }`}
-                  >
-                    10Q
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleModeChange(30)}
-                    className={`px-2 py-0.5 font-mono border-l border-border cursor-pointer transition-colors ${
-                      quizMode === 30
-                        ? 'bg-foreground text-background font-semibold'
-                        : 'bg-background hover:bg-muted text-muted-foreground'
-                    }`}
-                  >
-                    30Q
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleModeChange(60)}
-                    className={`px-2 py-0.5 font-mono border-l border-border cursor-pointer transition-colors ${
-                      quizMode === 60
-                        ? 'bg-foreground text-background font-semibold'
-                        : 'bg-background hover:bg-muted text-muted-foreground'
-                    }`}
-                  >
-                    60Q
-                  </button>
-                </div>
-              </div>
-            ) : null}
-            <div className="flex items-center gap-1.5 min-w-0 truncate">
+        <div className="max-w-2xl mx-auto px-3 sm:px-4 py-2 sm:py-3.5 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
+            {isGuest && (
+              <span className="text-[10px] px-1.5 py-0.5 border border-border rounded text-muted-foreground font-mono shrink-0">
+                Gast
+              </span>
+            )}
+            <div className="flex items-center gap-1 min-w-0 truncate">
               <span className="text-muted-foreground hidden sm:inline">Bereich:</span>
-              <span className="font-medium text-foreground truncate">
+              <span className="font-medium text-foreground truncate text-xs">
                 {catInfo.label}
               </span>
             </div>
           </div>
-          <span className="text-muted-foreground font-mono text-[11px] shrink-0 ml-2">
-            {currentIndex + 1} / {questions.length}
-          </span>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {isGuest && (
+              <div className="flex items-center border border-border rounded overflow-hidden text-[10px]">
+                <button
+                  type="button"
+                  onClick={() => handleModeChange(10)}
+                  className={`px-1.5 sm:px-2 py-0.5 font-mono cursor-pointer transition-colors ${
+                    quizMode === 10
+                      ? 'bg-foreground text-background font-semibold'
+                      : 'bg-background hover:bg-muted text-muted-foreground'
+                  }`}
+                >
+                  10Q
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleModeChange(30)}
+                  className={`px-1.5 sm:px-2 py-0.5 font-mono border-l border-border cursor-pointer transition-colors ${
+                    quizMode === 30
+                      ? 'bg-foreground text-background font-semibold'
+                      : 'bg-background hover:bg-muted text-muted-foreground'
+                  }`}
+                >
+                  30Q
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleModeChange(60)}
+                  className={`px-1.5 sm:px-2 py-0.5 font-mono border-l border-border cursor-pointer transition-colors ${
+                    quizMode === 60
+                      ? 'bg-foreground text-background font-semibold'
+                      : 'bg-background hover:bg-muted text-muted-foreground'
+                  }`}
+                >
+                  60Q
+                </button>
+              </div>
+            )}
+            <span className="text-muted-foreground font-mono text-[11px] shrink-0">
+              {currentIndex + 1} / {questions.length}
+            </span>
+          </div>
         </div>
 
         {/* 2px Minimal Progress Line */}
@@ -466,11 +469,11 @@ export default function QuizPage() {
       </header>
 
       {/* Main Minimal Question Box */}
-      <main className="max-w-xl w-full mx-auto px-4 py-6 sm:py-12 flex-1 flex flex-col justify-center pb-24 sm:pb-8">
-        <article className="paper-sheet p-5 sm:p-8 space-y-6">
+      <main className="max-w-xl w-full mx-auto px-3 sm:px-4 py-4 sm:py-12 flex-1 flex flex-col justify-center pb-24 sm:pb-8">
+        <article className="paper-sheet p-4 sm:p-8 space-y-5 sm:space-y-6">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-border pb-3 text-xs text-muted-foreground">
-            <span className="font-mono text-[11px]">
+          <div className="flex items-center justify-between border-b border-border pb-2.5 text-xs text-muted-foreground">
+            <span className="font-mono text-[10px] sm:text-[11px]">
               {catInfo.label} · Frage {categoryIndex + 1} / {categoryQuestions.length}
             </span>
 
@@ -478,7 +481,7 @@ export default function QuizPage() {
               <button
                 type="button"
                 onClick={() => setShowHelp(!showHelp)}
-                className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground cursor-pointer text-xs transition-colors p-1"
+                className="flex items-center gap-1 text-muted-foreground hover:text-foreground cursor-pointer text-xs transition-colors p-1"
               >
                 <HelpCircle className="w-3.5 h-3.5" />
                 <span>Hinweis</span>
@@ -488,7 +491,7 @@ export default function QuizPage() {
 
           {/* Help box */}
           {showHelp && currentQuestion.helpText && (
-            <div className="p-3.5 rounded-lg border border-border bg-muted/50 text-xs text-foreground flex items-start gap-2.5 leading-relaxed">
+            <div className="p-3 rounded-lg border border-border bg-muted/50 text-xs text-foreground flex items-start gap-2 leading-relaxed">
               <p className="flex-1 text-muted-foreground">{currentQuestion.helpText}</p>
               <button
                 type="button"
@@ -501,7 +504,7 @@ export default function QuizPage() {
           )}
 
           {/* Question Text */}
-          <h2 className="text-lg sm:text-2xl font-medium text-foreground leading-snug tracking-tight">
+          <h2 className="text-base min-[360px]:text-lg sm:text-2xl font-medium text-foreground leading-snug tracking-tight">
             {currentQuestion.questionText}
           </h2>
 
@@ -509,23 +512,23 @@ export default function QuizPage() {
           <div className="space-y-4 pt-1">
             {/* 1. SLIDER */}
             {currentQuestion.questionType === 'slider' && (
-              <div className="space-y-6 py-2">
+              <div className="space-y-4 sm:space-y-6 py-2">
                 <div className="text-center">
-                  <span className="text-4xl sm:text-5xl font-mono font-semibold text-foreground">
+                  <span className="text-3xl sm:text-5xl font-mono font-semibold text-foreground">
                     {currentValue ?? currentQuestion.defaultValue ?? currentQuestion.minValue ?? 0}
                   </span>
                   {currentQuestion.unit && (
-                    <span className="text-xs sm:text-sm text-muted-foreground ml-2">
+                    <span className="text-xs sm:text-sm text-muted-foreground ml-1.5">
                       {currentQuestion.unit}
                     </span>
                   )}
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <button
                     type="button"
                     onClick={handleDecrement}
-                    className="w-12 h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-all"
+                    className="w-10 h-10 sm:w-12 sm:h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-all"
                     aria-label="Verringern"
                   >
                     <Minus className="w-4 h-4" />
@@ -546,14 +549,14 @@ export default function QuizPage() {
                   <button
                     type="button"
                     onClick={handleIncrement}
-                    className="w-12 h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-all"
+                    className="w-10 h-10 sm:w-12 sm:h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer shrink-0 text-foreground transition-all"
                     aria-label="Erhöhen"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
 
-                <div className="flex justify-between text-[11px] text-muted-foreground font-mono px-1">
+                <div className="flex justify-between text-[10px] sm:text-[11px] text-muted-foreground font-mono px-1">
                   <span>{currentQuestion.minValue ?? 0} {currentQuestion.unit}</span>
                   <span>{currentQuestion.maxValue ?? 100} {currentQuestion.unit}</span>
                 </div>
@@ -562,24 +565,24 @@ export default function QuizPage() {
 
             {/* 2. NUMBER INPUT */}
             {currentQuestion.questionType === 'number' && (
-              <div className="flex items-center justify-center gap-3 py-4">
+              <div className="flex items-center justify-center gap-2 sm:gap-3 py-3">
                 <button
                   type="button"
                   onClick={handleDecrement}
-                  className="w-12 h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer text-foreground transition-all"
+                  className="w-10 h-10 sm:w-12 sm:h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer text-foreground transition-all"
                   aria-label="Verringern"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <input
                     type="number"
                     min={currentQuestion.minValue ?? undefined}
                     max={currentQuestion.maxValue ?? undefined}
                     value={currentValue ?? ''}
                     onChange={(e) => handleAnswer(parseFloat(e.target.value) || 0)}
-                    className="w-28 h-12 text-xl font-mono font-medium text-center border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-foreground"
+                    className="w-20 sm:w-28 h-10 sm:h-12 text-lg sm:text-xl font-mono font-medium text-center border border-border rounded-xl bg-background text-foreground focus:outline-none focus:border-foreground"
                   />
                   {currentQuestion.unit && (
                     <span className="text-xs text-muted-foreground font-medium">
@@ -591,7 +594,7 @@ export default function QuizPage() {
                 <button
                   type="button"
                   onClick={handleIncrement}
-                  className="w-12 h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer text-foreground transition-all"
+                  className="w-10 h-10 sm:w-12 sm:h-12 border border-border rounded-xl hover:bg-muted active:scale-95 flex items-center justify-center cursor-pointer text-foreground transition-all"
                   aria-label="Erhöhen"
                 >
                   <Plus className="w-4 h-4" />
@@ -602,7 +605,7 @@ export default function QuizPage() {
             {/* 3. MULTIPLE CHOICE */}
             {(currentQuestion.questionType === 'select' || currentQuestion.questionType === 'radio') &&
               currentQuestion.options && (
-                <div className="space-y-2.5">
+                <div className="space-y-2">
                   {(currentQuestion.options as { label: string; value: number }[]).map((option, i) => {
                     const isSelected =
                       answers[currentQuestion.id]?.optionIndex !== undefined
@@ -614,21 +617,21 @@ export default function QuizPage() {
                         key={i}
                         type="button"
                         onClick={() => handleAnswer(option.value, i)}
-                        className={`w-full text-left min-h-[50px] sm:min-h-[54px] p-3.5 sm:p-4 rounded-xl border transition-all flex items-center justify-between cursor-pointer text-xs sm:text-sm active:scale-[0.99] ${
+                        className={`w-full text-left min-h-[46px] sm:min-h-[54px] p-3 sm:p-4 rounded-xl border transition-all flex items-start justify-between cursor-pointer text-xs sm:text-sm active:scale-[0.99] gap-2.5 ${
                           isSelected
                             ? 'border-foreground bg-muted font-medium text-foreground ring-1 ring-foreground'
                             : 'border-border bg-background hover:bg-muted/50 text-foreground'
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <span className="text-xs font-mono text-muted-foreground w-4 shrink-0">
+                        <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                          <span className="text-xs font-mono text-muted-foreground w-4 shrink-0 mt-0.5">
                             {i + 1}.
                           </span>
-                          <span className="leading-snug">{option.label}</span>
+                          <span className="leading-snug break-words">{option.label}</span>
                         </div>
 
                         <div
-                          className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 ml-3 ${
+                          className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 mt-0.5 ${
                             isSelected
                               ? 'border-foreground bg-foreground text-background'
                               : 'border-border'
@@ -645,9 +648,9 @@ export default function QuizPage() {
 
           {/* CO2 Hint */}
           {answers[currentQuestion.id] && (
-            <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
+            <div className="pt-2.5 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
               <span>Geschätzter Ausstoß:</span>
-              <span className="font-mono text-foreground font-medium">
+              <span className="font-mono text-foreground font-medium text-[11px] sm:text-xs">
                 ca. {formatCO2(answers[currentQuestion.id].calculatedCo2)} / Jahr
               </span>
             </div>
@@ -656,13 +659,13 @@ export default function QuizPage() {
       </main>
 
       {/* Mobile-First Sticky Bottom Action Bar */}
-      <div className="fixed sm:static bottom-0 left-0 right-0 z-30 bg-background/95 backdrop-blur-md sm:bg-transparent border-t border-border sm:border-0 p-3 sm:p-0 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <div className="max-w-xl mx-auto flex items-center justify-between gap-3">
+      <div className="fixed sm:static bottom-0 left-0 right-0 z-30 bg-background/95 backdrop-blur-md sm:bg-transparent border-t border-border sm:border-0 px-3 py-2.5 sm:p-0 pb-[max(0.6rem,env(safe-area-inset-bottom))]">
+        <div className="max-w-xl mx-auto flex items-center justify-between gap-2.5">
           <button
             type="button"
             onClick={goPrev}
             disabled={currentIndex === 0}
-            className="paper-btn-secondary text-xs sm:text-sm px-4 min-w-[85px] disabled:opacity-30 disabled:cursor-not-allowed"
+            className="paper-btn-secondary text-xs sm:text-sm px-3 sm:px-4 min-w-[76px] sm:min-w-[85px] min-h-[42px] sm:min-h-[44px] disabled:opacity-30 disabled:cursor-not-allowed"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Zurück</span>
@@ -673,7 +676,7 @@ export default function QuizPage() {
               type="button"
               onClick={handleSubmit}
               disabled={submitting}
-              className="paper-btn-primary text-xs sm:text-sm flex-1 sm:flex-initial px-5 font-semibold"
+              className="paper-btn-primary text-xs sm:text-sm flex-1 sm:flex-initial px-4 sm:px-5 min-h-[42px] sm:min-h-[44px] font-semibold"
             >
               <Check className="w-3.5 h-3.5" />
               <span>{submitting ? 'Wird ausgewertet...' : 'Auswertung anzeigen'}</span>
@@ -682,7 +685,7 @@ export default function QuizPage() {
             <button
               type="button"
               onClick={goNext}
-              className="paper-btn-primary text-xs sm:text-sm flex-1 sm:flex-initial px-5 font-semibold"
+              className="paper-btn-primary text-xs sm:text-sm flex-1 sm:flex-initial px-4 sm:px-5 min-h-[42px] sm:min-h-[44px] font-semibold"
             >
               <span>Weiter</span>
               <ArrowRight className="w-3.5 h-3.5" />
