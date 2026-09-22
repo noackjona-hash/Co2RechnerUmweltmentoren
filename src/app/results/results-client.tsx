@@ -49,6 +49,9 @@ import { LegalFooter } from '@/components/legal-footer';
 
 interface ResultsData {
   totalCo2: number;
+  personalTotalCo2?: number;
+  fullTotalCo2?: number;
+  publicInfrastructureCo2?: number;
   categoryTotals: Record<string, number>;
   responses: any[];
   className: string;
@@ -72,6 +75,7 @@ export default function ResultsClient() {
   const [results, setResults] = useState<ResultsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [animatedTotal, setAnimatedTotal] = useState(0);
+  const [includeInfrastructure, setIncludeInfrastructure] = useState(false);
   const [activeTab, setActiveTab] = useState<'analysis' | 'simulator' | 'challenge'>('analysis');
   const [customSchoolName, setCustomSchoolName] = useState('');
   const [pledges, setPledges] = useState({
@@ -156,53 +160,64 @@ export default function ResultsClient() {
   if (!results) return null;
 
   const { totalCo2, categoryTotals } = results;
+  const personalTotalCo2 = results.personalTotalCo2 || totalCo2;
+  const activeTotalCo2 = includeInfrastructure ? personalTotalCo2 + 1200 : personalTotalCo2;
 
-  const simulatedCategoryTotals: Record<string, number> = {
-    mobility: categoryTotals.mobility || CO2_BASE_PAUSCHALEN.mobility,
-    food: categoryTotals.food || CO2_BASE_PAUSCHALEN.food,
-    energy: categoryTotals.energy || CO2_BASE_PAUSCHALEN.energy,
-    consumption: categoryTotals.consumption || CO2_BASE_PAUSCHALEN.consumption,
-    public: categoryTotals.public || CO2_BASE_PAUSCHALEN.public,
+  // Actual personal categories from quiz
+  const actualTotals: Record<string, number> = {
+    mobility: categoryTotals.mobility || 0,
+    food: categoryTotals.food || 0,
+    energy: categoryTotals.energy || 0,
+    consumption: categoryTotals.consumption || 0,
   };
 
-  const variableFood = Math.max(0, (categoryTotals.food || 0) - CO2_BASE_PAUSCHALEN.food);
-  const variableMobility = Math.max(0, (categoryTotals.mobility || 0) - CO2_BASE_PAUSCHALEN.mobility);
-  const variableEnergy = Math.max(0, (categoryTotals.energy || 0) - CO2_BASE_PAUSCHALEN.energy);
-  const variableConsumption = Math.max(0, (categoryTotals.consumption || 0) - CO2_BASE_PAUSCHALEN.consumption);
+  if (includeInfrastructure) {
+    actualTotals.public = 1200;
+  }
 
+  // Realistic reductions based on selected pledges
   let foodReduction = 0;
-  if (pledges.vegan) foodReduction = Math.max(350, variableFood * 0.55);
-  else if (pledges.vegetarian) foodReduction = Math.max(250, variableFood * 0.38);
-  if (pledges.bioRegional) foodReduction += Math.max(80, variableFood * 0.12);
-  simulatedCategoryTotals.food = Math.max(CO2_BASE_PAUSCHALEN.food, (categoryTotals.food || 0) - foodReduction);
+  if (pledges.vegan) foodReduction = actualTotals.food * 0.40;
+  else if (pledges.vegetarian) foodReduction = actualTotals.food * 0.25;
+  if (pledges.bioRegional) foodReduction += actualTotals.food * 0.08;
 
   let mobilityReduction = 0;
-  if (pledges.activeTransit) mobilityReduction += Math.max(140, variableMobility * 0.35);
-  if (pledges.noFlights) mobilityReduction += Math.max(400, variableMobility * 0.6);
-  simulatedCategoryTotals.mobility = Math.max(CO2_BASE_PAUSCHALEN.mobility, (categoryTotals.mobility || 0) - mobilityReduction);
+  if (pledges.activeTransit) mobilityReduction += actualTotals.mobility * 0.30;
+  if (pledges.noFlights) mobilityReduction += actualTotals.mobility * 0.35;
 
   let energyReduction = 0;
-  if (pledges.greenPower) energyReduction += Math.max(280, variableEnergy * 0.3);
-  if (pledges.lowerHeating) energyReduction += Math.max(120, variableEnergy * 0.15);
-  simulatedCategoryTotals.energy = Math.max(CO2_BASE_PAUSCHALEN.energy, (categoryTotals.energy || 0) - energyReduction);
+  if (pledges.greenPower) energyReduction += actualTotals.energy * 0.25;
+  if (pledges.lowerHeating) energyReduction += actualTotals.energy * 0.12;
 
   let consumptionReduction = 0;
-  if (pledges.secondHand) consumptionReduction += Math.max(180, variableConsumption * 0.35);
-  if (pledges.digitalReduction) consumptionReduction += Math.max(80, variableConsumption * 0.18);
-  simulatedCategoryTotals.consumption = Math.max(CO2_BASE_PAUSCHALEN.consumption, (categoryTotals.consumption || 0) - consumptionReduction);
+  if (pledges.secondHand) consumptionReduction += actualTotals.consumption * 0.35;
+  if (pledges.digitalReduction) consumptionReduction += actualTotals.consumption * 0.15;
 
-  const simulatedTotalCo2 = Object.values(simulatedCategoryTotals).reduce((sum, v) => sum + v, 0);
-  const co2Saved = Math.max(0, totalCo2 - simulatedTotalCo2);
+  const simulatedCategoryTotals: Record<string, number> = {
+    mobility: Math.max(0, Math.round(actualTotals.mobility - mobilityReduction)),
+    food: Math.max(0, Math.round(actualTotals.food - foodReduction)),
+    energy: Math.max(0, Math.round(actualTotals.energy - energyReduction)),
+    consumption: Math.max(0, Math.round(actualTotals.consumption - consumptionReduction)),
+  };
+
+  if (includeInfrastructure) {
+    simulatedCategoryTotals.public = 1200;
+  }
+
+  const simulatedTotalCo2 = Math.round(
+    Object.values(simulatedCategoryTotals).reduce((sum, v) => sum + v, 0)
+  );
+  const co2Saved = Math.max(0, activeTotalCo2 - simulatedTotalCo2);
   const treesSaved = Math.round(co2Saved / 12.5);
 
   const getRating = () => {
-    if (totalCo2 <= CLIMATE_TARGET_CO2) {
+    if (activeTotalCo2 <= CLIMATE_TARGET_CO2) {
       return { label: 'Klimaziel erreicht', desc: 'Vorbildlich · Unter 2.000 kg CO₂ pro Jahr' };
     }
-    if (totalCo2 <= 6500) {
-      return { label: 'Sehr sparsam', desc: 'Deutlich unter dem Bundesdurchschnitt' };
+    if (activeTotalCo2 <= 5000) {
+      return { label: 'Sehr sparsam & klimabewusst', desc: 'Deutlich unter dem Bundesdurchschnitt' };
     }
-    if (totalCo2 <= NATIONAL_AVERAGE_CO2) {
+    if (activeTotalCo2 <= NATIONAL_AVERAGE_CO2) {
       return { label: 'Unter Bundesdurchschnitt', desc: `Unter den durchschnittlichen ${formatCO2(NATIONAL_AVERAGE_CO2)}` };
     }
     return { label: 'Einsparpotenzial vorhanden', desc: 'Mit gezielten Alltagsänderungen viel bewegen' };
@@ -210,22 +225,29 @@ export default function ResultsClient() {
 
   const rating = getRating();
 
-  const pieData = Object.entries(categoryTotals).map(([key, value]) => ({
+  const pieData = Object.entries(actualTotals).map(([key, value]) => ({
     name: CATEGORIES[key as Category]?.label || key,
     value: Math.max(0, Math.round(value)),
     color: CATEGORIES[key as Category]?.color || '#444',
   }));
 
+  const hasPledges = Object.values(pledges).some(Boolean);
   const comparisonData = [
-    { name: 'Klimaziel', value: CLIMATE_TARGET_CO2, fill: '#245037' },
-    { name: 'Mit Versprechen', value: Math.round(simulatedTotalCo2), fill: '#3d7a57' },
-    { name: 'Dein Wert', value: Math.round(totalCo2), fill: '#1c1917' },
+    { name: 'Klimaziel 2050', value: CLIMATE_TARGET_CO2, fill: '#245037' },
+    ...(hasPledges
+      ? [{ name: 'Mit Versprechen', value: Math.round(simulatedTotalCo2), fill: '#3d7a57' }]
+      : []),
+    {
+      name: includeInfrastructure ? 'Dein Wert (Vollbilanz)' : 'Dein persönlicher Alltag',
+      value: Math.round(activeTotalCo2),
+      fill: '#1c1917',
+    },
   ];
 
   if (results.classAverage > 0) {
     comparisonData.push({
       name: `Klasse ${results.className}`,
-      value: results.classAverage,
+      value: includeInfrastructure ? results.classAverage + 1200 : results.classAverage,
       fill: '#57534e',
     });
   }
@@ -296,7 +318,7 @@ export default function ResultsClient() {
 
       <p className="text-[11px] sm:text-xs leading-relaxed max-w-md mx-auto mb-4 sm:mb-6 text-stone-800">
         den persönlichen CO₂-Fußabdruck analysiert und ein Jahresergebnis von{' '}
-        <strong className="font-sans text-stone-900 font-bold">{formatCO2(totalCo2)}</strong> ermittelt hat.
+        <strong className="font-sans text-stone-900 font-bold">{formatCO2(personalTotalCo2)}</strong> ermittelt hat.
       </p>
 
       {/* Pledges box */}
@@ -320,7 +342,8 @@ export default function ResultsClient() {
             <p className="text-[11px] sm:text-xs text-stone-700 mt-2.5 pt-2 border-t border-stone-300 font-medium">
               Prognostizierte Einsparung:{' '}
               <strong className="font-bold text-stone-900">-{formatCO2(co2Saved)} CO₂/Jahr</strong>{' '}
-              (ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}).
+              (ca. {treesSaved} {treesSaved === 1 ? 'Baum' : 'Bäume'}). Neuer Wert:{' '}
+              <strong className="font-bold text-stone-900">{formatCO2(simulatedTotalCo2)}</strong>.
             </p>
           )}
         </div>
@@ -385,13 +408,15 @@ export default function ResultsClient() {
       {/* Main Content Area */}
       <main className="max-w-4xl mx-auto px-3 sm:px-6 py-4 sm:py-10 flex-1 w-full space-y-4 sm:space-y-6">
         {/* Scorecard Hero Banner */}
-        <article className="paper-sheet p-5 sm:p-12 text-center space-y-3 sm:space-y-4">
+        <article className="paper-sheet p-5 sm:p-10 text-center space-y-3 sm:space-y-4">
           <span className="text-[10px] sm:text-xs uppercase tracking-wider text-muted-foreground font-mono block">
-            Dein persönlicher CO₂-Fußabdruck
+            {includeInfrastructure
+              ? 'Gesamt-Fußabdruck inkl. staatliche Infrastruktur'
+              : 'Dein persönlicher CO₂-Fußabdruck'}
           </span>
 
           <div className="text-3xl min-[360px]:text-4xl sm:text-6xl font-mono font-semibold text-foreground tracking-tight py-1">
-            {formatCO2(animatedTotal)}
+            {formatCO2(activeTotalCo2)}
           </div>
 
           <div className="space-y-1">
@@ -403,7 +428,35 @@ export default function ResultsClient() {
             </p>
           </div>
 
-          <div className="pt-1 flex flex-col sm:flex-row items-center justify-center gap-2.5">
+          {/* Idiot-proof 2-Way View Switcher */}
+          <div className="pt-1 flex justify-center">
+            <div className="inline-flex items-center p-1 rounded-full bg-muted/80 border border-border text-[10px] sm:text-xs font-mono">
+              <button
+                type="button"
+                onClick={() => setIncludeInfrastructure(false)}
+                className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
+                  !includeInfrastructure
+                    ? 'bg-background text-foreground font-semibold shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Persönlicher Alltag ({formatCO2(personalTotalCo2)})
+              </button>
+              <button
+                type="button"
+                onClick={() => setIncludeInfrastructure(true)}
+                className={`px-3 py-1 rounded-full transition-all cursor-pointer ${
+                  includeInfrastructure
+                    ? 'bg-background text-foreground font-semibold shadow-xs'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                + Staatliche Infrastruktur ({formatCO2(personalTotalCo2 + 1200)})
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
             <button
               onClick={() => setShowCertificate(true)}
               className="w-full sm:w-auto paper-btn-primary text-xs sm:text-sm flex items-center justify-center gap-2 font-medium min-h-[42px] sm:min-h-[44px]"
@@ -421,7 +474,7 @@ export default function ResultsClient() {
               Kompensation
             </span>
             <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground tracking-tight">
-              {Math.round(totalCo2 / 12.5)} Bäume
+              {Math.round(activeTotalCo2 / 12.5)} Bäume
             </div>
             <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">
               notwendig zur jährlichen Bindung dieser Emissionen
@@ -433,7 +486,7 @@ export default function ResultsClient() {
               Mobilität
             </span>
             <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground tracking-tight">
-              {(totalCo2 / 0.15 / 1000).toFixed(0)}.000 km
+              {Math.round(activeTotalCo2 / 0.15).toLocaleString('de-DE')} km
             </div>
             <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">
               Fahrtstrecke mit einem durchschnittlichen Benziner-PKW
@@ -445,7 +498,7 @@ export default function ResultsClient() {
               Ernährung
             </span>
             <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground tracking-tight">
-              {Math.round(totalCo2 / 3.6)} Portionen
+              {Math.round(activeTotalCo2 / 3.6).toLocaleString('de-DE')} Portionen
             </div>
             <p className="text-[11px] sm:text-xs text-muted-foreground leading-snug">
               äquivalente durchschnittliche Fleischmahlzeiten
@@ -493,19 +546,29 @@ export default function ResultsClient() {
         {/* TAB 1: ANALYSE */}
         {activeTab === 'analysis' && (
           <div className="space-y-4 sm:space-y-6">
-            {/* UBA Pauschale Explanatory Banner */}
-            <div className="p-3 sm:p-4 rounded-xl border border-border bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-muted-foreground">
-              <div className="flex items-start sm:items-center gap-2.5">
-                <span className="font-mono text-[10px] font-bold text-foreground bg-background border border-border px-2 py-0.5 rounded shrink-0 uppercase tracking-wide">
-                  UBA-Standard
-                </span>
-                <span className="text-[11px] sm:text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
-                  Dein Gesamtergebnis enthält eine <strong>wissenschaftliche Grundpauschale (4,4 t)</strong>: 1.200 kg für öffentliche Infrastruktur (Straßen, Schulen, Krankenhäuser) sowie Sockelbeträge für Grundbedarfe in Wohnen, Ernährung und Konsum.
-                </span>
+            {/* UBA-Transparenz Info Banner */}
+            <div className="p-3.5 sm:p-4 rounded-xl border border-border bg-muted/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-[10px] font-bold text-foreground bg-background border border-border px-2 py-0.5 rounded uppercase tracking-wide">
+                    UBA-Transparenz
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    Persönlicher Alltag vs. Staatliche Infrastruktur
+                  </span>
+                </div>
+                <p className="text-[11px] sm:text-xs text-muted-foreground leading-relaxed max-w-2xl">
+                  Dein Ergebnis von <strong>{formatCO2(personalTotalCo2)}</strong> umfasst alle Lebensbereiche, die du durch dein persönliches Verhalten steuerst (Ernährung, Schulweg, Heizung, Konsum).
+                  Im bundesweiten Gesamtdurchschnitt (10,5 t) kommen für jeden Bürger in Deutschland noch <strong>ca. 1.200 kg für öffentliche Infrastruktur</strong> (Straßen, Schulen, Krankenhäuser, Verwaltung) hinzu.
+                </p>
               </div>
-              <span className="font-mono text-xs text-foreground font-semibold shrink-0 bg-background/80 px-2 py-1 rounded border border-border">
-                +4.400 kg Pauschale
-              </span>
+              <button
+                type="button"
+                onClick={() => setIncludeInfrastructure(!includeInfrastructure)}
+                className="paper-btn-secondary text-xs shrink-0 flex items-center justify-center gap-1.5 px-3 py-1.5 min-h-[38px] cursor-pointer font-medium"
+              >
+                <span>{includeInfrastructure ? '✓ Staatliche Infrastruktur aktiv (+1,2 t)' : '+ Staatliche Infrastruktur einrechnen (+1,2 t)'}</span>
+              </button>
             </div>
 
             <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
@@ -530,12 +593,12 @@ export default function ResultsClient() {
               </div>
             </div>
 
-            {/* 5 Category Cards with Clean Progress Bars */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
-              {Object.entries(categoryTotals).map(([key, value]) => {
+            {/* Category Cards with Clean Progress Bars */}
+            <div className={`grid gap-2 sm:gap-3 ${includeInfrastructure ? 'grid-cols-2 sm:grid-cols-5' : 'grid-cols-2 sm:grid-cols-4'}`}>
+              {Object.entries(actualTotals).map(([key, value]) => {
                 const cat = CATEGORIES[key as Category];
                 if (!cat) return null;
-                const percent = Math.round((Math.max(0, value) / Math.max(1, totalCo2)) * 100);
+                const percent = Math.round((Math.max(0, value) / Math.max(1, activeTotalCo2)) * 100);
 
                 return (
                   <div key={key} className="paper-sheet p-3 sm:p-4 space-y-1.5 sm:space-y-2">
@@ -588,6 +651,40 @@ export default function ResultsClient() {
                 ))}
               </div>
             </div>
+
+            {/* Rechner-Vergleich & Transparenz FAQ */}
+            <article className="paper-sheet p-4 sm:p-6 space-y-3">
+              <div className="border-b border-border pb-2.5 flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-muted-foreground block">
+                    Transparenz & Methodik
+                  </span>
+                  <h3 className="text-xs sm:text-sm font-semibold text-foreground">
+                    💡 Warum zeigen andere CO₂-Rechner im Internet oft 5 Tonnen oder mehr an?
+                  </h3>
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-3 text-xs text-muted-foreground">
+                <div className="space-y-1.5 p-3 rounded-lg bg-muted/30 border border-border">
+                  <span className="font-semibold text-foreground block text-[11px] sm:text-xs">1. Gesamthaushalt vs. Schüler-Anteil</span>
+                  <p className="text-[10px] sm:text-[11px] leading-relaxed">
+                    Erwachsenen-Rechner (wie FirstClimate oder Stromanbieter) berechnen meist die Heizung und den Strom für eine <em>ganze Wohnung</em> (oft 3–4 Tonnen) für 1 Person. Unser Rechner teilt die Wohnwärme fair auf alle Familienmitglieder im Haushalt auf.
+                  </p>
+                </div>
+                <div className="space-y-1.5 p-3 rounded-lg bg-muted/30 border border-border">
+                  <span className="font-semibold text-foreground block text-[11px] sm:text-xs">2. Ökostrom & Solaranlage</span>
+                  <p className="text-[10px] sm:text-[11px] leading-relaxed">
+                    Klimafreundliche Entscheidungen zu Hause (wie 100% Ökostrom oder Solarmodule auf dem Dach) reduzieren deine Bilanz bei uns spürbar – bis zu 700 kg Einsparung im Bereich Energie!
+                  </p>
+                </div>
+                <div className="space-y-1.5 p-3 rounded-lg bg-muted/30 border border-border">
+                  <span className="font-semibold text-foreground block text-[11px] sm:text-xs">3. Ernährung wissenschaftlich exakt</span>
+                  <p className="text-[10px] sm:text-[11px] leading-relaxed">
+                    Bei Ernährung liegen unser Rechner ({formatCO2(actualTotals.food || 0)}) und große Portale (z.B. FirstClimate: 1.410 kg) fast auf das Kilogramm genau gleichauf!
+                  </p>
+                </div>
+              </div>
+            </article>
 
             {/* Certificate Call-to-Action */}
             <article className="paper-sheet p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
@@ -643,10 +740,12 @@ export default function ResultsClient() {
                     Prognostizierte Einsparung
                   </span>
                   <div className="text-xl sm:text-2xl font-mono font-semibold text-foreground">
-                    -{formatCO2(co2Saved)} / Jahr
+                    {co2Saved > 0 ? `-${formatCO2(co2Saved)} / Jahr` : '0 kg / Jahr'}
                   </div>
                   <span className="text-[11px] sm:text-xs text-muted-foreground block mt-0.5">
-                    Neuer Ausstoß: {formatCO2(simulatedTotalCo2)} (Ausgang: {formatCO2(totalCo2)})
+                    {co2Saved > 0
+                      ? `Neuer Ausstoß: ${formatCO2(simulatedTotalCo2)} (Ausgangswert: ${formatCO2(activeTotalCo2)})`
+                      : `Wähle unten Maßnahmen aus, um deinen CO₂-Ausstoß von ${formatCO2(activeTotalCo2)} gezielt zu senken.`}
                   </span>
                 </div>
 

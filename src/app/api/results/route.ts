@@ -143,6 +143,9 @@ export async function GET() {
 
     return NextResponse.json({
       totalCo2,
+      personalTotalCo2: totalCo2,
+      publicInfrastructureCo2: 1200,
+      fullTotalCo2: totalCo2 + 1200,
       categoryTotals,
       responses,
       className: student.class.className,
