@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { loadEncryptedItem, saveEncryptedItem } from '@/lib/secure-storage';
 import {
   CATEGORIES,
   NATIONAL_AVERAGE_CO2,
@@ -89,19 +90,18 @@ export default function ResultsClient() {
   const router = useRouter();
 
   useEffect(() => {
-    const saved = localStorage.getItem('co2rechner_pledges');
-    if (saved) {
-      try {
-        setPledges(JSON.parse(saved));
-      } catch {
-        /* ignore */
+    async function loadPledges() {
+      const saved = await loadEncryptedItem<typeof pledges>('co2rechner_pledges');
+      if (saved) {
+        setPledges(saved);
       }
     }
+    loadPledges();
   }, []);
 
   useEffect(() => {
     if (results) {
-      localStorage.setItem('co2rechner_pledges', JSON.stringify(pledges));
+      saveEncryptedItem('co2rechner_pledges', pledges);
     }
   }, [pledges, results]);
 

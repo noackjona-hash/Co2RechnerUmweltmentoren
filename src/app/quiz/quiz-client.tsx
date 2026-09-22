@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { CATEGORIES, type Category, formatCO2 } from '@/lib/utils';
+import { loadEncryptedItem, saveEncryptedItem, removeEncryptedItem } from '@/lib/secure-storage';
 import {
   ArrowLeft,
   ArrowRight,
@@ -78,16 +79,11 @@ export default function QuizPage() {
       }
 
       const storageKey = `co2rechner_quiz_progress_${data.studentId}`;
-      const saved = localStorage.getItem(storageKey);
+      const saved = await loadEncryptedItem<{ answers: Record<string, Answer>; currentIndex: number }>(storageKey);
       if (saved && !modeOverride) {
-        try {
-          const parsed = JSON.parse(saved);
-          setAnswers(parsed.answers || {});
-          setCurrentIndex(parsed.currentIndex || 0);
-          setShowCategoryIntro(false);
-        } catch {
-          /* ignore */
-        }
+        setAnswers(saved.answers || {});
+        setCurrentIndex(saved.currentIndex || 0);
+        setShowCategoryIntro(false);
       } else if (data.responses?.length > 0 && !saved) {
         const existing: Record<string, Answer> = {};
         data.responses.forEach(
@@ -121,11 +117,11 @@ export default function QuizPage() {
     await loadQuestions(newMode);
   };
 
-  // Save progress locally
+  // Save progress locally with AES-256-GCM encryption
   useEffect(() => {
     if (studentId && questions.length > 0 && Object.keys(answers).length > 0) {
       const storageKey = `co2rechner_quiz_progress_${studentId}`;
-      localStorage.setItem(storageKey, JSON.stringify({ answers, currentIndex }));
+      saveEncryptedItem(storageKey, { answers, currentIndex });
     }
   }, [answers, currentIndex, questions.length, studentId]);
 
@@ -263,7 +259,7 @@ export default function QuizPage() {
       }
 
       if (studentId) {
-        localStorage.removeItem(`co2rechner_quiz_progress_${studentId}`);
+        removeEncryptedItem(`co2rechner_quiz_progress_${studentId}`);
       }
 
       router.push('/results');

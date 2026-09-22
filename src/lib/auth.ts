@@ -1,9 +1,14 @@
-import { SignJWT, jwtVerify } from 'jose';
+import { EncryptJWT, jwtDecrypt, SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'fallback-secret-change-me'
-);
+const rawSecret = process.env.JWT_SECRET || 'fallback-secret-change-me-co2-rechner';
+const SIGNING_SECRET = new TextEncoder().encode(rawSecret);
+
+// Derive exact 256-bit key using Web Crypto subtle digest (100% Edge Runtime & Node.js compatible)
+async function getEncryptionKey(): Promise<Uint8Array> {
+  const hash = await crypto.subtle.digest('SHA-256', SIGNING_SECRET);
+  return new Uint8Array(hash);
+}
 
 export type UserRole = 'super-admin' | 'school-admin' | 'teacher' | 'student';
 
@@ -20,20 +25,36 @@ export interface JWTPayload {
   accessKey?: string;
 }
 
+/**
+ * Creates an encrypted JSON Web Token (JWE) using AES-256-GCM (Authenticated Encryption).
+ * Zero payload plaintext leakage: payload is 100% opaque ciphertext.
+ */
 export async function createToken(payload: JWTPayload): Promise<string> {
-  return new SignJWT({ ...payload })
-    .setProtectedHeader({ alg: 'HS256' })
+  const key = await getEncryptionKey();
+  return new EncryptJWT({ ...payload })
+    .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(JWT_SECRET);
+    .encrypt(key);
 }
 
+/**
+ * Decrypts and authenticates a JWE token.
+ * Falls back to verifying legacy JWS signature for seamless session upgrades.
+ */
 export async function verifyToken(token: string): Promise<JWTPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const key = await getEncryptionKey();
+    const { payload } = await jwtDecrypt(token, key);
     return payload as unknown as JWTPayload;
   } catch {
-    return null;
+    // Fallback for existing legacy sessions signed with HS256
+    try {
+      const { payload } = await jwtVerify(token, SIGNING_SECRET);
+      return payload as unknown as JWTPayload;
+    } catch {
+      return null;
+    }
   }
 }
 
