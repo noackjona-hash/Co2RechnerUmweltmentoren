@@ -46,6 +46,7 @@ export function CookieBanner() {
     const newSettings = { essential: true, analytics: true };
     setSettings(newSettings);
     localStorage.setItem(COOKIE_KEY, JSON.stringify(newSettings));
+    window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: newSettings }));
     setIsOpen(false);
   };
 
@@ -53,11 +54,13 @@ export function CookieBanner() {
     const newSettings = { essential: true, analytics: false };
     setSettings(newSettings);
     localStorage.setItem(COOKIE_KEY, JSON.stringify(newSettings));
+    window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: newSettings }));
     setIsOpen(false);
   };
 
   const handleSaveSelection = () => {
     localStorage.setItem(COOKIE_KEY, JSON.stringify(settings));
+    window.dispatchEvent(new CustomEvent('cookie-consent-updated', { detail: settings }));
     setIsOpen(false);
   };
 

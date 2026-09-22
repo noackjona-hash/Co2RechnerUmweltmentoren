@@ -1,8 +1,8 @@
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { CookieBanner } from '@/components/cookie-banner';
+import { AnalyticsConsentWrapper } from '@/components/analytics-consent-wrapper';
 import { Lora, JetBrains_Mono } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/react';
 
 const fontSerif = Lora({
   subsets: ['latin'],
@@ -40,7 +40,7 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
           <CookieBanner />
-          <Analytics />
+          <AnalyticsConsentWrapper />
         </ThemeProvider>
       </body>
     </html>

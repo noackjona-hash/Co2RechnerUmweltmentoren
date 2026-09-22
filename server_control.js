@@ -65,19 +65,53 @@ async function getNgrokUrl() {
   return 'Inaktiv';
 }
 
+// Authentication & Security Helper
+const BACKEND_SECRET = process.env.BACKEND_SECRET_KEY || '2555a2c27693e16ac232dc26cec15f603a79fd0aa41cd9810bc2d10469c2e474';
+
+function isAuthorized(req, url) {
+  const incomingKey = req.headers['x-backend-secret-key'] ||
+                      (req.headers['authorization']?.startsWith('Bearer ') ? req.headers['authorization'].slice(7) : null) ||
+                      url.searchParams.get('key');
+  if (!incomingKey) return false;
+
+  // Allow admin password or secret key
+  if (incomingKey === BACKEND_SECRET || incomingKey === 'jonajona') return true;
+
+  if (incomingKey.length === BACKEND_SECRET.length) {
+    let diff = 0;
+    for (let i = 0; i < incomingKey.length; i++) {
+      diff |= incomingKey.charCodeAt(i) ^ BACKEND_SECRET.charCodeAt(i);
+    }
+    if (diff === 0) return true;
+  }
+  return false;
+}
+
 // Request Handler
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   
-  // Allow requests from localhost and local network subnets
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  // Strict CORS: Allow only local origins
+  const origin = req.headers['origin'] || '';
+  if (origin.includes('localhost') || origin.includes('127.0.0.1') || origin.includes('192.168.178.')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Backend-Secret-Key, Authorization');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
     res.end();
     return;
+  }
+
+  // Enforce Authentication on sensitive management APIs
+  if (['/api/service', '/api/command', '/api/logs'].includes(url.pathname)) {
+    if (!isAuthorized(req, url)) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Nicht autorisiert. Gültiger Administrator-Schlüssel erforderlich.' }));
+      return;
+    }
   }
 
   // 1. API: Get Status Metrics
@@ -784,6 +818,25 @@ const htmlTemplate = `<!DOCTYPE html>
   </div>
 
   <script>
+    // Authentication Key Management
+    function getAuthKey() {
+      let key = localStorage.getItem('server_control_key');
+      if (!key) {
+        key = prompt('Sicherheitshinweis: Bitte Administrator-Passwort oder Backend-Schlüssel eingeben:');
+        if (key) {
+          localStorage.setItem('server_control_key', key.trim());
+        }
+      }
+      return key || '';
+    }
+
+    function authHeaders(extra = {}) {
+      return {
+        ...extra,
+        'X-Backend-Secret-Key': getAuthKey()
+      };
+    }
+
     // Format Uptime (seconds to DD:HH:MM:SS)
     function formatUptime(sec) {
       const days = Math.floor(sec / (3600*24));
@@ -802,7 +855,7 @@ const htmlTemplate = `<!DOCTYPE html>
     // Fetch metrics
     async function updateStatus() {
       try {
-        const res = await fetch('/api/status');
+        const res = await fetch('/api/status', { headers: authHeaders() });
         if (!res.ok) throw new Error('Network error');
         const data = await res.json();
         
@@ -821,22 +874,21 @@ const htmlTemplate = `<!DOCTYPE html>
         
         document.getElementById('uptime-label').innerText = 'Uptime: ' + formatUptime(data.uptime);
         
-        // Update Services Badge
+        // Update service badges
+        updateServiceBadge('co2', data.services.co2rechner);
+        updateServiceBadge('ngrok', data.services.ngrok);
         updateServiceBadge('nginx', data.services.nginx);
         updateServiceBadge('postgresql', data.services.postgresql);
         updateServiceBadge('fail2ban', data.services.fail2ban);
-        updateServiceBadge('co2', data.services.co2rechner);
-        updateServiceBadge('ngrok', data.services.ngrok);
         
-        // PM2 App metrics
-        if (data.services.co2rechner) {
+        // Process details
+        if (data.services.co2rechnerMonit) {
           document.getElementById('co2-monit').innerText = 'RAM: ' + data.services.co2rechnerMonit.mem + ' | CPU: ' + data.services.co2rechnerMonit.cpu;
         } else {
           document.getElementById('co2-monit').innerText = 'Dienst ist inaktiv';
         }
 
-        // ngrok metrics
-        if (data.services.ngrok) {
+        if (data.services.ngrokMonit) {
           document.getElementById('ngrok-monit').innerText = 'RAM: ' + data.services.ngrokMonit.mem + ' | CPU: ' + data.services.ngrokMonit.cpu;
         } else {
           document.getElementById('ngrok-monit').innerText = 'Dienst ist inaktiv';
@@ -869,19 +921,24 @@ const htmlTemplate = `<!DOCTYPE html>
 
     // Control Services
     async function controlService(service, action) {
-      const confirmAction = confirm('M├Âchten Sie den Dienst "' + service + '" wirklich ' + (action === 'start' ? 'starten' : action === 'stop' ? 'stoppen' : 'neu starten') + '?');
+      const confirmAction = confirm('Möchten Sie den Dienst "' + service + '" wirklich ' + (action === 'start' ? 'starten' : action === 'stop' ? 'stoppen' : 'neu starten') + '?');
       if (!confirmAction) return;
 
       try {
         const res = await fetch('/api/service', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ service, action })
         });
+        if (res.status === 401) {
+          localStorage.removeItem('server_control_key');
+          alert('Nicht autorisiert. Bitte Passwort/Schlüssel erneut eingeben.');
+          return;
+        }
         const data = await res.json();
         
         if (data.success) {
-          alert('Aktion erfolgreich ausgef├╝hrt.');
+          alert('Aktion erfolgreich ausgeführt.');
         } else {
           alert('Fehler: ' + (data.error || data.stderr));
         }
@@ -907,9 +964,14 @@ const htmlTemplate = `<!DOCTYPE html>
       try {
         const res = await fetch('/api/command', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders({ 'Content-Type': 'application/json' }),
           body: JSON.stringify({ command })
         });
+        if (res.status === 401) {
+          localStorage.removeItem('server_control_key');
+          output.innerText = '$ ' + command + '\\n[Fehler 401]: Nicht autorisiert. Bitte Seite neu laden und Passwort eingeben.';
+          return;
+        }
         const data = await res.json();
         
         let display = '$ ' + command + '\\n';
@@ -934,7 +996,14 @@ const htmlTemplate = `<!DOCTYPE html>
       output.innerText = 'Lade Protokolle...';
       
       try {
-        const res = await fetch('/api/logs');
+        const res = await fetch('/api/logs', {
+          headers: authHeaders()
+        });
+        if (res.status === 401) {
+          localStorage.removeItem('server_control_key');
+          output.innerText = 'Nicht autorisiert zum Laden der Logs.';
+          return;
+        }
         const data = await res.json();
         output.innerText = data.logs || 'Keine Logs vorhanden.';
       } catch (err) {

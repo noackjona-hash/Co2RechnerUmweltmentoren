@@ -31,7 +31,7 @@ export default function ImpressumClient() {
         <article className="paper-sheet p-6 sm:p-10 space-y-6">
           <div className="border-b border-border pb-3 flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
             <span>Rechtliche Angaben</span>
-            <span>§ 5 TMG / § 18 MStV</span>
+            <span>§ 5 DDG / § 18 MStV</span>
           </div>
 
           <div className="space-y-1">
@@ -39,7 +39,7 @@ export default function ImpressumClient() {
               Impressum
             </h1>
             <p className="text-xs text-muted-foreground font-sans">
-              Angaben gemäß § 5 TMG und § 18 Abs. 2 MStV
+              Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG) und § 18 Abs. 2 MStV
             </p>
           </div>
 
